@@ -1,0 +1,6 @@
+-- require("radia.settings.comment")
+require("radia.settings.hop_file")
+require("radia.settings.trouble")
+require("radia.settings.indentline")
+require("radia.settings.terms")
+require("radia.settings.move")
