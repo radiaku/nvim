@@ -3,12 +3,7 @@ return {
 	version = "*",
 	config = function()
 		require("toggleterm").setup()
+		vim.api.nvim_set_keymap("n", "<C-t>", ":ToggleTerm<CR>", { noremap = true })
+		-- vim.api.nvim_set_keymap("t", "<C-T>", ":ToggleTerm<CR>", { noremap = true })
 	end,
-	-- keys = {
-	-- 	{
-	-- 		"<leader>td",
-	-- 		":ToggleTerm<CR><CR>",
-	-- 		desc = "Open a horizontal terminal at the Desktop directory",
-	-- 	},
-	-- },
 }
