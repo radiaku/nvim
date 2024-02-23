@@ -76,29 +76,38 @@ return {
 			on_attach = on_attach,
 		})
 
-		-- configure typescript server with plugin
-		lspconfig["tsserver"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
 		-- configure css server
 		lspconfig["cssls"].setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
 		})
 
-		-- configure tailwindcss server
-		lspconfig["tailwindcss"].setup({
+		capabilities.textDocument.completion.completionItem.snippetSupport = true
+		lspconfig.emmet_ls.setup({
+			-- on_attach = on_attach,
 			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		-- configure emmet language server
-		lspconfig["emmet_ls"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less" },
+			filetypes = {
+				"css",
+				"eruby",
+				"html",
+				"javascript",
+				"javascriptreact",
+				"less",
+				"sass",
+				"scss",
+				"svelte",
+				"pug",
+				"typescriptreact",
+				"vue",
+			},
+			init_options = {
+				html = {
+					options = {
+						-- For possible options, see: https://github.com/emmetio/emmet/blob/master/src/config.ts#L79-L267
+						["bem.enabled"] = true,
+					},
+				},
+			},
 		})
 
 		-- configure python server
@@ -112,19 +121,30 @@ return {
 			"pyrightconfig.json",
 		}
 
+		local site_packages_path = ""
+		if vim.fn.has("win32") == 1 then
+			local python_install_path = vim.fn.exepath("python")
+			local python_directory = python_install_path:match("(.*)\\[^\\]*$")
+			site_packages_path = python_directory .. "\\lib\\site-packages"
+		end
+
 		local util = require("lspconfig/util")
 		lspconfig["pyright"].setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
 			root_dir = function(fname)
-				return util.root_pattern(unpack(python_root_files))(fname)
+				-- return util.root_pattern(unpack(python_root_files))(fname)
+				-- 	or util.find_git_ancestor(fname)
+				-- 	or util.path.dirname(fname)
+
+				return util.root_pattern(table.unpack(python_root_files))(fname)
 					or util.find_git_ancestor(fname)
 					or util.path.dirname(fname)
 			end,
 			settings = {
 				python = {
 					analysis = {
-						extraPaths = { "c:\\python310\\lib\\site-packages" },
+						extraPaths = { site_packages_path },
 					},
 				},
 			},

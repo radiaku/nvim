@@ -15,6 +15,7 @@ return {
 
 		-- enable mason and configure icons
 		mason.setup({
+			PATH = "prepend",
 			ui = {
 				icons = {
 					package_installed = "✓",
@@ -29,11 +30,10 @@ return {
 			ensure_installed = {
 				"html",
 				"cssls",
-				"tailwindcss",
 				"lua_ls",
-				"emmet_ls",
 				"pyright",
 				"intelephense",
+				"emmet_ls",
 			},
 			-- auto-install configured servers (with lspconfig)
 			automatic_installation = true, -- not the same as ensure_installed
