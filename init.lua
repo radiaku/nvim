@@ -24,7 +24,7 @@ require("radia.themes")
 
 require("radia.neovide")
 
-require("radia.settings")
+-- require("radia.settings")
 
 --vim.cmd([[
 --set mouse=a
