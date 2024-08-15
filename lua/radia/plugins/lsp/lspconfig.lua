@@ -3,61 +3,76 @@ return {
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
 		"hrsh7th/cmp-nvim-lsp",
+		"williamboman/mason-lspconfig.nvim",
 		{ "antosha417/nvim-lsp-file-operations", config = true },
+		-- { "folke/neodev.nvim", opts = {} },
+		{ "folke/lazydev.nvim", opts = {} },
 	},
 	config = function()
 		-- import lspconfig plugin
 		local lspconfig = require("lspconfig")
+		local util = require("lspconfig/util")
+
+		-- import mason_lspconfig plugin
+		local mason = require("mason")
+		local mason_lspconfig = require("mason-lspconfig")
 
 		-- import cmp-nvim-lsp plugin
 		local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
 		local keymap = vim.keymap -- for conciseness
 
-		local opts = { noremap = true, silent = true }
-		local on_attach = function(client, bufnr)
-			opts.buffer = bufnr
+		vim.api.nvim_create_autocmd("LspAttach", {
+			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+			callback = function(ev)
+				-- Buffer local mappings.
+				-- See `:help vim.lsp.*` for documentation on any of the below functions
+				local opts = { buffer = ev.buf, silent = true }
 
-			-- set keybinds
-			opts.desc = "Show LSP references"
-			keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
+				-- set keybinds
+				opts.desc = "Show LSP references"
+				keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
 
-			opts.desc = "Go to declaration"
-			keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
+				opts.desc = "Show LSP type all References"
+				keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts) -- Show LSP type all References
 
-			opts.desc = "Show LSP definitions"
-			keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
+				opts.desc = "Go to declaration"
+				keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
 
-			opts.desc = "Show LSP implementations"
-			keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
+				opts.desc = "Show LSP definitions"
+				keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
 
-			opts.desc = "Show LSP type definitions"
-			keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
+				opts.desc = "Show LSP implementations"
+				keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
 
-			opts.desc = "See available code actions"
-			keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
+				opts.desc = "Show LSP type definitions"
+				keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
 
-			opts.desc = "Smart rename"
-			keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts) -- smart rename
+				opts.desc = "See available code actions"
+				keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
 
-			opts.desc = "Show buffer diagnostics"
-			keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
+				opts.desc = "Smart rename"
+				keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts) -- smart rename
 
-			opts.desc = "Show line diagnostics"
-			keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
+				opts.desc = "Show buffer diagnostics"
+				keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
 
-			opts.desc = "Go to previous diagnostic"
-			keymap.set("n", "[d", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
+				opts.desc = "Show line diagnostics"
+				keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
 
-			opts.desc = "Go to next diagnostic"
-			keymap.set("n", "]d", vim.diagnostic.goto_next, opts) -- jump to next diagnostic in buffer
+				opts.desc = "Go to previous diagnostic"
+				keymap.set("n", "[d", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
 
-			opts.desc = "Show documentation for what is under cursor"
-			keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
+				opts.desc = "Go to next diagnostic"
+				keymap.set("n", "]d", vim.diagnostic.goto_next, opts) -- jump to next diagnostic in buffer
 
-			opts.desc = "Restart LSP"
-			keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
-		end
+				opts.desc = "Show documentation for what is under cursor"
+				keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
+
+				opts.desc = "Restart LSP"
+				keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
+			end,
+		})
 
 		-- used to enable autocompletion (assign to every lsp server config)
 		local capabilities = cmp_nvim_lsp.default_capabilities()
@@ -70,128 +85,151 @@ return {
 			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 		end
 
-		-- configure html server
-		lspconfig["html"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		-- configure css server
-		lspconfig["cssls"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		capabilities.textDocument.completion.completionItem.snippetSupport = true
-		lspconfig.emmet_ls.setup({
-			-- on_attach = on_attach,
-			capabilities = capabilities,
-			filetypes = {
-				"css",
-				"eruby",
-				"html",
-				"javascript",
-				"javascriptreact",
-				"less",
-				"sass",
-				"scss",
-				"svelte",
-				"pug",
-				"typescriptreact",
-				"vue",
-			},
-			init_options = {
-				html = {
-					options = {
-						-- For possible options, see: https://github.com/emmetio/emmet/blob/master/src/config.ts#L79-L267
-						["bem.enabled"] = true,
-					},
-				},
-			},
-		})
-
-		-- configure python server
-		local python_root_files = {
-			"WORKSPACE", -- added for Bazel; items below are from default config
-			"pyproject.toml",
-			"setup.py",
-			"setup.cfg",
-			"requirements.txt",
-			"Pipfile",
-			"pyrightconfig.json",
-		}
-
-		local site_packages_path = ""
-		if vim.fn.has("win32") == 1 then
-			local python_install_path = vim.fn.exepath("python")
-			local python_directory = python_install_path:match("(.*)\\[^\\]*$")
-			site_packages_path = python_directory .. "\\lib\\site-packages"
-		end
-
-		local util = require("lspconfig/util")
-		lspconfig["pyright"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			root_dir = function(fname)
-				-- return util.root_pattern(unpack(python_root_files))(fname)
-				-- 	or util.find_git_ancestor(fname)
-				-- 	or util.path.dirname(fname)
-
-				return util.root_pattern(table.unpack(python_root_files))(fname)
-					or util.find_git_ancestor(fname)
-					or util.path.dirname(fname)
+		mason_lspconfig.setup_handlers({
+			-- default handler for installed servers
+			function(server_name)
+				lspconfig[server_name].setup({
+					capabilities = capabilities,
+				})
 			end,
-			settings = {
-				python = {
-					analysis = {
-						extraPaths = { site_packages_path },
-					},
-				},
-			},
-		})
 
-		-- configure php server
-		lspconfig["intelephense"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			settings = {
-				intelephense = {
-					diagnostics = {
-						undefinedConstants = false,
-						enable = true,
-					},
-					format = {
-						enable = true,
-					},
-				},
-			},
-		})
+			["basedpyright"] = function()
+				local python_root_files = {
+					"WORKSPACE", -- added for Bazel; items below are from default config
+					"pyproject.toml",
+					"setup.py",
+					"setup.cfg",
+					"requirements.txt",
+					"Pipfile",
+				}
 
-		-- configure go server
-		lspconfig["gopls"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
+				local site_packages_path = ""
+				local python_install_path = ""
+				if vim.fn.has("win32") == 1 then
+					python_install_path = vim.fn.exepath("python")
+					local python_directory = python_install_path:match("(.*)\\[^\\]*$")
+					site_packages_path = python_directory .. "\\lib\\site-packages"
+				else
+					python_install_path = vim.fn.exepath("python3")
+				end
 
-		-- configure lua server (with special settings)
-		lspconfig["lua_ls"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			settings = { -- custom settings for lua
-				Lua = {
-					-- make the language server recognize "vim" global
-					diagnostics = {
-						globals = { "vim" },
-					},
-					workspace = {
-						-- make language server aware of runtime files
-						library = {
-							[vim.fn.expand("$VIMRUNTIME/lua")] = true,
-							[vim.fn.stdpath("config") .. "/lua"] = true,
+				lspconfig["basedpyright"].setup({
+					filetypes = { "python", ".py" },
+					capabilities = capabilities,
+
+					root_dir = function(fname)
+						table.unpack = table.unpack or unpack -- 5.1 compatibility
+						return util.root_pattern(table.unpack(python_root_files))(fname)
+							or util.find_git_ancestor(fname)
+							or util.path.dirname(fname)
+					end,
+					settings = {
+						basedpyright = {
+							typeCheckingMode = "standard",
+							extraPaths = { site_packages_path },
+							autoSearchPaths = true,
+							diagnosticMode = "workspace",
+							useLibraryCodeForTypes = true,
 						},
 					},
-				},
-			},
+				})
+			end,
+
+			["tsserver"] = function()
+				lspconfig["tsserver"].setup({
+					capabilities = capabilities,
+					root_dir = util.root_pattern("package.json") or vim.fn.getcwd(),
+					-- cmd = { bin_path .. "typescript-language-server.cmd" },
+				})
+			end,
+
+			["tailwindcss"] = function()
+				lspconfig["tailwindcss"].setup({
+					filetypes = {
+						"css",
+						"sass",
+						"scss",
+						"less",
+						"svelte",
+					},
+					capabilities = capabilities,
+					root_dir = util.root_pattern("package.json") or vim.fn.getcwd(),
+					autoformat = false,
+					-- cmd = { bin_path .. "tailwindcss-language-server.cmd" },
+				})
+			end,
+
+			["gopls"] = function()
+				lspconfig["gopls"].setup({
+					filetypes = { "go" },
+					capabilities = capabilities,
+				})
+			end,
+
+			["intelephense"] = function()
+				lspconfig["intelephense"].setup({
+					capabilities = capabilities,
+					filetypes = { "php" },
+					root_dir = function(pattern)
+						local cwd = vim.fn.getcwd()
+						local root = util.root_pattern("composer.json", ".git")(pattern)
+						return util.path.is_descendant(cwd, root) and cwd or root
+					end,
+				})
+			end,
+
+			["html"] = function()
+				lspconfig["html"].setup({
+					filetypes = {
+						"html",
+						"*.tmpl",
+						"gotexttmpl",
+					},
+					capabilities = capabilities,
+					init_options = {
+						embeddedLanguages = {
+							css = true,
+							javascript = true,
+						},
+						provideFormatter = true,
+					},
+
+					root_dir = util.root_pattern("package.json") or vim.fn.getcwd(),
+					autoformat = false,
+					-- cmd = { bin_path .. "vscode-html-language-server.cmd" },
+				})
+			end,
+			["emmet_ls"] = function()
+				-- configure emmet language server
+				lspconfig["emmet_ls"].setup({
+					capabilities = capabilities,
+					filetypes = {
+						"html",
+						"css",
+						"sass",
+						"scss",
+						"less",
+						"svelte",
+					},
+				})
+			end,
+			["lua_ls"] = function()
+				-- configure lua server (with special settings)
+				lspconfig["lua_ls"].setup({
+					capabilities = capabilities,
+					settings = {
+						Lua = {
+							-- make the language server recognize "vim" global
+							diagnostics = {
+								globals = { "vim" },
+							},
+							-- completion = {
+							-- 	callSnippet = "Replace",
+							-- },
+						},
+					},
+				})
+			end,
 		})
 	end,
 }

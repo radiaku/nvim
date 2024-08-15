@@ -30,4 +30,14 @@ return {
 
 		hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
 	end,
+	-- callback = function()
+	-- 	if vim.fn.strlen(vim.fn.join(vim.fn.getline(1, "$"), "")) > 10000 then
+	-- 		local ibl = require("ibl")
+	-- 		local config = require("ibl.config")
+	-- 		ibl.setup_buffer(0, {
+	-- 			enabled = not config.get_config(0).enabled,
+	-- 		})
+	-- 		vim.fn.echo("line besar dari indent-blankline callback")
+	-- 	end
+	-- end,
 }

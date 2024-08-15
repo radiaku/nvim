@@ -2,7 +2,7 @@ return {
 	{
 		"nvim-treesitter/nvim-treesitter",
 		event = { "BufReadPre", "BufNewFile" },
-		build = ":TSUpdate",
+		-- build = ":TSUpdate",
 		dependencies = {
 			"windwp/nvim-ts-autotag",
 		},
@@ -19,8 +19,11 @@ return {
 				indent = { enable = true },
 				-- enable autotagging (w/ nvim-ts-autotag plugin)
 				autotag = {
-					enable = true,
+					enable = false,
 				},
+				disable = function()
+					return string.len(table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "")) > 100000
+				end,
 				-- ensure these language parsers are installed
 				ensure_installed = {
 					"json",
@@ -34,13 +37,13 @@ return {
 					"query",
 				},
 				incremental_selection = {
-					enable = true,
-					keymaps = {
-						init_selection = "<C-space>",
-						node_incremental = "<C-space>",
-						scope_incremental = false,
-						node_decremental = "<bs>",
-					},
+					enable = false,
+					-- keymaps = {
+					-- 	init_selection = "<C-space>",
+					-- 	node_incremental = "<C-space>",
+					-- 	scope_incremental = false,
+					-- 	node_decremental = "<bs>",
+					-- },
 				},
 			})
 

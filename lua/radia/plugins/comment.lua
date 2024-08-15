@@ -2,7 +2,7 @@ return {
 	"numToStr/Comment.nvim",
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
-		-- "JoosepAlviste/nvim-ts-context-commentstring",
+		"JoosepAlviste/nvim-ts-context-commentstring",
 	},
 	config = function()
 		-- import comment plugin safely
@@ -10,16 +10,18 @@ return {
 
 		-- enable comment
 		comment.setup({
+      ignore = nil,
+      extra = nil,
 			padding = true,
 			sticky = true,
-			ignore = nil,
+			-- ignore = nil,
 			toggler = {
 				line = "gcc",
-				block = "gbc",
+				block = "gcc",
 			},
 			opleader = {
-				line = "gc",
-				block = "gb",
+				line = "gcc",
+				block = "gcc",
 			},
 			mappings = {
 				basic = true,

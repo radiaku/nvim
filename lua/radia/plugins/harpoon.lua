@@ -14,57 +14,58 @@ return {
 		--
 		-- basic telescope configuration
 		local conf = require("telescope.config").values
-		local function toggle_telescope(harpoon_files)
-			local file_paths = {}
-			for _, item in ipairs(harpoon_files.items) do
-				table.insert(file_paths, item.value)
-			end
+    local function toggle_telescope(harpoon_files)
+      local finder = function()
+        local paths = {}
+        for _, item in ipairs(harpoon_files.items) do
+          table.insert(paths, item.value)
+        end
 
-			require("telescope.pickers")
-				.new({}, {
-					prompt_title = "Harpoon",
-					finder = require("telescope.finders").new_table({
-						results = file_paths,
-					}),
-					previewer = conf.file_previewer({}),
-					sorter = conf.generic_sorter({}),
-				})
-				:find()
-		end
+        return require("telescope.finders").new_table({
+          results = paths,
+        })
+      end
 
-		local keymap = vim.keymap -- for conciseness
+      require("telescope.pickers")
+        .new({}, {
+          prompt_title = "Harpoon",
+          finder = finder(),
+          -- previewer = conf.file_previewer({}),
+          previewer = false,
+          sorter = conf.generic_sorter({}),
+          attach_mappings = function(prompt_bufnr, map)
+            map("n", "dd", function()
+              local state = require("telescope.actions.state")
+              local selected_entry = state.get_selected_entry()
+              local current_picker = state.get_current_picker(prompt_bufnr)
 
-		keymap.set("n", "<leader>hm", function()
-			toggle_telescope(harpoon:list())
-		end, { desc = "Open harpoon window" })
+              table.remove(harpoon_files.items, selected_entry.index)
+              current_picker:refresh(finder())
+            end)
+            return true
+          end,
+        })
+        :find()
+    end
 
-		keymap.set("n", "<leader>ha", function()
-			harpoon:list():append()
-		end)
+    local keymap = vim.keymap -- for conciseness
 
-		-- keymap.set("n", "<leader>hb", function()
-		-- 	require("harpoon.mark").add_file()
-		-- end, "Mark file")
+    keymap.set("n", "<leader>hm", function()
+      toggle_telescope(harpoon:list())
+    end, { desc = "Open harpoon window" })
 
-		-- keymap.set(
-		-- 	"n",
-		-- 	"<leader>hh",
-		-- 	"<cmd>lua require('harpoon.ui').toggle_quick_menu()<cr>",
-		-- 	{ desc = "Go to next harpoon mark" }
-		-- )
+    keymap.set("n", "<leader>ha", function()
+      harpoon:list():add()
+    end, { desc = "+Add to harpoon" })
 
-		-- keymap.set(
-		-- 	"n",
-		-- 	"<leader>hn",
-		-- 	"<cmd>lua require('harpoon.ui').nav_next()<cr>",
-		-- 	{ desc = "Go to next harpoon mark" }
-		-- )
-		--
-		-- keymap.set(
-		-- 	"n",
-		-- 	"<leader>hp",
-		-- 	"<cmd>lua require('harpoon.ui').nav_prev()<cr>",
-		-- 	{ desc = "Go to previous harpoon mark" }
-		-- )
-	end,
+    keymap.set("n", "<leader>hn", function()
+      harpoon:list():next()
+    end, { desc = "Next Harpoon" })
+
+    keymap.set("n", "<leader>hp", function()
+      harpoon:list():prev()
+    end, { desc = "Previous Harpoon" })
+
+
+  end,
 }
