@@ -1,6 +1,7 @@
 return {
 	"fedepujol/move.nvim",
 	config = function()
+		require("move").setup({})
 		local opts = { noremap = true, silent = true }
 
 		vim.keymap.set("v", "<A-j>", ":MoveBlock(1)<CR>", opts)

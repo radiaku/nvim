@@ -16,9 +16,9 @@ opt.wrap = false -- disable line wrapping
 -- syntax on
 -- opt.syntax = true
 
-opt.foldmethod = "expr"
-opt.foldexpr = "nvim_treesitter#foldexpr()"
-
+-- opt.foldmethod = "expr"
+-- opt.foldexpr = "nvim_treesitter#foldexpr()"
+--
 -- search settings
 opt.ignorecase = true -- ignore case when searching
 opt.smartcase = true -- if you include mixed case in your search, assumes you want case-sensitive
@@ -47,19 +47,4 @@ opt.splitbelow = true -- split horizontal window to the bottom
 -- turn off swapfile
 opt.swapfile = false
 
--- Blinking Yangking
-vim.cmd([[
-	autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup=(vim.fn['hlexists']('HighlightedyankRegion') > 0 and 'HighlightedyankRegion' or 'IncSearch'), timeout=100}
-]])
-
-vim.cmd([[
-filetype plugin on
-filetype indent on
-]])
-
--- Disable folding on startupp
--- vim.cmd([[
--- autocmd BufReadPost,FileReadPost * normal zR
--- ]])
-
-vim.opt.foldenable = false
+-- opt.foldenable = false

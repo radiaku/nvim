@@ -1,0 +1,27 @@
+return {
+	-- "LintaoAmons/bookmarks.nvim",
+	-- config = function()
+	-- 	require("bookmarks").setup({
+	-- 		-- json_db_path = vim.fs.normalize(vim.fn.stdpath("config") .. "/bookmarks.db.json"),
+	-- 	})
+	--
+	-- 	vim.keymap.set(
+	-- 		{ "n", "v" },
+	-- 		"<leader>ma",
+	-- 		"<cmd>BookmarksMark<cr>",
+	-- 		{ desc = "Mark current line into active BookmarkList." }
+	-- 	)
+	-- 	vim.keymap.set(
+	-- 		{ "n", "v" },
+	-- 		"<leader>mo",
+	-- 		"<cmd>BookmarksGoto<cr>",
+	-- 		{ desc = "Go to bookmark at current active BookmarkList" }
+	-- 	)
+	-- 	vim.keymap.set(
+	-- 		{ "n", "v" },
+	-- 		"<leader>mm",
+	-- 		"<cmd>BookmarksCommands<cr>",
+	-- 		{ desc = "Find and trigger a bookmark command." }
+	-- 	)
+	-- end,
+}
