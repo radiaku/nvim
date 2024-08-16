@@ -30,7 +30,7 @@ keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" }) 
 keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" }) -- close current split window
 
 -- destory buffer
-keymap.set("n", "<leader>bd", "<cmd>bd<CR>", { desc = "Close Buffer (bd)" }) --  Close Buffer (bd)
+keymap.set("n", "<leader>bd", "<cmd>bd!<CR>", { desc = "Close Buffer (bd)" }) --  Close Buffer (bd)
 keymap.set("n", "<leader>ba", ":%bd|e#|bd#<CR>", { desc = "Close Buffer All except unsaved (bd)" }) --  Close Buffer (bd)
 keymap.set("n", "<leader>cc", ":cclose<CR>", { desc = "Close QuickFix" }) --  Close Buffer (bd)
 keymap.set("n", "<leader>bk", ":q<CR>", { desc = "Quit " }) --  Close Buffer (bd)
