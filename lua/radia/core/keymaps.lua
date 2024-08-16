@@ -43,16 +43,16 @@ keymap.set("n", "<M-j>", "<C-w>j", { desc = "Move to down windows", noremap = tr
 keymap.set("n", "<M-k>", "<C-w>k", { desc = "Move to upper windows", noremap = true })
 
 -- disable for performance ( god speed)
-keymap.set("n", "<leader>gp", ":lua ToggleFeatures()<CR>", { desc = "Disable almost anything", noremap = true })
+-- keymap.set("n", "<leader>gp", ":lua ToggleFeatures()<CR>", { desc = "Disable almost anything", noremap = true })
 
 -- Set a keymap to trigger buffer formatting
 -- keymap.set("n", "<leader>fp", function() vim.lsp.buf.formatting_sync() end, { desc = "Format Buffer", noremap = true })
 
 -- disable format
-keymap.set("n", "<leader>fd", "<cmd>FormatDisable<CR>", { desc = "Disable Format", noremap = true })
+-- keymap.set("n", "<leader>fd", "<cmd>FormatDisable<CR>", { desc = "Disable Format", noremap = true })
 
 -- enable format
-keymap.set("n", "<leader>fe", "<cmd>FormatEnable<CR>", { desc = "Enable Format", noremap = true })
+-- keymap.set("n", "<leader>fe", "<cmd>FormatEnable<CR>", { desc = "Enable Format", noremap = true })
 
 -- change working directory to the location of the current file
 keymap.set("n", "<leader>cd", ":cd %:p:h<CR>:pwd<CR>", { desc = "Changing Working Directory", noremap = true })
