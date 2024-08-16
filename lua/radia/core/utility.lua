@@ -133,7 +133,7 @@ function DisableSyntaxTreesitter()
 	vim.opt.foldmethod = "manual"
 end
 
--- Disable big file or lines number 100.0000 more than this 
+-- Disable big file or lines number 500.0000 more than this 
 vim.cmd([[
-  autocmd BufRead * lua if string.len(table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "")) > 100000 then ToggleFeatures() end
+  autocmd BufRead * lua if string.len(table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "")) > 500000 then ToggleFeatures() end
 ]])
