@@ -11,7 +11,8 @@ return {
 			local treesitter = require("nvim-treesitter.configs")
 
 			-- configure treesitter
-			treesitter.setup({ -- enable syntax highlighting
+			treesitter.setup({ 
+        -- enable syntax highlighting
 				highlight = {
 					enable = true,
 				},
@@ -22,7 +23,7 @@ return {
 					enable = false,
 				},
 				disable = function()
-					return string.len(table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "")) > 100000
+					return string.len(table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "")) > 500000
 				end,
 				-- ensure these language parsers are installed
 				ensure_installed = {

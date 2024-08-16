@@ -1,10 +1,20 @@
 return {
-	-- "LunarVim/bigfile.nvim",
-	-- event = "BufReadPre",
-	-- opts = {
-	-- 	filesize = 2,
-	-- },
-	-- config = function(_, opts)
-	-- 	require("bigfile").setup(opts)
-	-- end,
+	"LunarVim/bigfile.nvim",
+	event = "BufReadPre",
+	config = function()
+		require("bigfile").setup({
+			filesize = 2, -- size of the file in MiB, the plugin round file sizes to the closest MiB
+			pattern = { "*" }, -- autocmd pattern or function see <### Overriding the detection of big files>
+			features = {
+				"indent_blankline",
+				"illuminate",
+				"lsp",
+				"treesitter",
+				"syntax",
+				"matchparen",
+				"vimopts",
+				"filetype",
+			},
+		})
+	end,
 }
