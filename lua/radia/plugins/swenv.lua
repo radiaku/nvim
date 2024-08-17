@@ -1,4 +1,5 @@
 return {
+  -- #NOTE use this when you use 9.5
 	-- "AckslD/swenv.nvim",
 	-- config = function()
 	-- 	require("swenv").setup({

@@ -10,7 +10,7 @@ return {
 
 		-- enable comment
 		comment.setup({
-      ignore = nil,
+      ignore ="",
       extra = nil,
 			padding = true,
 			sticky = true,
