@@ -103,50 +103,50 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(ev)
 		-- Buffer local mappings.
 		-- See `:help vim.lsp.*` for documentation on any of the below functions
-		local opts = { buffer = ev.buf, silent = true }
+		local opts_lsp = { buffer = ev.buf, silent = true }
 
 		-- set keybinds
-		opts.desc = "Show LSP references"
-		keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
+		opts_lsp.desc = "Show LSP references"
+		keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts_lsp) -- show definition, references
 
-		opts.desc = "Show LSP type all References"
-		keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts) -- Show LSP type all References
+		opts_lsp.desc = "Show LSP type all References"
+		keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts_lsp) -- Show LSP type all References
 
-		opts.desc = "Go to declaration"
-		keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
+		opts_lsp.desc = "Go to declaration"
+		keymap.set("n", "gD", vim.lsp.buf.declaration, opts_lsp) -- go to declaration
 
-		opts.desc = "Show LSP definitions"
-		keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
+		opts_lsp.desc = "Show LSP definitions"
+		keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts_lsp) -- show lsp definitions
 
-		opts.desc = "Show LSP implementations"
-		keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
+		opts_lsp.desc = "Show LSP implementations"
+		keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts_lsp) -- show lsp implementations
 
-		opts.desc = "Show LSP type definitions"
-		keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
+		opts_lsp.desc = "Show LSP type definitions"
+		keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts_lsp) -- show lsp type definitions
 
-		opts.desc = "See available code actions"
-		keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
+		opts_lsp.desc = "See available code actions"
+		keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts_lsp) -- see available code actions, in visual mode will apply to selection
 
-		opts.desc = "Smart rename"
-		keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts) -- smart rename
+		opts_lsp.desc = "Smart rename"
+		keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts_lsp) -- smart rename
 
-		opts.desc = "Show buffer diagnostics"
-		keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
+		opts_lsp.desc = "Show buffer diagnostics"
+		keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts_lsp) -- show  diagnostics for file
 
-		opts.desc = "Show line diagnostics"
-		keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
+		opts_lsp.desc = "Show line diagnostics"
+		keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts_lsp) -- show diagnostics for line
 
-		opts.desc = "Go to previous diagnostic"
-		keymap.set("n", "[d", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
+		opts_lsp.desc = "Go to previous diagnostic"
+		keymap.set("n", "[d", vim.diagnostic.goto_prev, opts_lsp) -- jump to previous diagnostic in buffer
 
-		opts.desc = "Go to next diagnostic"
-		keymap.set("n", "]d", vim.diagnostic.goto_next, opts) -- jump to next diagnostic in buffer
+		opts_lsp.desc = "Go to next diagnostic"
+		keymap.set("n", "]d", vim.diagnostic.goto_next, opts_lsp) -- jump to next diagnostic in buffer
 
-		opts.desc = "Show documentation for what is under cursor"
-		keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
+		opts_lsp.desc = "Show documentation for what is under cursor"
+		keymap.set("n", "K", vim.lsp.buf.hover, opts_lsp) -- show documentation for what is under cursor
 
-		opts.desc = "Restart LSP"
-		keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
+		opts_lsp.desc = "Restart LSP"
+		keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts_lsp) -- mapping to restart lsp if necessary
 	end,
 })
 
@@ -255,40 +255,40 @@ keymap.set("n", "<leader>hp", function()
 	harpoon:list():prev()
 end, { desc = "Previous Harpoon" })
 
-local augroup = vim.api.nvim_create_augroup("tigh-latte-golang", { clear = true })
-vim.api.nvim_create_autocmd("BufEnter", {
-	group = augroup,
-	pattern = "*.go",
-	callback = function()
-    opts.desc = "GoCoverage"
-		vim.keymap.set("n", "<Leader>gbb", vim.cmd.GoCoverage, opts)
-
-    opts.desc = "GoALtV"
-		vim.keymap.set("n", "<Leader>gaa", vim.cmd.GoAltV, opts)
-
-    opts.desc = "GoTest"
-		vim.keymap.set("n", "<Leader>gtt", vim.cmd.GoTest, opts)
-
-    opts.desc = "GoTestFunc"
-		vim.keymap.set("n", "<Leader>gtf", vim.cmd.GoTestFunc, opts)
-    
-    opts.desc = "GoModTidy"
-		vim.keymap.set("n", "<Leader>gti", vim.cmd.GoModTidy, opts)
-
-    opts.desc = "GoModVendor"
-		vim.keymap.set("n", "<Leader>gve", vim.cmd.GoModVendor, opts)
-
-    opts.desc = "GoGet"
-		vim.keymap.set("n", "<Leader>gg", function()
-			vim.api.nvim_input('"zyi":GoGet <C-R>z<CR>')
-			vim.schedule(function()
-				if vim.fn.isdirectory("vendor") ~= 0 then
-					vim.cmd.GoModVendor()
-				end
-			end)
-		end, opts)
-	end,
-})
+-- local augroup = vim.api.nvim_create_augroup("tigh-latte-golang", { clear = true })
+-- vim.api.nvim_create_autocmd("BufEnter", {
+-- 	group = augroup,
+-- 	pattern = "*.go",
+-- 	callback = function()
+--     opts.desc = "GoCoverage"
+-- 		vim.keymap.set("n", "<Leader>gbb", vim.cmd.GoCoverage, opts)
+--
+--     opts.desc = "GoALtV"
+-- 		vim.keymap.set("n", "<Leader>gaa", vim.cmd.GoAltV, opts)
+--
+--     opts.desc = "GoTest"
+-- 		vim.keymap.set("n", "<Leader>gtt", vim.cmd.GoTest, opts)
+--
+--     opts.desc = "GoTestFunc"
+-- 		vim.keymap.set("n", "<Leader>gtf", vim.cmd.GoTestFunc, opts)
+--
+--     opts.desc = "GoModTidy"
+-- 		vim.keymap.set("n", "<Leader>gti", vim.cmd.GoModTidy, opts)
+--
+--     opts.desc = "GoModVendor"
+-- 		vim.keymap.set("n", "<Leader>gve", vim.cmd.GoModVendor, opts)
+--
+--     opts.desc = "GoGet"
+-- 		vim.keymap.set("n", "<Leader>ggg", function()
+-- 			vim.api.nvim_input('"zyi":GoGet <C-R>z<CR>')
+-- 			vim.schedule(function()
+-- 				if vim.fn.isdirectory("vendor") ~= 0 then
+-- 					vim.cmd.GoModVendor()
+-- 				end
+-- 			end)
+-- 		end, opts)
+-- 	end,
+-- })
 
 keymap.set("n", "t", "<cmd>HopPattern<CR>", { desc="Hop", noremap = true })
 keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc="Diagnostics (Trouble)", noremap = true })
