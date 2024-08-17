@@ -1,15 +1,8 @@
 -- disable netrw at the very start of your init.lua
---
---
 -- vim.lsp.set_log_level("debug")
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.g.loaded_perl_provider = 0
-
--- Map Caps Lock to Escape
--- vim.api.nvim_set_keymap("n", "<CapsLock>", "<Esc>", { noremap = true, silent = true })
--- vim.api.nvim_set_keymap("i", "<CapsLock>", "<Esc>", { noremap = true, silent = true })
--- vim.api.nvim_set_keymap("v", "<CapsLock>", "<Esc>", { noremap = true, silent = true })
 
 -- optionally enable 24-bit colour
 -- vim.opt.termguicolors = true
@@ -46,63 +39,24 @@ if vim.fn.has("win32") == 1 then
 	require("radia.pwsh")
 end
 
+-- Set <space> as the leader key
+-- See `:help mapleader`
+--  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
+-- Load Core
 require("radia.core")
+-- Load Lazy
 require("radia.lazy")
-
--- setting for plugins on here
+-- Load Keymaps for plugin etc
+require("radia.keymaps")
+-- setting themes
 require("radia.themes")
-
+-- settings neovide
 require("radia.neovide")
 
--- require("radia.settings")
 
-vim.cmd([[
-set mouse=a
-" source $VIMRUNTIME/mswin.vim
-" imap <S-Insert> <C-R>*
-" noremap y "*y
-" noremap yy "*yy
-" noremap Y "*y$
-"
-" imap <silent>  <C-R>+
-imap <C-v> <C-R>*
-cmap <S-Insert>  <C-R>+
-
-" ON toggleterm or terminal change to normal mode"
-tnoremap <C-\> <C-\><C-N>
-tnoremap <C-t> <C-\><C-N>:ToggleTerm<CR>
-tnoremap <Esc> <C-\><C-N> 
-tnoremap <A-h> <C-\><C-N><C-w>h
-tnoremap <A-j> <C-\><C-N><C-w>j
-tnoremap <A-k> <C-\><C-N><C-w>k
-tnoremap <A-l> <C-\><C-N><C-w>l
-
-]])
-
--- vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
---   pattern = "*",
---   callback = function()
---     -- Check if the file contains the pattern "{{.+}}"
---     if vim.fn.search("{{.+}}", "nw") > 0 then
---       -- If the pattern is found, set the filetype to "html"
---       vim.opt_local.filetype = "html"
---     end
---   end
--- })
---
-
--- vim.cmd([[
---   autocmd BufRead,BufNewFile *.tmpl set filetype=html
--- ]])
-
--- vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
---   pattern = { "*.tmpl", "*.gotext", "*.gohtml" },
---   callback = function()
---     print("Filetype set to 'html'")
---     vim.bo.filetype = "html"
---   end,
--- })
---
 
 local function set_filetype()
 	local extension = vim.fn.expand("%:e")
@@ -116,15 +70,3 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
 	callback = set_filetype,
 })
 
--- vim.api.nvim_create_autocmd({ "VimLeave" }, {
---   callback = function()
---     vim.cmd('!notify-send  "hello"')
---     vim.cmd('sleep 10m')
---   end,
--- })
-
--- vim.api.nvim_create_autocmd({ "VimLeave" }, {
--- 	callback = function()
--- 		vim.fn.jobstart('notify-send "hello"', { detach = true })
--- 	end,
--- })

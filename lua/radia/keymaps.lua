@@ -1,12 +1,28 @@
--- Set <space> as the leader key
--- See `:help mapleader`
---  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
+vim.cmd([[
+set mouse=a
+" source $VIMRUNTIME/mswin.vim
+" imap <S-Insert> <C-R>*
+" noremap y "*y
+" noremap yy "*yy
+" noremap Y "*y$
+"
+" imap <silent>  <C-R>+
+imap <C-v> <C-R>*
+cmap <S-Insert>  <C-R>+
+
+" ON toggleterm or terminal change to normal mode"
+tnoremap <C-\> <C-\><C-N>
+tnoremap <C-t> <C-\><C-N>:ToggleTerm<CR>
+tnoremap <Esc> <C-\><C-N> 
+tnoremap <A-h> <C-\><C-N><C-w>h
+tnoremap <A-j> <C-\><C-N><C-w>j
+tnoremap <A-k> <C-\><C-N><C-w>k
+tnoremap <A-l> <C-\><C-N><C-w>l
+
+]])
+
 
 local keymap = vim.keymap -- for conciseness
-
--- General Keymaps -------------------
 
 -- use jk to exit insert mode
 keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
@@ -246,20 +262,25 @@ vim.api.nvim_create_autocmd("BufEnter", {
 	callback = function()
     opts.desc = "GoCoverage"
 		vim.keymap.set("n", "<Leader>gbb", vim.cmd.GoCoverage, opts)
+
     opts.desc = "GoALtV"
 		vim.keymap.set("n", "<Leader>gaa", vim.cmd.GoAltV, opts)
+
     opts.desc = "GoTest"
 		vim.keymap.set("n", "<Leader>gtt", vim.cmd.GoTest, opts)
+
     opts.desc = "GoTestFunc"
 		vim.keymap.set("n", "<Leader>gtf", vim.cmd.GoTestFunc, opts)
+    
     opts.desc = "GoModTidy"
 		vim.keymap.set("n", "<Leader>gti", vim.cmd.GoModTidy, opts)
+
     opts.desc = "GoModVendor"
 		vim.keymap.set("n", "<Leader>gve", vim.cmd.GoModVendor, opts)
 
+    opts.desc = "GoGet"
 		vim.keymap.set("n", "<Leader>gg", function()
 			vim.api.nvim_input('"zyi":GoGet <C-R>z<CR>')
-
 			vim.schedule(function()
 				if vim.fn.isdirectory("vendor") ~= 0 then
 					vim.cmd.GoModVendor()
