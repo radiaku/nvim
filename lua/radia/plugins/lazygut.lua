@@ -16,7 +16,5 @@ return {
 		vim.g.lazygit_use_custom_config_file_path = 0
 		vim.g.lazygit_config_file_path = ""
 
-		local keymap = require("vim.keymap")
-		keymap.set("n", "<leader>lg", "<cmd>LazyGit<cr>", { desc = "Toggle Lazygit" })
 	end,
 }
