@@ -290,4 +290,8 @@ vim.api.nvim_create_autocmd("BufEnter", {
 	end,
 })
 
-vim.api.nvim_set_keymap("n", "t", "<cmd>HopPattern<CR>", { desc="Hop", noremap = true })
+keymap.set("n", "t", "<cmd>HopPattern<CR>", { desc="Hop", noremap = true })
+keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc="Diagnostics (Trouble)", noremap = true })
+
+
+
