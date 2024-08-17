@@ -70,17 +70,22 @@ return {
 							or util.path.dirname(fname)
 					end,
 					settings = {
-						pyright = {
+						python = {
+							analysis = {
+								typeCheckingMode = "off",
+								diagnosticMode = "workspace",
+							},
 							typeCheckingMode = "off",
 							args = { "--select", "ALL", "--ignore", "D100" },
 							extraPaths = { site_packages_path },
 							autoSearchPaths = true,
-							diagnosticMode = "workspace",
+							-- diagnosticMode = "workspace",
 							useLibraryCodeForTypes = true,
 							diagnosticSeverityOverrides = {
 								reportUnknownVariableType = false,
 								strictListInference = "error",
 								strictDictionaryInference = "error",
+								reportArgumentType = "off",
 								strictSetInference = "error",
 								-- reportDuplicateImport = "error",
 							},
@@ -88,8 +93,6 @@ return {
 					},
 				})
 			end,
-
-
 
 			-- ["basedpyright"] = function()
 			-- 	local python_root_files = {
@@ -122,7 +125,7 @@ return {
 			-- 				or util.path.dirname(fname)
 			-- 		end,
 			-- 		settings = {
-			-- 			basedpyright = {
+			-- 			python = {
 			-- 				typeCheckingMode = "off",
 			-- 				args = { "--select", "ALL", "--ignore", "D100" },
 			-- 				extraPaths = { site_packages_path },
@@ -228,6 +231,14 @@ return {
 							-- make the language server recognize "vim" global
 							diagnostics = {
 								globals = { "vim" },
+							},
+							workspace = {
+								-- Make the server aware of Neovim runtime files
+								library = vim.api.nvim_get_runtime_file("", true),
+							},
+							-- Do not send telemetry data containing a randomized but unique identifier
+							telemetry = {
+								enable = false,
 							},
 							-- completion = {
 							-- 	callSnippet = "Replace",
