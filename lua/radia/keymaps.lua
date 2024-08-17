@@ -91,7 +91,7 @@ end, { desc = "Format file" })
 
 local recall = require("recall")
 vim.keymap.set("n", "<leader>ma", "<cmd>RecallMark<CR>", { desc = "RecallMark", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>md", "<cmd>RecallUnMark<CR>", { desc = "RecallUnMark", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>md", "<cmd>RecallUnmark<CR>", { desc = "RecallUnMark", noremap = true, silent = true })
 vim.keymap.set("n", "<leader>mm", recall.toggle, { desc = "Toggle Recall", noremap = true, silent = true })
 vim.keymap.set("n", "<leader>mn", recall.goto_next, { desc = "Next Recall Mark", noremap = true, silent = true })
 vim.keymap.set("n", "<leader>mp", recall.goto_prev, { desc = "Previous Recall Mark", noremap = true, silent = true })
