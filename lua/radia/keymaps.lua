@@ -251,3 +251,5 @@ keymap.set("n", "<leader>hp", function()
 end, { desc = "Previous Harpoon" })
 
 keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)", noremap = true })
+
+
