@@ -1,6 +1,10 @@
+Config for my neovim, you need atleast 0.10.1
 ```
-ctrl + l + h  = to move between tabstop
-shift + t = open new tab
-ctrl + w ( motion ) hjkl = move between windows
-:mesg = history message
+check on keymaps.lua for all map keymap
 ```
+
+Dont forget checking for fzf searching on windows
+```
+telescope.lua
+```
+
