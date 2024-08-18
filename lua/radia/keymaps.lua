@@ -38,6 +38,8 @@ keymap.set("i", "<A-P>", "<C-R>+", { noremap = true, silent = true, desc = "Past
 -- clear search highlights
 keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 
+keymap.set("n", "t", "<cmd>HopPattern<CR>", { desc = "Hop", noremap = true })
+
 -- window management
 keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" }) -- split window vertically
 keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" }) -- split window horizontally
@@ -158,32 +160,32 @@ vim.api.nvim_set_keymap("n", "<leader>tq", ":TodoQuickFix<CR>", { noremap = true
 vim.api.nvim_set_keymap("n", "<C-t>", ":ToggleTerm<CR>", { desc = "ToggleTerm", noremap = true })
 
 -- Telescope map
-keymap.set("n", "<leader>o", "<cmd>Telescope neoclip<CR>", { desc = "Telescope Neoclip" })
-keymap.set("n", "<leader>km", "<cmd>:lua require('telescope.builtin').keymaps()<cr>", { desc = "Show Keymaps" })
-keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files in cwd" })
-keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" })
-keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
-keymap.set("n", "<leader>fm", "<cmd>Telescope buffers show_all_buffers=true<cr>", { desc = "Find string in cwd" })
+keymap.set("n", "<leader>to", "<cmd>Telescope neoclip<CR>", { desc = "Telescope Neoclip" })
+keymap.set("n", "<leader>tg", "<cmd>:lua require('telescope.builtin').registers()<cr>", { desc = "Telescope Neoclip" })
+keymap.set("n", "<leader>tm", "<cmd>:lua require('telescope.builtin').keymaps()<cr>", { desc = "Show Keymaps" })
+keymap.set("n", "<leader>tf", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files in cwd" })
+keymap.set("n", "<leader>tr", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" })
+keymap.set("n", "<leader>ts", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
+keymap.set("n", "<leader>ta", "<cmd>Telescope buffers show_all_buffers=true<cr>", { desc = "Find string in cwd" })
 -- keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
 keymap.set(
 	"n",
-	"<leader>fb",
+	"<leader>tb",
 	-- '<cmd>Telescope live_grep search_dirs={"%:p"} vimgrep_arguments=rg,--color=never,--no-heading,--with-filename,--line-number,--column,--smart-case,--fixed-strings<cr>',
 	'<cmd>Telescope live_grep search_dirs={"%:p"} vimgrep_arguments=rg,--color=never,--no-heading,--with-filename,--line-number,--column,--smart-case,--fixed-strings<cr>',
 	{ desc = "Find string in current buffer" }
 )
 keymap.set(
 	"n",
-	"<leader>fl",
+	"<leader>tl",
 	[[<cmd>lua require('telescope.builtin').live_grep({grep_open_files=true})<CR>]],
 	{ desc = "Find string in all open buffer" }
 )
 
+-- Spectre
 vim.keymap.set("n", "<leader>sr", '<cmd>lua require("spectre").toggle()<CR>', {
 	desc = "Toggle Spectre",
 })
-
--- Spectre
 vim.keymap.set("n", "<leader>sw", '<cmd>lua require("spectre").open_visual({select_word=true})<CR>', {
 	desc = "Search current word",
 })
@@ -255,40 +257,4 @@ keymap.set("n", "<leader>hp", function()
 	harpoon:list():prev()
 end, { desc = "Previous Harpoon" })
 
--- local augroup = vim.api.nvim_create_augroup("tigh-latte-golang", { clear = true })
--- vim.api.nvim_create_autocmd("BufEnter", {
--- 	group = augroup,
--- 	pattern = "*.go",
--- 	callback = function()
---     opts.desc = "GoCoverage"
--- 		vim.keymap.set("n", "<Leader>gbb", vim.cmd.GoCoverage, opts)
---
---     opts.desc = "GoALtV"
--- 		vim.keymap.set("n", "<Leader>gaa", vim.cmd.GoAltV, opts)
---
---     opts.desc = "GoTest"
--- 		vim.keymap.set("n", "<Leader>gtt", vim.cmd.GoTest, opts)
---
---     opts.desc = "GoTestFunc"
--- 		vim.keymap.set("n", "<Leader>gtf", vim.cmd.GoTestFunc, opts)
---
---     opts.desc = "GoModTidy"
--- 		vim.keymap.set("n", "<Leader>gti", vim.cmd.GoModTidy, opts)
---
---     opts.desc = "GoModVendor"
--- 		vim.keymap.set("n", "<Leader>gve", vim.cmd.GoModVendor, opts)
---
---     opts.desc = "GoGet"
--- 		vim.keymap.set("n", "<Leader>ggg", function()
--- 			vim.api.nvim_input('"zyi":GoGet <C-R>z<CR>')
--- 			vim.schedule(function()
--- 				if vim.fn.isdirectory("vendor") ~= 0 then
--- 					vim.cmd.GoModVendor()
--- 				end
--- 			end)
--- 		end, opts)
--- 	end,
--- })
-
-keymap.set("n", "t", "<cmd>HopPattern<CR>", { desc = "Hop", noremap = true })
 keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)", noremap = true })
