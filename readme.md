@@ -1,4 +1,4 @@
-Config for my neovim, you need atleast 0.10.1
+Config for my neovim, you need atleast neovim 0.10.1
 ```
 check on keymaps.lua for all map keymap
 ```
