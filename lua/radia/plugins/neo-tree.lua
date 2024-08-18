@@ -6,10 +6,6 @@ return {
 		"MunifTanjim/nui.nvim",
 	},
 	event = "VeryLazy",
-	keys = {
-		{ "<leader>ee", ":Neotree toggle float<CR>", silent = true, desc = "Float File Explorer" },
-		{ "<leader>ef", ":Neotree toggle left<CR>", silent = true, desc = "Left File Explorer" },
-	},
 	config = function()
 		require("neo-tree").setup({
 
