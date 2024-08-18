@@ -21,7 +21,6 @@ tnoremap <A-l> <C-\><C-N><C-w>l
 
 ]])
 
-
 local keymap = vim.keymap -- for conciseness
 
 -- use jk to exit insert mode
@@ -62,14 +61,14 @@ keymap.set("n", "<leader>cd", ":cd %:p:h<CR>:pwd<CR>", { desc = "Changing Workin
 -- keymap.set("n", "<leader>cd", ":cd %:p:h<CR>:pwd<CR>", { desc = "Changing Working Directory", noremap = true })
 
 -- resize split
-keymap.set("n", "<M-,>", "<C-w>5<", {desc="Resize to right"})
-keymap.set("n", "<M-.>", "<C-w>5>", {desc="Resize to Left"})
-keymap.set("n", "<M-u>", "<C-w>+", {desc="Resize Up"})
-keymap.set("n", "<M-d>", "<C-w>-", {desc="Resize Down"})
-keymap.set("n", "<M-f>", "<C-w>=", {desc="Resize F"})
+keymap.set("n", "<M-,>", "<C-w>5<", { desc = "Resize to right" })
+keymap.set("n", "<M-.>", "<C-w>5>", { desc = "Resize to Left" })
+keymap.set("n", "<M-u>", "<C-w>+", { desc = "Resize Up" })
+keymap.set("n", "<M-d>", "<C-w>-", { desc = "Resize Down" })
+keymap.set("n", "<M-f>", "<C-w>=", { desc = "Resize F" })
 
 -- reset font
-keymap.set("n", "<M-0>", "<cmd>:GuiFont! JetBrainsMono Nerd Font:h14<CR>", {desc="Reset Font"})
+keymap.set("n", "<M-0>", "<cmd>:GuiFont! JetBrainsMono Nerd Font:h14<CR>", { desc = "Reset Font" })
 
 -- save all
 keymap.set("n", "<leader>sa", ":wa<CR>", { desc = "Save all", noremap = true })
@@ -159,6 +158,7 @@ vim.api.nvim_set_keymap("n", "<leader>tq", ":TodoQuickFix<CR>", { noremap = true
 vim.api.nvim_set_keymap("n", "<C-t>", ":ToggleTerm<CR>", { desc = "ToggleTerm", noremap = true })
 
 -- Telescope map
+keymap.set("n", "<leader>o", "<cmd>Telescope neoclip<CR>", { desc = "Telescope Neoclip" })
 keymap.set("n", "<leader>km", "<cmd>:lua require('telescope.builtin').keymaps()<cr>", { desc = "Show Keymaps" })
 keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files in cwd" })
 keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" })
@@ -290,8 +290,5 @@ end, { desc = "Previous Harpoon" })
 -- 	end,
 -- })
 
-keymap.set("n", "t", "<cmd>HopPattern<CR>", { desc="Hop", noremap = true })
-keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc="Diagnostics (Trouble)", noremap = true })
-
-
-
+keymap.set("n", "t", "<cmd>HopPattern<CR>", { desc = "Hop", noremap = true })
+keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)", noremap = true })
