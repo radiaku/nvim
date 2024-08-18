@@ -160,24 +160,24 @@ vim.api.nvim_set_keymap("n", "<leader>tq", ":TodoQuickFix<CR>", { noremap = true
 vim.api.nvim_set_keymap("n", "<C-t>", ":ToggleTerm<CR>", { desc = "ToggleTerm", noremap = true })
 
 -- Telescope map
-keymap.set("n", "<leader>to", "<cmd>Telescope neoclip<CR>", { desc = "Telescope Neoclip" })
-keymap.set("n", "<leader>tg", "<cmd>:lua require('telescope.builtin').registers()<cr>", { desc = "Telescope Neoclip" })
-keymap.set("n", "<leader>tm", "<cmd>:lua require('telescope.builtin').keymaps()<cr>", { desc = "Show Keymaps" })
-keymap.set("n", "<leader>tf", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files in cwd" })
-keymap.set("n", "<leader>tr", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" })
-keymap.set("n", "<leader>ts", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
-keymap.set("n", "<leader>ta", "<cmd>Telescope buffers show_all_buffers=true<cr>", { desc = "Find string in cwd" })
+keymap.set("n", "<leader>fo", "<cmd>Telescope neoclip<CR>", { desc = "Telescope Neoclip" })
+keymap.set("n", "<leader>fg", "<cmd>:lua require('telescope.builtin').registers()<cr>", { desc = "Telescope Neoclip" })
+keymap.set("n", "<leader>fm", "<cmd>:lua require('telescope.builtin').keymaps()<cr>", { desc = "Show Keymaps" })
+keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files in cwd" })
+keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" })
+keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
+keymap.set("n", "<leader>fa", "<cmd>Telescope buffers show_all_buffers=true<cr>", { desc = "Find string in cwd" })
 -- keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
 keymap.set(
 	"n",
-	"<leader>tb",
+	"<leader>fb",
 	-- '<cmd>Telescope live_grep search_dirs={"%:p"} vimgrep_arguments=rg,--color=never,--no-heading,--with-filename,--line-number,--column,--smart-case,--fixed-strings<cr>',
 	'<cmd>Telescope live_grep search_dirs={"%:p"} vimgrep_arguments=rg,--color=never,--no-heading,--with-filename,--line-number,--column,--smart-case,--fixed-strings<cr>',
 	{ desc = "Find string in current buffer" }
 )
 keymap.set(
 	"n",
-	"<leader>tl",
+	"<leader>fl",
 	[[<cmd>lua require('telescope.builtin').live_grep({grep_open_files=true})<CR>]],
 	{ desc = "Find string in all open buffer" }
 )
