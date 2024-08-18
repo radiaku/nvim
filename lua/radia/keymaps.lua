@@ -27,12 +27,7 @@ local keymap = vim.keymap -- for conciseness
 keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
 
 -- set shift insert to paste on insert mode
-keymap.set(
-	"i",
-	"<S-Insert>",
-	"<C-R>+",
-	{ desc = "Paste with shift+insert on insert mode", noremap = true, silent = true }
-)
+keymap.set("i", "<S-Insert>", "<C-R>+", { desc = "Paste with shift+insert", noremap = true, silent = true })
 keymap.set("i", "<A-P>", "<C-R>+", { noremap = true, silent = true, desc = "Paste with Alt+P on insert mode" })
 
 -- clear search highlights
@@ -82,7 +77,7 @@ keymap.set("n", "<leader>qf", ":q!<CR>", { desc = "quit force all", noremap = tr
 local opts = { noremap = true, silent = true }
 
 local conform = require("conform")
-vim.keymap.set({ "n", "v" }, "<leader>rf", function()
+keymap.set({ "n", "v" }, "<leader>rf", function()
 	conform.format({
 		lsp_fallback = true,
 		async = false,
@@ -91,13 +86,13 @@ vim.keymap.set({ "n", "v" }, "<leader>rf", function()
 end, { desc = "Format file" })
 
 local recall = require("recall")
-vim.keymap.set("n", "<leader>ma", "<cmd>RecallMark<CR>", { desc = "RecallMark", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>md", "<cmd>RecallUnmark<CR>", { desc = "RecallUnMark", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>mm", recall.toggle, { desc = "Toggle Recall", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>mn", recall.goto_next, { desc = "Next Recall Mark", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>mp", recall.goto_prev, { desc = "Previous Recall Mark", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>mc", recall.clear, { desc = "Clear Recall Mark", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>mt", ":Telescope recall<CR>", { desc = "Recall Telescope", noremap = true, silent = true })
+keymap.set("n", "<leader>ma", "<cmd>RecallMark<CR>", { desc = "RecallMark", noremap = true, silent = true })
+keymap.set("n", "<leader>md", "<cmd>RecallUnmark<CR>", { desc = "RecallUnMark", noremap = true, silent = true })
+keymap.set("n", "<leader>mm", recall.toggle, { desc = "Toggle Recall", noremap = true, silent = true })
+keymap.set("n", "<leader>mn", recall.goto_next, { desc = "Next Recall Mark", noremap = true, silent = true })
+keymap.set("n", "<leader>mp", recall.goto_prev, { desc = "Previous Recall Mark", noremap = true, silent = true })
+keymap.set("n", "<leader>mc", recall.clear, { desc = "Clear Recall Mark", noremap = true, silent = true })
+keymap.set("n", "<leader>mt", ":Telescope recall<CR>", { desc = "Recall Telescope", noremap = true, silent = true })
 
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
@@ -151,57 +146,55 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 
-vim.keymap.set("n", "zR", require("ufo").openAllFolds, { desc = "Open AllFolds" })
-vim.keymap.set("n", "zM", require("ufo").closeAllFolds, { desc = "Close AllFolds" })
+keymap.set("n", "zR", require("ufo").openAllFolds, { desc = "Open AllFolds" })
+keymap.set("n", "zM", require("ufo").closeAllFolds, { desc = "Close AllFolds" })
 
-vim.api.nvim_set_keymap("n", "<leader>td", ":TodoTelescope<CR>", { noremap = true, desc = "Todo Telescope" })
-vim.api.nvim_set_keymap("n", "<leader>tq", ":TodoQuickFix<CR>", { noremap = true, desc = "Todo QuickFix" })
+keymap.set("n", "<leader>td", ":TodoTelescope<CR>", { noremap = true, desc = "Todo Telescope" })
+keymap.set("n", "<leader>tq", ":TodoQuickFix<CR>", { noremap = true, desc = "Todo QuickFix" })
 
-vim.api.nvim_set_keymap("n", "<C-t>", ":ToggleTerm<CR>", { desc = "ToggleTerm", noremap = true })
+keymap.set("n", "<C-t>", ":ToggleTerm<CR>", { desc = "ToggleTerm", noremap = true })
 
 -- Telescope map
-keymap.set("n", "<leader>fo", "<cmd>Telescope neoclip<CR>", { desc = "Telescope Neoclip" })
-keymap.set("n", "<leader>fg", "<cmd>:lua require('telescope.builtin').registers()<cr>", { desc = "Telescope Neoclip" })
-keymap.set("n", "<leader>fm", "<cmd>:lua require('telescope.builtin').keymaps()<cr>", { desc = "Show Keymaps" })
+keymap.set("n", "<leader>fo", "<cmd>Telescope neoclip<CR>", { desc = "Find Clipboard" })
+keymap.set("n", "<leader>fg", "<cmd>:lua require('telescope.builtin').registers()<cr>", { desc = "Find Registers" })
+keymap.set("n", "<leader>fm", "<cmd>:lua require('telescope.builtin').keymaps()<cr>", { desc = "Find Keymaps" })
 keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files in cwd" })
 keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" })
 keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
 keymap.set("n", "<leader>fa", "<cmd>Telescope buffers show_all_buffers=true<cr>", { desc = "Find string in cwd" })
 -- keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
-keymap.set(
-	"n",
-	"<leader>fb",
-	-- '<cmd>Telescope live_grep search_dirs={"%:p"} vimgrep_arguments=rg,--color=never,--no-heading,--with-filename,--line-number,--column,--smart-case,--fixed-strings<cr>',
-	'<cmd>Telescope live_grep search_dirs={"%:p"} vimgrep_arguments=rg,--color=never,--no-heading,--with-filename,--line-number,--column,--smart-case,--fixed-strings<cr>',
-	{ desc = "Find string in current buffer" }
-)
-keymap.set(
-	"n",
-	"<leader>fl",
-	[[<cmd>lua require('telescope.builtin').live_grep({grep_open_files=true})<CR>]],
-	{ desc = "Find string in all open buffer" }
-)
+
+local live_grep_cmdc_buffer =
+	'<cmd>Telescope live_grep search_dirs={"%:p"} vimgrep_arguments=rg,--color=never,--no-heading,--with-filename,--line-number,--column,--smart-case,--fixed-strings<cr>'
+keymap.set("n", "<leader>fb", live_grep_cmdc_buffer, { desc = "Find string in current buffer" })
+
+local live_grep_cmd = '<cmd>lua require("telescope.builtin").live_grep({grep_open_files=true})<CR>'
+keymap.set("n", "<leader>fl", live_grep_cmd, { desc = "Find string in all open buffers" })
+
+-- File Neotree
+keymap.set("n", "<leader>ee", ":Neotree toggle float<CR>", { desc = "Float File Explore", silent = true })
+keymap.set("n", "<leader>ef", ":Neotree toggle left<CR>", { desc = "Left File Explorer", silent = true })
 
 -- Spectre
-vim.keymap.set("n", "<leader>sr", '<cmd>lua require("spectre").toggle()<CR>', {
+keymap.set("n", "<leader>sr", '<cmd>lua require("spectre").toggle()<CR>', {
 	desc = "Toggle Spectre",
 })
-vim.keymap.set("n", "<leader>sw", '<cmd>lua require("spectre").open_visual({select_word=true})<CR>', {
+keymap.set("n", "<leader>sw", '<cmd>lua require("spectre").open_visual({select_word=true})<CR>', {
 	desc = "Search current word",
 })
-vim.keymap.set("v", "<leader>sw", '<esc><cmd>lua require("spectre").open_visual()<CR>', {
+keymap.set("v", "<leader>sw", '<esc><cmd>lua require("spectre").open_visual()<CR>', {
 	desc = "Search current word",
 })
-vim.keymap.set("n", "<leader>sp", '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>', {
+keymap.set("n", "<leader>sp", '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>', {
 	desc = "Search on current file",
 })
 
 opts.desc = "Move BlockLine Down"
-vim.keymap.set("v", "<A-j>", ":MoveBlock(1)<CR>", opts)
+keymap.set("v", "<A-j>", ":MoveBlock(1)<CR>", opts)
 opts.desc = "Move BlockLine Up"
-vim.keymap.set("v", "<A-k>", ":MoveBlock(-1)<CR>", opts)
--- vim.keymap.set("v", "<A-h>", ":MoveHBlock(-1)<CR>", opts)
--- vim.keymap.set("v", "<A-l>", ":MoveHBlock(1)<CR>", opts)
+keymap.set("v", "<A-k>", ":MoveBlock(-1)<CR>", opts)
+-- keymap.set("v", "<A-h>", ":MoveHBlock(-1)<CR>", opts)
+-- keymap.set("v", "<A-l>", ":MoveHBlock(1)<CR>", opts)
 
 keymap.set("n", "<leader>lg", "<cmd>LazyGit<cr>", { desc = "Toggle Lazygit" })
 
