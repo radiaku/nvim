@@ -60,35 +60,49 @@ return {
 				end
 
 				lspconfig["pyright"].setup({
+					cmd = { "pyright-langserver", "--stdio" },
 					filetypes = { "python", ".py" },
 					capabilities = capabilities,
-
 					root_dir = function(fname)
 						table.unpack = table.unpack or unpack -- 5.1 compatibility
 						return util.root_pattern(table.unpack(python_root_files))(fname)
 							or util.find_git_ancestor(fname)
 							or util.path.dirname(fname)
 					end,
+					-- handlers = {
+					-- 	["textDocument/publishDiagnostics"] = function() end,
+					-- },
+					-- on_attach = function(client, _)
+					-- 	client.server_capabilities.codeActionProvider = false
+					-- end,
 					settings = {
+						pyright = {
+							disableLanguageServices = true,
+							disableOrganizeImports = true,
+							reportMissingModuleSource = "off",
+							reportMissingImports = "off",
+							reportUndefinedVariable = "off",
+						},
 						python = {
 							analysis = {
-								typeCheckingMode = "off",
+								typeCheckingMode = "basic",
+								autoSearchPaths = true,
 								diagnosticMode = "workspace",
+								extraPaths = { site_packages_path },
+								useLibraryCodeForTypes = true,
+								diagnosticSeverityOverrides = {
+									reportUnusedVariable = "warning", -- or anything
+									reportArgumentType = "off",
+								},
 							},
-							typeCheckingMode = "off",
-							args = { "--select", "ALL", "--ignore", "D100" },
-							extraPaths = { site_packages_path },
-							autoSearchPaths = true,
-							-- diagnosticMode = "workspace",
-							useLibraryCodeForTypes = true,
-							diagnosticSeverityOverrides = {
-								reportUnknownVariableType = false,
-								strictListInference = "error",
-								strictDictionaryInference = "error",
-								reportArgumentType = "off",
-								strictSetInference = "error",
-								-- reportDuplicateImport = "error",
-							},
+							-- diagnosticSeverityOverrides = {
+							-- 	reportUnknownVariableType = false,
+							-- 	strictListInference = "error",
+							-- 	strictDictionaryInference = "error",
+							-- 	reportArgumentType = "off",
+							-- 	strictSetInference = "error",
+							-- 	-- reportDuplicateImport = "error",
+							-- },
 						},
 					},
 				})
