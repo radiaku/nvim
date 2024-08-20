@@ -4,7 +4,8 @@ return {
 	config = function()
 		local recall = require("recall")
 
-		recall.setup({})
-
+		recall.setup({
+			wshada = vim.fn.has("nvim-0.10") == 0,
+		})
 	end,
 }
