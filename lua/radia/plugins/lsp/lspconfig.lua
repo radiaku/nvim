@@ -92,17 +92,9 @@ return {
 								useLibraryCodeForTypes = true,
 								diagnosticSeverityOverrides = {
 									reportUnusedVariable = "warning", -- or anything
-									reportArgumentType = "off",
+									reportArgumentType = "none",
 								},
 							},
-							-- diagnosticSeverityOverrides = {
-							-- 	reportUnknownVariableType = false,
-							-- 	strictListInference = "error",
-							-- 	strictDictionaryInference = "error",
-							-- 	reportArgumentType = "off",
-							-- 	strictSetInference = "error",
-							-- 	-- reportDuplicateImport = "error",
-							-- },
 						},
 					},
 				})
