@@ -3,10 +3,10 @@ return {
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
 		"hrsh7th/cmp-nvim-lsp",
-		"williamboman/mason-lspconfig.nvim",
-		-- { "antosha417/nvim-lsp-file-operations", config = true },
-		-- { "folke/neodev.nvim", opts = {} },
-		{ "folke/lazydev.nvim", opts = {} },
+		-- "williamboman/mason-lspconfig.nvim",
+		{ "antosha417/nvim-lsp-file-operations", config = true },
+		{ "folke/neodev.nvim", opts = {} },
+		-- { "folke/lazydev.nvim", opts = {} },
 	},
 	config = function()
 		-- import lspconfig plugin
@@ -59,16 +59,10 @@ return {
 				end
 
 				lspconfig["pyright"].setup({
-					cmd = { "pyright-langserver", "--stdio" },
 					filetypes = { "python", ".py" },
-					-- capabilities = capabilities,
+					capabilities = capabilities,
 
-          handlers = {
-            ["textDocument/publishDiagnostics"] = function() end,
-          },
-          on_attach = function(client, _)
-            client.server_capabilities.codeActionProvider = false
-          end,
+					cmd = { "pyright-langserver", "--stdio" },
 
 					root_dir = function(fname)
 						table.unpack = table.unpack or unpack -- 5.1 compatibility
