@@ -39,7 +39,7 @@ if vim.fn.has("win32") == 1 then
 	require("radia.pwsh")
 end
 
-vim.opt.smartindent = false
+vim.opt.smartindent = true
 
 -- cleaning shada
 -- vim.api.nvim_create_user_command("ClearShada", function()
