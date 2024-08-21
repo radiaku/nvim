@@ -92,6 +92,7 @@ return {
 									["reportOptionalOperand"] = "none",
 									["reportAttributeAccessIssue"] = "none",
 									["reportOptionalMemberAccess"] = "none",
+									["reportCallIssue"] = "none",
 								},
 							},
 						},
