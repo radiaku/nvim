@@ -10,22 +10,27 @@ return {
 
 		-- enable comment
 		comment.setup({
-      ignore ="",
-      extra = nil,
 			padding = true,
 			sticky = true,
-			-- ignore = nil,
+			ignore = nil,
 			toggler = {
 				line = "gcc",
-				block = "gcc",
+				block = "gbc",
 			},
 			opleader = {
-				line = "gcc",
-				block = "gcc",
+				line = "gc",
+				block = "gb",
 			},
+			extra = {
+				above = "gcO",
+				below = "gco",
+				eol = "gcA",
+			},
+			---Enable keybindings
+			---NOTE: If given `false` then the plugin won't create any mappings
 			mappings = {
 				basic = true,
-				extra = false,
+				extra = true,
 			},
 			pre_hook = nil,
 			post_hook = nil,
