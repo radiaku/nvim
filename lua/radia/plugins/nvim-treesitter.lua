@@ -11,13 +11,13 @@ return {
 			local treesitter = require("nvim-treesitter.configs")
 
 			-- configure treesitter
-			treesitter.setup({ 
+			treesitter.setup({
         -- enable syntax highlighting
 				highlight = {
 					enable = true,
 				},
 				-- enable indentation
-				indent = { enable = false},
+				indent = { enable = true},
 				-- enable autotagging (w/ nvim-ts-autotag plugin)
 				autotag = {
 					enable = false,

@@ -7,7 +7,7 @@ vim.cmd([[
 -- filetype on
 vim.cmd([[
   filetype plugin on
-  filetype indent on
+  " filetype indent on
 ]])
 
 -- disable for performance
