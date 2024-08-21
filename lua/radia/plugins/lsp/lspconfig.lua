@@ -4,7 +4,7 @@ return {
 	dependencies = {
 		"hrsh7th/cmp-nvim-lsp",
 		"williamboman/mason-lspconfig.nvim",
-		{ "antosha417/nvim-lsp-file-operations", config = true },
+		-- { "antosha417/nvim-lsp-file-operations", config = true },
 		-- { "folke/neodev.nvim", opts = {} },
 		{ "folke/lazydev.nvim", opts = {} },
 	},
@@ -32,7 +32,6 @@ return {
 		end
 
 		mason_lspconfig.setup_handlers({
-			-- default handler for installed servers
 			function(server_name)
 				lspconfig[server_name].setup({
 					capabilities = capabilities,
@@ -62,27 +61,29 @@ return {
 				lspconfig["pyright"].setup({
 					cmd = { "pyright-langserver", "--stdio" },
 					filetypes = { "python", ".py" },
-					capabilities = capabilities,
+					-- capabilities = capabilities,
+
+          handlers = {
+            ["textDocument/publishDiagnostics"] = function() end,
+          },
+          on_attach = function(client, _)
+            client.server_capabilities.codeActionProvider = false
+          end,
+
 					root_dir = function(fname)
 						table.unpack = table.unpack or unpack -- 5.1 compatibility
 						return util.root_pattern(table.unpack(python_root_files))(fname)
 							or util.find_git_ancestor(fname)
 							or util.path.dirname(fname)
 					end,
-					-- handlers = {
-					-- 	["textDocument/publishDiagnostics"] = function() end,
-					-- },
-					-- on_attach = function(client, _)
-					-- 	client.server_capabilities.codeActionProvider = false
-					-- end,
 					settings = {
-						pyright = {
-							disableLanguageServices = true,
-							disableOrganizeImports = true,
-							reportMissingModuleSource = "off",
-							reportMissingImports = "off",
-							reportUndefinedVariable = "off",
-						},
+						-- pyright = {
+						-- 	disableLanguageServices = true,
+						-- 	disableOrganizeImports = true,
+						-- 	reportMissingModuleSource = "off",
+						-- 	reportMissingImports = "off",
+						-- 	reportUndefinedVariable = "off",
+						-- },
 						python = {
 							analysis = {
 								typeCheckingMode = "basic",
@@ -91,8 +92,8 @@ return {
 								extraPaths = { site_packages_path },
 								useLibraryCodeForTypes = true,
 								diagnosticSeverityOverrides = {
-									reportUnusedVariable = "warning", -- or anything
-									reportArgumentType = "none",
+									["reportOptionalSubscript"] = "ignore",
+									["reportOptionalIterable"] = "none",
 								},
 							},
 						},
