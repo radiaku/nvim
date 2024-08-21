@@ -190,6 +190,20 @@ return {
 						local root = util.root_pattern("composer.json", ".git")(pattern)
 						return util.path.is_descendant(cwd, root) and cwd or root
 					end,
+					intelephense = {
+            diagnostics = {
+              ["undefinedProperties"] = false,
+            },
+						telemetry = {
+							enabled = false,
+						},
+						completion = {
+							fullyQualifyGlobalConstantsAndFunctions = false,
+						},
+						phpdoc = {
+							returnVoid = false,
+						},
+					},
 				})
 			end,
 
