@@ -88,6 +88,9 @@ return {
 								diagnosticSeverityOverrides = {
 									["reportOptionalSubscript"] = "ignore",
 									["reportOptionalIterable"] = "none",
+									["reportArgumentType"] = "none",
+									["reportOptionalOperand"] = "none",
+									["reportAttributeAccessIssue"] = "none",
 								},
 							},
 						},
