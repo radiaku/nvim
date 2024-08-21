@@ -91,6 +91,7 @@ return {
 									["reportArgumentType"] = "none",
 									["reportOptionalOperand"] = "none",
 									["reportAttributeAccessIssue"] = "none",
+									["reportOptionalMemberAccess"] = "none",
 								},
 							},
 						},
