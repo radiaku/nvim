@@ -181,9 +181,24 @@ return {
 				})
 			end,
 
+			-- ["phpactor"] = function()
+			-- 	lspconfig["phpactor"].setup({
+			-- 		filetypes = { "php" },
+			-- 		root_dir = function(pattern)
+			-- 			local cwd = vim.loop.cwd()
+			-- 			local root =
+			-- 				util.root_pattern("composer.json", ".git", ".phpactor.json", ".phpactor.yml")(pattern)
+			--
+			-- 			-- prefer cwd if root is a descendant
+			-- 			return util.path.is_descendant(cwd, root) and cwd or root
+			-- 		end,
+			-- 	})
+			-- end,
+
 			["intelephense"] = function()
 				lspconfig["intelephense"].setup({
 					capabilities = capabilities,
+					cmd = { "intelephense", "--stdio" },
 					filetypes = { "php" },
 					root_dir = function(pattern)
 						local cwd = vim.fn.getcwd()
@@ -192,8 +207,12 @@ return {
 					end,
 					intelephense = {
 						diagnostics = {
-							undefinedProperties = false,
-							-- ["undefinedProperties"] = false,
+							-- undefinedProperties = false,
+							unusedSymbols = false,
+							undefinedSymbols = false,
+							undefinedMethods = false,
+							undefinedProperties= false,
+							undefinedTypes = false,
 						},
 						telemetry = {
 							enabled = false,
