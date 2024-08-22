@@ -1,4 +1,5 @@
 -- disable netrw at the very start of your init.lua
+--
 -- vim.lsp.set_log_level("debug")
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
