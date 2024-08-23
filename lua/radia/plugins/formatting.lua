@@ -13,7 +13,7 @@ return {
 				yaml = { "prettier" },
 				graphql = { "prettier" },
 				lua = { "stylua" },
-				python = { "isor", "black" },
+				python = { "isort", "black" },
 			},
 
 			format_on_save = function(bufnr)
