@@ -4,6 +4,7 @@ set mouse=a
 "
 "
 
+let g:VM_show_warnings = 0
 nnoremap <Tab> <Esc>
 
 let s:fontsize = 14
