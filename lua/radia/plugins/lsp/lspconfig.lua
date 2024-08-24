@@ -131,21 +131,24 @@ return {
 			-- 				or util.path.dirname(fname)
 			-- 		end,
 			-- 		settings = {
-			-- 			python = {
-			-- 				typeCheckingMode = "off",
-			-- 				args = { "--select", "ALL", "--ignore", "D100" },
-			-- 				extraPaths = { site_packages_path },
-			-- 				autoSearchPaths = true,
-			-- 				diagnosticMode = "workspace",
-			-- 				useLibraryCodeForTypes = true,
-			-- 				diagnosticSeverityOverrides = {
-			-- 					reportUnknownVariableType = false,
-			-- 					strictListInference = "error",
-			-- 					strictDictionaryInference = "error",
-			-- 					strictSetInference = "error",
-			-- 					-- reportDuplicateImport = "error",
-			-- 				},
-			-- 			},
+			-- python = {
+			-- 	analysis = {
+			-- 		typeCheckingMode = "basic",
+			-- 		autoSearchPaths = true,
+			-- 		diagnosticMode = "workspace",
+			-- 		extraPaths = { site_packages_path },
+			-- 		useLibraryCodeForTypes = true,
+			-- 		diagnosticSeverityOverrides = {
+			-- 			["reportOptionalSubscript"] = "ignore",
+			-- 			["reportOptionalIterable"] = "none",
+			-- 			["reportArgumentType"] = "none",
+			-- 			["reportOptionalOperand"] = "none",
+			-- 			["reportAttributeAccessIssue"] = "none",
+			-- 			["reportOptionalMemberAccess"] = "none",
+			-- 			["reportCallIssue"] = "none",
+			-- 		},
+			-- 	},
+			-- },
 			-- 		},
 			-- 	})
 			-- end,
