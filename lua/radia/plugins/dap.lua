@@ -1,27 +1,24 @@
 return {
-  {
-    "mfussenegger/nvim-dap",
-    keys = {
-      {
-        "<leader>dO",
-        function()
-          require("dap").step_out()
-        end,
-        desc = "Step Out",
-      },
-      {
-        "<leader>do",
-        function()
-          require("dap").step_over()
-        end,
-        desc = "Step Over",
-      },
-    },
-  },
-  {
-    "theHamsta/nvim-dap-virtual-text",
-    opts = {
-      virt_text_win_col = 80,
-    },
-  },
+	{
+		"mfussenegger/nvim-dap",
+	},
+	{
+		"theHamsta/nvim-dap-virtual-text",
+		opts = {
+			virt_text_win_col = 80,
+		},
+	},
+	{
+		"rcarriga/nvim-dap-ui",
+		dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+		config = function()
+			require("dapui").setup()
+		end,
+	},
+	{
+		"leoluz/nvim-dap-go",
+		config = function()
+			require("dap-go").setup()
+		end,
+	},
 }

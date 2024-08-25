@@ -147,6 +147,18 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 
+-- Debug
+keymap.set("n", "<leader>dt", ":DapUiToggle<CR>", { desc = "Open DapUi" })
+keymap.set("n", "<leader>db", ":DapToggleBreakpoint<CR>", { desc = "Toggle Breakpoint" })
+keymap.set("n", "<leader>ds", ":lua require('dap').run_to_cursor()<CR>", { desc = "Run Dap Under Cursor" })
+keymap.set("n", "<leader>drc", ":lua require('dap').continue()<CR>", { desc = "Run Continue" })
+keymap.set("n", "<leader>drs", ":lua require('dap').restart()<CR>", { desc = "Restart Dap" })
+keymap.set("n", "dO", ":lua require('dap').step_out()<CR>", { desc = "Step Out" })
+keymap.set("n", "do", ":lua require('dap').step_over()<CR>", { desc = "Step Over" })
+keymap.set("n", "di", ":lua require('dap').step_into()<CR>", { desc = "Step Into" })
+keymap.set("n", "da", ":lua require('dap').step_back()<CR>", { desc = "Step Back" })
+keymap.set("n", "<leader>dc", ":lua require('dapui').open({ reset = true })<CR>", { desc = "Reset Dapui" })
+
 keymap.set("n", "zR", require("ufo").openAllFolds, { desc = "Open AllFolds" })
 keymap.set("n", "zM", require("ufo").closeAllFolds, { desc = "Close AllFolds" })
 
@@ -162,7 +174,12 @@ keymap.set("n", "<leader>fm", "<cmd>:lua require('telescope.builtin').keymaps()<
 keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files in cwd" })
 keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" })
 keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
-keymap.set("n", "<leader>fa", "<cmd>Telescope buffers show_all_buffers=true sort_lastused=true<cr>", { desc = "Find buffer on buffers" })
+keymap.set(
+	"n",
+	"<leader>fa",
+	"<cmd>Telescope buffers show_all_buffers=true sort_lastused=true<cr>",
+	{ desc = "Find buffer on buffers" }
+)
 -- keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
 
 local live_grep_cmdc_buffer =
@@ -252,5 +269,3 @@ keymap.set("n", "<leader>hp", function()
 end, { desc = "Previous Harpoon" })
 
 keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)", noremap = true })
-
-
