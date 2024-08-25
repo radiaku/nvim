@@ -33,6 +33,7 @@ keymap.set("i", "<A-P>", "<C-R>+", { noremap = true, silent = true, desc = "Past
 -- clear search highlights
 keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 
+-- Hop
 keymap.set("n", "t", "<cmd>HopPattern<CR>", { desc = "Hop", noremap = true })
 
 -- window management
@@ -74,9 +75,9 @@ keymap.set("n", "<leader>sa", ":wa<CR>", { desc = "Save all", noremap = true })
 keymap.set("n", "<leader>qf", ":q!<CR>", { desc = "quit force all", noremap = true })
 
 -- Plugin map
-
 local opts = { noremap = true, silent = true }
 
+-- conform
 local conform = require("conform")
 keymap.set({ "n", "v" }, "<leader>rf", function()
 	conform.format({
@@ -86,6 +87,7 @@ keymap.set({ "n", "v" }, "<leader>rf", function()
 	})
 end, { desc = "Format file" })
 
+-- Recall
 local recall = require("recall")
 keymap.set("n", "<leader>ma", "<cmd>RecallMark<CR>", { desc = "RecallMark", noremap = true, silent = true })
 keymap.set("n", "<leader>md", "<cmd>RecallUnmark<CR>", { desc = "RecallUnMark", noremap = true, silent = true })
@@ -95,6 +97,7 @@ keymap.set("n", "<leader>mp", recall.goto_prev, { desc = "Previous Recall Mark",
 keymap.set("n", "<leader>mc", recall.clear, { desc = "Clear Recall Mark", noremap = true, silent = true })
 keymap.set("n", "<leader>mt", ":Telescope recall<CR>", { desc = "Recall Telescope", noremap = true, silent = true })
 
+-- Lsp
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 	callback = function(ev)
@@ -159,12 +162,15 @@ keymap.set("n", "di", ":lua require('dap').step_into()<CR>", { desc = "Step Into
 keymap.set("n", "da", ":lua require('dap').step_back()<CR>", { desc = "Step Back" })
 keymap.set("n", "<leader>dc", ":lua require('dapui').open({ reset = true })<CR>", { desc = "Reset Dapui" })
 
+-- Folding
 keymap.set("n", "zR", require("ufo").openAllFolds, { desc = "Open AllFolds" })
 keymap.set("n", "zM", require("ufo").closeAllFolds, { desc = "Close AllFolds" })
 
+-- Todo Telescope
 keymap.set("n", "<leader>td", ":TodoTelescope<CR>", { noremap = true, desc = "Todo Telescope" })
 keymap.set("n", "<leader>tq", ":TodoQuickFix<CR>", { noremap = true, desc = "Todo QuickFix" })
 
+-- Toggle Term aka terminal
 keymap.set("n", "<C-t>", ":ToggleTerm<CR>", { desc = "ToggleTerm", noremap = true })
 
 -- Telescope map
@@ -181,11 +187,9 @@ keymap.set(
 	{ desc = "Find buffer on buffers" }
 )
 -- keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
-
 local live_grep_cmdc_buffer =
 	'<cmd>Telescope live_grep search_dirs={"%:p"} vimgrep_arguments=rg,--color=never,--no-heading,--with-filename,--line-number,--column,--smart-case,--fixed-strings<cr>'
 keymap.set("n", "<leader>fb", live_grep_cmdc_buffer, { desc = "Find string in current buffer" })
-
 local live_grep_cmd = '<cmd>lua require("telescope.builtin").live_grep({grep_open_files=true})<CR>'
 keymap.set("n", "<leader>fl", live_grep_cmd, { desc = "Find string in all open buffers" })
 
@@ -207,6 +211,7 @@ keymap.set("n", "<leader>sp", '<cmd>lua require("spectre").open_file_search({sel
 	desc = "Search on current file",
 })
 
+-- Line Operation, Moving block or line
 opts.desc = "Move BlockLine Down"
 keymap.set("v", "<A-j>", ":MoveBlock(1)<CR>", opts)
 opts.desc = "Move BlockLine Up"
@@ -214,8 +219,10 @@ keymap.set("v", "<A-k>", ":MoveBlock(-1)<CR>", opts)
 -- keymap.set("v", "<A-h>", ":MoveHBlock(-1)<CR>", opts)
 -- keymap.set("v", "<A-l>", ":MoveHBlock(1)<CR>", opts)
 
+-- LazyGit
 keymap.set("n", "<leader>lg", "<cmd>LazyGit<cr>", { desc = "Toggle Lazygit" })
 
+-- Harpoon
 local harpoon = require("harpoon")
 local conf = require("telescope.config").values
 local function toggle_telescope(harpoon_files)
@@ -255,7 +262,6 @@ end
 keymap.set("n", "<leader>hm", function()
 	toggle_telescope(harpoon:list())
 end, { desc = "Open harpoon window" })
-
 keymap.set("n", "<leader>ha", function()
 	harpoon:list():add()
 end, { desc = "+Add to harpoon" })
@@ -268,4 +274,5 @@ keymap.set("n", "<leader>hp", function()
 	harpoon:list():prev()
 end, { desc = "Previous Harpoon" })
 
+-- Trouble 
 keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)", noremap = true })
