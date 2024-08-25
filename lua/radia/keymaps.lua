@@ -130,11 +130,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		opts_lsp.desc = "Smart rename"
 		keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts_lsp) -- smart rename
 
-		opts_lsp.desc = "Show buffer diagnostics"
-		keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts_lsp) -- show  diagnostics for file
-
-		opts_lsp.desc = "Show line diagnostics"
-		keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts_lsp) -- show diagnostics for line
+		-- opts_lsp.desc = "Show buffer diagnostics"
+		-- keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts_lsp) -- show  diagnostics for file
+		--
+		-- opts_lsp.desc = "Show line diagnostics"
+		-- keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts_lsp) -- show diagnostics for line
 
 		opts_lsp.desc = "Go to previous diagnostic"
 		keymap.set("n", "[d", vim.diagnostic.goto_prev, opts_lsp) -- jump to previous diagnostic in buffer
