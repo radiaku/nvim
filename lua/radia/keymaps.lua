@@ -44,8 +44,9 @@ keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" }
 -- destory buffer
 keymap.set("n", "<leader>bd", "<cmd>bd!<CR>", { desc = "Close Buffer (bd)" }) --  Close Buffer (bd)
 keymap.set("n", "<leader>ba", ":%bd|e#|bd#<CR>", { desc = "Close Buffer All except unsaved (bd)" }) --  Close Buffer (bd)
+keymap.set("n", "<leader>baf", ":qa!", { desc = "Kill all and exit" })
 keymap.set("n", "<leader>cc", ":cclose<CR>", { desc = "Close QuickFix" }) --  Close Buffer (bd)
-keymap.set("n", "<leader>bk", ":qa!<CR>", { desc = "Quit " }) --  Close Buffer (bd)
+keymap.set("n", "<leader>bk", ":q!<CR>", { desc = "Quit " }) --  Close Buffer (bd)
 
 -- move between windows, uppside done
 keymap.set("n", "<M-h>", "<C-w>h", { desc = "Move to left windows", noremap = true })
