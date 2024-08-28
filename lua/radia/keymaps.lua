@@ -131,10 +131,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts_lsp) -- smart rename
 
 		opts_lsp.desc = "Show buffer diagnostics"
-		keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts_lsp) -- show  diagnostics for file
+		keymap.set("n", "df", "<cmd>Telescope diagnostics bufnr=0<CR>", opts_lsp) -- show  diagnostics for file
 
 		opts_lsp.desc = "Show line diagnostics"
-		keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts_lsp) -- show diagnostics for line
+		keymap.set("n", "dl", vim.diagnostic.open_float, opts_lsp) -- show diagnostics for line
 
 		opts_lsp.desc = "Go to previous diagnostic"
 		keymap.set("n", "[d", vim.diagnostic.goto_prev, opts_lsp) -- jump to previous diagnostic in buffer
@@ -156,10 +156,10 @@ keymap.set("n", "<leader>db", ":DapToggleBreakpoint<CR>", { desc = "Toggle Break
 keymap.set("n", "<leader>ds", ":lua require('dap').run_to_cursor()<CR>", { desc = "Run Dap Under Cursor" })
 keymap.set("n", "<leader>drc", ":lua require('dap').continue()<CR>", { desc = "Run Continue" })
 keymap.set("n", "<leader>drs", ":lua require('dap').restart()<CR>", { desc = "Restart Dap" })
-keymap.set("n", "dO", ":lua require('dap').step_out()<CR>", { desc = "Step Out" })
-keymap.set("n", "do", ":lua require('dap').step_over()<CR>", { desc = "Step Over" })
-keymap.set("n", "di", ":lua require('dap').step_into()<CR>", { desc = "Step Into" })
-keymap.set("n", "da", ":lua require('dap').step_back()<CR>", { desc = "Step Back" })
+keymap.set("n", "<leader>dO", ":lua require('dap').step_out()<CR>", { desc = "Step Out" })
+keymap.set("n", "<leader>do", ":lua require('dap').step_over()<CR>", { desc = "Step Over" })
+keymap.set("n", "<leader>di", ":lua require('dap').step_into()<CR>", { desc = "Step Into" })
+keymap.set("n", "<leader>da", ":lua require('dap').step_back()<CR>", { desc = "Step Back" })
 keymap.set("n", "<leader>dc", ":lua require('dapui').open({ reset = true })<CR>", { desc = "Reset Dapui" })
 
 -- Folding
