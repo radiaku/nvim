@@ -135,7 +135,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 		opts_lsp.desc = "Show line diagnostics"
 		keymap.set("n", "dl", vim.diagnostic.open_float, opts_lsp) -- show diagnostics for line
-
+    
 		opts_lsp.desc = "Go to previous diagnostic"
 		keymap.set("n", "[d", vim.diagnostic.goto_prev, opts_lsp) -- jump to previous diagnostic in buffer
 
