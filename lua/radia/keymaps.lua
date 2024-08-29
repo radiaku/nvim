@@ -131,11 +131,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts_lsp) -- smart rename
 
 		opts_lsp.desc = "Show buffer diagnostics"
-		keymap.set("n", "df", "<cmd>Telescope diagnostics bufnr=0<CR>", opts_lsp) -- show  diagnostics for file
+		keymap.set("n", "gf", "<cmd>Telescope diagnostics bufnr=0<CR>", opts_lsp) -- show  diagnostics for file
 
 		opts_lsp.desc = "Show line diagnostics"
-		keymap.set("n", "dl", vim.diagnostic.open_float, opts_lsp) -- show diagnostics for line
-    
+		keymap.set("n", "gl", vim.diagnostic.open_float, opts_lsp) -- show diagnostics for line
+
 		opts_lsp.desc = "Go to previous diagnostic"
 		keymap.set("n", "[d", vim.diagnostic.goto_prev, opts_lsp) -- jump to previous diagnostic in buffer
 
@@ -274,5 +274,5 @@ keymap.set("n", "<leader>hp", function()
 	harpoon:list():prev()
 end, { desc = "Previous Harpoon" })
 
--- Trouble 
+-- Trouble
 keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)", noremap = true })
