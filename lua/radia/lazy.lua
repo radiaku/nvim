@@ -24,7 +24,7 @@ require("lazy").setup({ { import = "radia.plugins" }, { import = "radia.plugins.
     notify = false,
   },
   change_detection = {
-    notify = false,
+    notify = true,
   },
   ui = {
     border = "rounded",
