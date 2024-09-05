@@ -32,6 +32,7 @@ return {
         "cssls",
         "lua_ls",
         "jsonls",
+        "gopls",
         -- "tsserver",
         "vtsls",
         "tailwindcss",
