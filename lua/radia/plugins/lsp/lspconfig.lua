@@ -34,7 +34,7 @@ return {
 		mason_lspconfig.setup_handlers({
 			function(server_name)
 				-- https://github.com/neovim/nvim-lspconfig/pull/3232
-				server_name = server_name == "tsserver" and "ts_ls" or server_name
+				-- server_name = server_name == "tsserver" and "ts_ls" or server_name
 				lspconfig[server_name].setup({
 					capabilities = capabilities,
 				})
@@ -170,7 +170,6 @@ return {
 					-- cmd = { bin_path .. "typescript-language-server.cmd" },
 				})
 			end,
-
 
 			["tailwindcss"] = function()
 				lspconfig["tailwindcss"].setup({
