@@ -23,8 +23,8 @@ tnoremap <A-l> <C-\><C-N><C-w>l
 
 local keymap = vim.keymap -- for conciseness
 
--- use ctrl v on neovim when using commandline
-keymap.set('c', '<C-V>', '<C-R>+', { noremap = true, silent = true })
+-- use alt+v on neovim when using commandline
+-- keymap.set("c", "<M-v>", "<C-R>+", { desc="Alt+v paste neovim", noremap = true, silent = true })
 
 -- use jk to exit insert mode
 keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
