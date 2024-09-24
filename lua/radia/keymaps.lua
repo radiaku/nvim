@@ -53,10 +53,38 @@ keymap.set("n", "<leader>cc", ":cclose<CR>", { desc = "Close QuickFix" }) --  Cl
 keymap.set("n", "<leader>bk", ":q!<CR>", { desc = "Quit " }) --  Close Buffer (bd)
 
 -- move between windows, uppside done
-keymap.set("n", "<C-h>", "<C-w>h", { desc = "Move to left windows", noremap = true })
-keymap.set("n", "<C-l>", "<C-w>l", { desc = "Move to right windows", noremap = true })
-keymap.set("n", "<C-j>", "<C-w>j", { desc = "Move to down windows", noremap = true })
-keymap.set("n", "<C-k>", "<C-w>k", { desc = "Move to upper windows", noremap = true })
+keymap.set("n", "<M-h>", "<C-w>h", { desc = "Move to left windows", noremap = true })
+keymap.set("n", "<M-l>", "<C-w>l", { desc = "Move to right windows", noremap = true })
+keymap.set("n", "<M-j>", "<C-w>j", { desc = "Move to down windows", noremap = true })
+keymap.set("n", "<M-k>", "<C-w>k", { desc = "Move to upper windows", noremap = true })
+
+-- Move Between tab buffer
+keymap.set(
+	"n",
+	"<S-l>",
+	"<CMD>BufferLineCycleNext<CR>",
+	{ desc = "Move to left tab buffer", noremap = true, silent = true }
+)
+keymap.set(
+	"n",
+	"<S-h>",
+	"<CMD>BufferLineCyclePrev<CR>",
+	{ desc = "Move to right tab buffer", noremap = true, silent = true }
+)
+
+-- Moving buffer tab to left or right
+keymap.set(
+	"n",
+	"<C-l>",
+	"<CMD>BufferLineMoveNext<CR>",
+	{ desc = "Move buffer to next left ", noremap = true, silent = true }
+)
+keymap.set(
+	"n",
+	"<C-h>",
+	"<CMD>BufferLineMovePrev<CR>",
+	{ desc = "Move buffer to right", noremap = true, silent = true }
+)
 
 -- change working directory to the location of the current file
 keymap.set("n", "<leader>cd", ":cd %:p:h<CR>:pwd<CR>", { desc = "Changing Working Directory", noremap = true })
