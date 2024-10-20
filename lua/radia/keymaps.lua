@@ -245,9 +245,9 @@ keymap.set("n", "<leader>sp", '<cmd>lua require("spectre").open_file_search({sel
 
 -- Line Operation, Moving block or line
 opts.desc = "Move BlockLine Down"
-keymap.set("v", "<A-j>", ":MoveBlock(1)<CR>", opts)
+keymap.set("v", "<S-j>", ":MoveBlock(1)<CR>", opts)
 opts.desc = "Move BlockLine Up"
-keymap.set("v", "<A-k>", ":MoveBlock(-1)<CR>", opts)
+keymap.set("v", "<S-k>", ":MoveBlock(-1)<CR>", opts)
 -- keymap.set("v", "<A-h>", ":MoveHBlock(-1)<CR>", opts)
 -- keymap.set("v", "<A-l>", ":MoveHBlock(1)<CR>", opts)
 
