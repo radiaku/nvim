@@ -171,6 +171,29 @@ return {
 				})
 			end,
 
+			["clangd"] = function()
+				lspconfig["clangd"].setup({
+					filetypes = {
+						"c",
+						"cpp",
+						"objc",
+						"objcpp",
+						"mq4",
+						"mq5",
+					},
+					capabilities = capabilities,
+					root_dir = util.root_pattern(
+						"package.json",
+						".clangd",
+						"compile_flags.txt",
+						"compile_commands.json",
+						".vim/",
+						".git",
+						".hg"
+					) or vim.fn.getcwd(),
+				})
+			end,
+
 			["tailwindcss"] = function()
 				lspconfig["tailwindcss"].setup({
 					filetypes = {
