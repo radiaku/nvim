@@ -9,7 +9,10 @@ return {
 				next = "mn",
 				prev = "mp",
 				set_bookmark0 = "m0",
-			}
+				delete_buf = "dm<space>",
+				delete_line = "dm-",
+				-- delete_bookmark = "dmx",
+			},
 		})
 	end,
 }

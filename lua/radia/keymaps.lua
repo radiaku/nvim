@@ -19,12 +19,17 @@ tnoremap <A-j> <C-\><C-N><C-w>j
 tnoremap <A-k> <C-\><C-N><C-w>k
 tnoremap <A-l> <C-\><C-N><C-w>l
 
+" tnoremap <C-S-h> <C-\><C-N><C-w>h
+" tnoremap <C-S-j> <C-\><C-N><C-w>j
+" tnoremap <C-S-k> <C-\><C-N><C-w>k
+" tnoremap <C-S-l> <C-\><C-N><C-w>l
+
 ]])
 
 local keymap = vim.keymap -- for conciseness
 
--- use alt+v on neovim when using commandline
--- keymap.set("c", "<M-v>", "<C-R>+", { desc="Alt+v paste neovim", noremap = true, silent = true })
+-- ctrl+shift+v
+-- keymap.set("c", "<M-v>", "<C-R>+", { desc="ctrl+shift+v paste neovim", noremap = true, silent = true })
 
 -- use jk to exit insert mode
 keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
@@ -50,13 +55,20 @@ keymap.set("n", "<leader>bd", "<cmd>bd!<CR>", { desc = "Close Buffer (bd)" }) --
 keymap.set("n", "<leader>ba", ":%bd|e#|bd#<CR>", { desc = "Close Buffer All except unsaved (bd)" }) --  Close Buffer (bd)
 -- keymap.set("n", "<leader>baf", ":qa!", { desc = "Kill all and exit" })
 keymap.set("n", "<leader>cc", ":cclose<CR>", { desc = "Close QuickFix" }) --  Close Buffer (bd)
+keymap.set("n", "<leader>co", "::only<CR>", { desc = "Close Other Split windows" })
 keymap.set("n", "<leader>bk", ":q!<CR>", { desc = "Quit " }) --  Close Buffer (bd)
 
--- move between windows, uppside done
-keymap.set("n", "<M-h>", "<C-w>h", { desc = "Move to left windows", noremap = true })
-keymap.set("n", "<M-l>", "<C-w>l", { desc = "Move to right windows", noremap = true })
-keymap.set("n", "<M-j>", "<C-w>j", { desc = "Move to down windows", noremap = true })
-keymap.set("n", "<M-k>", "<C-w>k", { desc = "Move to upper windows", noremap = true })
+-- move between windows, uppside done on mac set to iterm2
+-- \<C-w>h on profile
+-- keymap.set("n", "<M-h>", "<C-w>h", { desc = "Move to left windows", noremap = true })
+-- keymap.set("n", "<M-l>", "<C-w>l", { desc = "Move to right windows", noremap = true })
+-- keymap.set("n", "<M-j>", "<C-w>j", { desc = "Move to down windows", noremap = true })
+-- keymap.set("n", "<M-k>", "<C-w>k", { desc = "Move to upper windows", noremap = true })
+
+-- keymap.set("n", "<C-h>", "<C-w>h", { desc = "Move to left windows", noremap = true })
+-- keymap.set("n", "<C-l>", "<C-w>l", { desc = "Move to right windows", noremap = true })
+-- keymap.set("n", "<C-j>", "<C-w>j", { desc = "Move to down windows", noremap = true })
+-- keymap.set("n", "<C-k>", "<C-w>k", { desc = "Move to upper windows", noremap = true })
 
 -- Move Between tab buffer
 keymap.set(
@@ -72,12 +84,11 @@ keymap.set(
 	{ desc = "Move to right tab buffer", noremap = true, silent = true }
 )
 
--- Moving buffer tab to left or right
 keymap.set(
 	"n",
 	"<C-l>",
 	"<CMD>BufferLineMoveNext<CR>",
-	{ desc = "Move buffer to next left ", noremap = true, silent = true }
+	{ desc = "Move buffer to next left", noremap = true, silent = true }
 )
 keymap.set(
 	"n",
@@ -91,11 +102,17 @@ keymap.set("n", "<leader>cd", ":cd %:p:h<CR>:pwd<CR>", { desc = "Changing Workin
 -- keymap.set("n", "<leader>cd", ":cd %:p:h<CR>:pwd<CR>", { desc = "Changing Working Directory", noremap = true })
 
 -- resize split
-keymap.set("n", "<M-,>", "<C-w>5<", { desc = "Resize to right" })
-keymap.set("n", "<M-.>", "<C-w>5>", { desc = "Resize to Left" })
-keymap.set("n", "<M-u>", "<C-w>+", { desc = "Resize Up" })
-keymap.set("n", "<M-d>", "<C-w>-", { desc = "Resize Down" })
-keymap.set("n", "<M-f>", "<C-w>=", { desc = "Resize F" })
+keymap.set("n", "<C-,>", "<C-w>5<", { desc = "Resize to right" })
+keymap.set("n", "<C-.>", "<C-w>5>", { desc = "Resize to Left" })
+keymap.set("n", "<C-u>", "<C-w>+", { desc = "Resize Up" })
+keymap.set("n", "<C-d>", "<C-w>-", { desc = "Resize Down" })
+keymap.set("n", "<C-f>", "<C-w>=", { desc = "Resize F" })
+
+-- keymap.set("n", "<M-,>", "<C-w>5<", { desc = "Resize to right" })
+-- keymap.set("n", "<M-.>", "<C-w>5>", { desc = "Resize to Left" })
+-- keymap.set("n", "<M-u>", "<C-w>+", { desc = "Resize Up" })
+-- keymap.set("n", "<M-d>", "<C-w>-", { desc = "Resize Down" })
+-- keymap.set("n", "<M-f>", "<C-w>=", { desc = "Resize F" })
 
 -- reset font
 keymap.set("n", "<M-0>", "<cmd>:GuiFont! JetBrainsMono Nerd Font:h14<CR>", { desc = "Reset Font" })
@@ -119,14 +136,19 @@ keymap.set({ "n", "v" }, "<leader>rf", function()
 end, { desc = "Format file" })
 
 -- Recall
-local recall = require("recall")
-keymap.set("n", "<leader>ma", "<cmd>RecallMark<CR>", { desc = "RecallMark", noremap = true, silent = true })
-keymap.set("n", "<leader>md", "<cmd>RecallUnmark<CR>", { desc = "RecallUnMark", noremap = true, silent = true })
-keymap.set("n", "<leader>mm", recall.toggle, { desc = "Toggle Recall", noremap = true, silent = true })
-keymap.set("n", "<leader>mn", recall.goto_next, { desc = "Next Recall Mark", noremap = true, silent = true })
-keymap.set("n", "<leader>mp", recall.goto_prev, { desc = "Previous Recall Mark", noremap = true, silent = true })
-keymap.set("n", "<leader>mc", recall.clear, { desc = "Clear Recall Mark", noremap = true, silent = true })
-keymap.set("n", "<leader>mt", ":Telescope recall<CR>", { desc = "Recall Telescope", noremap = true, silent = true })
+-- local recall = require("recall")
+-- keymap.set("n", "<leader>ma", "<cmd>RecallMark<CR>", { desc = "RecallMark", noremap = true, silent = true })
+-- keymap.set("n", "<leader>md", "<cmd>RecallUnmark<CR>", { desc = "RecallUnMark", noremap = true, silent = true })
+-- keymap.set("n", "<leader>mm", recall.toggle, { desc = "Toggle Recall", noremap = true, silent = true })
+-- keymap.set("n", "<leader>mn", recall.goto_next, { desc = "Next Recall Mark", noremap = true, silent = true })
+-- keymap.set("n", "<leader>mp", recall.goto_prev, { desc = "Previous Recall Mark", noremap = true, silent = true })
+-- keymap.set("n", "<leader>mc", recall.clear, { desc = "Clear Recall Mark", noremap = true, silent = true })
+-- keymap.set(
+-- 	"n",
+-- 	"<leader>mt",
+-- 	":Telescope recall theme=dropdown<CR>",
+-- 	{ desc = "Recall Telescope", noremap = true, silent = true }
+-- )
 
 -- Lsp
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -138,7 +160,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 		-- set keybinds
 		opts_lsp.desc = "Show LSP references"
-		keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts_lsp) -- show definition, references
+		keymap.set("n", "gR", "<cmd>Telescope lsp_references theme=dropdown<CR>", opts_lsp) -- show definition, references
 
 		opts_lsp.desc = "Show LSP type all References"
 		keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts_lsp) -- Show LSP type all References
@@ -205,24 +227,41 @@ keymap.set("n", "<leader>tq", ":TodoQuickFix<CR>", { noremap = true, desc = "Tod
 keymap.set("n", "<C-t>", ":ToggleTerm<CR>", { desc = "ToggleTerm", noremap = true })
 
 -- Telescope map
-keymap.set("i", "<C-o>", "<cmd>Telescope neoclip<CR>", { desc = "Find Clipboard on Edit" })
-keymap.set("n", "<leader>fo", "<cmd>Telescope neoclip<CR>", { desc = "Find Clipboard" })
-keymap.set("n", "<leader>fg", "<cmd>:lua require('telescope.builtin').registers()<cr>", { desc = "Find Registers" })
-keymap.set("n", "<leader>fm", "<cmd>:lua require('telescope.builtin').keymaps()<cr>", { desc = "Find Keymaps" })
-keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files in cwd" })
-keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" })
-keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
+keymap.set("i", "<C-o>", "<cmd>:Telescope neoclip <CR>", { desc = "Find Clipboard on Edit" })
+keymap.set("n", "<leader>fo", "<cmd>:Telescope neoclip <CR>", { desc = "Find Clipboard" })
+keymap.set(
+	"v",
+	"<leader>fo",
+	"<cmd>:lua require('telescope.builtin').registers({ layout_strategy='vertical', layout_config={ height=100 } })<CR>",
+	{ desc = "Find Clipboard Visual" }
+)
+keymap.set(
+	"n",
+	"<leader>fg",
+	"<cmd>:lua require('telescope.builtin').registers({layout_strategy='vertical',layout_config={height=100}})<cr>",
+	{ desc = "Find Registers" }
+)
+keymap.set(
+	"n",
+	"<leader>fm",
+	"<cmd>:lua require('telescope.builtin').keymaps({layout_strategy='vertical',layout_config={height=100}})<cr>",
+	{ desc = "Find Keymaps" }
+)
+keymap.set("n", "<leader>ff", "<cmd>Telescope find_files theme=dropdown<cr>", { desc = "Fuzzy find files in cwd" })
+keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles theme=dropdown<cr>", { desc = "Fuzzy find recent files" })
+keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep <cr>", { desc = "Find string in cwd" })
 keymap.set(
 	"n",
 	"<leader>fa",
-	"<cmd>Telescope buffers show_all_buffers=true sort_lastused=true<cr>",
+	"<cmd>Telescope buffers show_all_buffers=true sort_lastused=true theme=dropdown<cr>",
 	{ desc = "Find buffer on buffers" }
 )
 -- keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
 local live_grep_cmdc_buffer =
-	'<cmd>Telescope live_grep search_dirs={"%:p"} vimgrep_arguments=rg,--color=never,--no-heading,--with-filename,--line-number,--column,--smart-case,--fixed-strings<cr>'
+	'<cmd>Telescope live_grep search_dirs={"%:p"} vimgrep_arguments=rg,--color=never,--no-heading,--with-filename,--line-number,--column,--smart-case,--fixed-strings --theme=dropdown<cr>'
 keymap.set("n", "<leader>fb", live_grep_cmdc_buffer, { desc = "Find string in current buffer" })
-local live_grep_cmd = '<cmd>lua require("telescope.builtin").live_grep({grep_open_files=true})<CR>'
+local live_grep_cmd =
+	'<cmd>lua require("telescope.builtin").live_grep({grep_open_files=true,layout_strategy=vertical,layout_config={height=100}})<CR>'
 keymap.set("n", "<leader>fl", live_grep_cmd, { desc = "Find string in all open buffers" })
 
 -- File Neotree
@@ -230,18 +269,18 @@ keymap.set("n", "<leader>ee", ":Neotree toggle float<CR>", { desc = "Float File 
 keymap.set("n", "<leader>ef", ":Neotree toggle left<CR>", { desc = "Left File Explorer", silent = true })
 
 -- Spectre
-keymap.set("n", "<leader>sr", '<cmd>lua require("spectre").toggle()<CR>', {
-	desc = "Toggle Spectre",
-})
-keymap.set("n", "<leader>sw", '<cmd>lua require("spectre").open_visual({select_word=true})<CR>', {
-	desc = "Search current word",
-})
-keymap.set("v", "<leader>sw", '<esc><cmd>lua require("spectre").open_visual()<CR>', {
-	desc = "Search current word",
-})
-keymap.set("n", "<leader>sp", '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>', {
-	desc = "Search on current file",
-})
+-- keymap.set("n", "<leader>sr", '<cmd>lua require("spectre").toggle()<CR>', {
+-- 	desc = "Toggle Spectre",
+-- })
+-- keymap.set("n", "<leader>sw", '<cmd>lua require("spectre").open_visual({select_word=true})<CR>', {
+-- 	desc = "Search current word",
+-- })
+-- keymap.set("v", "<leader>sw", '<esc><cmd>lua require("spectre").open_visual()<CR>', {
+-- 	desc = "Search current word",
+-- })
+-- keymap.set("n", "<leader>sp", '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>', {
+-- 	desc = "Search on current file",
+-- })
 
 -- Line Operation, Moving block or line
 opts.desc = "Move BlockLine Down"
@@ -308,3 +347,8 @@ end, { desc = "Previous Harpoon" })
 
 -- Trouble
 keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)", noremap = true })
+-- Obsidian Search
+keymap.set("n", "<leader>so", "<cmd>ObsidianSearch<cr>", { desc = "Search Obsidian Note", noremap = true })
+keymap.set("n", "<leader>sn", "<cmd>ObsidianNew<cr>", { desc = "New Obsidian Note", noremap = true })
+-- Mark
+keymap.set("n", "<leader>ml", "<cmd>:MarksQFListBuf<cr>", { desc = "List Mark On Buffer", noremap = true })
