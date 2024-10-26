@@ -3,6 +3,9 @@ local function set_filetype()
 	if extension == "tmpl" or extension == "gotext" or extension == "gohtml" then
 		vim.bo.filetype = "html"
 	end
+	if extension == "mq5" then
+		vim.bo.filetype = "cpp"
+	end
 end
 
 -- vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
