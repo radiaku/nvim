@@ -60,10 +60,10 @@ keymap.set("n", "<leader>bk", ":q!<CR>", { desc = "Quit " }) --  Close Buffer (b
 
 -- move between windows, uppside done on mac set to iterm2
 -- \<C-w>h on profile
--- keymap.set("n", "<M-h>", "<C-w>h", { desc = "Move to left windows", noremap = true })
--- keymap.set("n", "<M-l>", "<C-w>l", { desc = "Move to right windows", noremap = true })
--- keymap.set("n", "<M-j>", "<C-w>j", { desc = "Move to down windows", noremap = true })
--- keymap.set("n", "<M-k>", "<C-w>k", { desc = "Move to upper windows", noremap = true })
+keymap.set("n", "<M-h>", "<C-w>h", { desc = "Move to left windows", noremap = true })
+keymap.set("n", "<M-l>", "<C-w>l", { desc = "Move to right windows", noremap = true })
+keymap.set("n", "<M-j>", "<C-w>j", { desc = "Move to down windows", noremap = true })
+keymap.set("n", "<M-k>", "<C-w>k", { desc = "Move to upper windows", noremap = true })
 
 -- keymap.set("n", "<C-h>", "<C-w>h", { desc = "Move to left windows", noremap = true })
 -- keymap.set("n", "<C-l>", "<C-w>l", { desc = "Move to right windows", noremap = true })
