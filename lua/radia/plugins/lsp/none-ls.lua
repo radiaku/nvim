@@ -49,7 +49,7 @@ return {
 				null_ls.builtins.formatting.stylua,
 				null_ls.builtins.formatting.isortd,
 				null_ls.builtins.formatting.blackd,
-				-- null_ls.builtins.formatting.clang_format,
+				null_ls.builtins.formatting.clang_format,
 				-- null_ls.builtins.formatting.markdownlint,
 				null_ls.builtins.formatting.prettierd,
 
