@@ -178,8 +178,6 @@ return {
 						"cpp",
 						"objc",
 						"objcpp",
-						"mq4",
-						"mq5",
 					},
 					capabilities = capabilities,
 					root_dir = util.root_pattern(
