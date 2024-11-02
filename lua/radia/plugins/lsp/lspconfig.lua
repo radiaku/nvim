@@ -191,10 +191,9 @@ return {
 					) or vim.fn.getcwd(),
 					settings = {
 						clangd = {
-							-- Disable specific directives
 							diagnostics = {
 								severityOverrides = {
-									["*"] = "ignore", -- Suppress all diagnostics
+									["*"] = "ignore",
 								},
 							},
 						},
