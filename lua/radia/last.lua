@@ -4,7 +4,7 @@ local function set_filetype()
 		vim.bo.filetype = "html"
 	end
 	if extension == "mq5" then
-		vim.bo.filetype = "mq5"
+		vim.bo.filetype = "cpp"
 	end
 end
 
