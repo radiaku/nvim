@@ -272,6 +272,44 @@ return {
 				})
 			end,
 
+			["omnisharp"] = function()
+				local lsp_server_omnisharp = vim.fn.expand("$HOME/AppData/Local/omnisharp/omnisharp.exe")
+				local pid = vim.fn.getpid()
+				lspconfig["omnisharp"].setup({
+					filetypes = {
+						"cs",
+						"csharp",
+						"c_sharp",
+					},
+					capabilities = capabilities,
+					root_dir = util.root_pattern("package.json")
+						or ".git"
+						or util.root_pattern("csproj")
+						or util.root_pattern("sln")
+						or vim.fn.getcwd(),
+					autoformat = false,
+					cmd = { lsp_server_omnisharp, "--languageserver", "--hostPID", tostring(pid) },
+				})
+			end,
+
+			-- ["csharp_ls"] = function()
+			--   lspconfig["csharp_ls"].setup({
+			--     filetypes = {
+			--       "cs",
+			--       "csharp",
+			--       "c_sharp",
+			--     },
+			--     capabilities = capabilities,
+			--     root_dir = util.root_pattern("package.json")
+			--       or ".git"
+			--       or util.root_pattern("csproj")
+			--       or util.root_pattern("sln")
+			--       or vim.fn.getcwd(),
+			--     autoformat = false,
+			--     -- cmd = {  "C:/Users/DELL/.dotnet/tools/csharp-ls.exe" },
+			--   })
+			-- end,
+
 			["html"] = function()
 				lspconfig["html"].setup({
 					filetypes = {
