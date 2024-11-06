@@ -8,14 +8,14 @@ vim.g.loaded_perl_provider = 0
 -- optionally enable 24-bit colour
 -- vim.opt.termguicolors = true
 
-local python_install_path = ""
-if vim.fn.has("win32") == 1 then
-	python_install_path = vim.fn.exepath("python")
-else
-	python_install_path = vim.fn.exepath("python3")
-end
-
-vim.g.python3_host_prog = python_install_path
+-- local python_install_path = ""
+-- if vim.fn.has("win32") == 1 then
+-- 	python_install_path = vim.fn.exepath("python")
+-- else
+-- 	python_install_path = vim.fn.exepath("python3")
+-- end
+--
+-- vim.g.python3_host_prog = python_install_path
 
 -- vim.opt.clipboard = "unnamed"
 vim.opt.clipboard = "unnamed,unnamedplus" -- allows neovim to access the system clipboard
