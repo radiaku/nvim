@@ -273,7 +273,7 @@ return {
 			end,
 
 			["omnisharp"] = function()
-				local lsp_server_omnisharp = vim.fn.expand("$HOME/AppData/Local/omnisharp/omnisharp.exe")
+				local lsp_server_omnisharp = vim.fn.expand("$HOME/.config/omnisharp/omnisharp.exe")
 				local pid = vim.fn.getpid()
 				lspconfig["omnisharp"].setup({
 					filetypes = {
@@ -288,7 +288,19 @@ return {
 						or util.root_pattern("sln")
 						or vim.fn.getcwd(),
 					autoformat = false,
-					cmd = { lsp_server_omnisharp, "--languageserver", "--hostPID", tostring(pid) },
+					-- cmd = { lsp_server_omnisharp, "--languageserver", "--hostPID", tostring(pid) },
+					cmd = {
+						lsp_server_omnisharp,
+						-- "-z",
+						-- "--hostPID",
+						-- tostring(pid),
+						-- "DotNet:enablePackageRestore=false",
+						-- "--encoding",
+						-- "utf-8",
+						-- "--languageserver",
+						-- "Sdk:IncludePrereleases=true",
+						-- "FormattingOptions:EnableEditorConfigSupport=true",
+					},
 				})
 			end,
 
