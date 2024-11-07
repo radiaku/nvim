@@ -9,7 +9,7 @@ vim.g.maplocalleader = " "
 require("radia.default")
 -- Load Core
 require("radia.core")
--- Load Lazy
+-- Load Lazy and plugins
 require("radia.lazy")
 -- Load Keymaps for plugin etc
 require("radia.keymaps")

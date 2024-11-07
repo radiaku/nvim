@@ -23,6 +23,7 @@ return {
 			{ name = "buffer" },
 			{ name = "vsnip" },
 			{ name = "path" },
+			{ name = "easy-dotnet" },
 		})
 
 		BufIsBig = function()
@@ -71,7 +72,6 @@ return {
 				["<C-e>"] = cmp.mapping.abort(), -- close completion window
 				["<CR>"] = cmp.mapping.confirm({ select = false }),
 			}),
-
 
 			-- sources for autocompletion
 			sources = default_cmp_sources,

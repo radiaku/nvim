@@ -17,8 +17,6 @@ vim.g.loaded_perl_provider = 0
 --
 -- vim.g.python3_host_prog = python_install_path
 
-local lsp_server_omnisharp = vim.fn.expand("$HOME/.config/omnisharp/omnisharp.exe")
-vim.g.OmniSharp_server_path = lsp_server_omnisharp
 
 -- vim.opt.clipboard = "unnamed"
 vim.opt.clipboard = "unnamed,unnamedplus" -- allows neovim to access the system clipboard

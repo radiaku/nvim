@@ -240,7 +240,7 @@ return {
 
 			["intelephense"] = function()
 				lspconfig["intelephense"].setup({
-					capabilities = capabilities,
+					-- capabilities = capabilities,
 					cmd = { "intelephense", "--stdio" },
 					filetypes = { "php" },
 					root_dir = function(pattern)
@@ -272,6 +272,53 @@ return {
 				})
 			end,
 
+			-- ["roslyn"] = function()
+			-- 	-- require("roslyn").setup({
+			-- 	lspconfig["intelephense"].setup({
+			-- 		config = {
+			-- 			settings = {
+			-- 				["csharp|background_analysis"] = {
+			-- 					dotnet_compiler_diagnostics_scope = "fullSolution",
+			-- 				},
+			-- 				["csharp|inlay_hints"] = {
+			-- 					csharp_enable_inlay_hints_for_implicit_object_creation = true,
+			-- 					csharp_enable_inlay_hints_for_implicit_variable_types = true,
+			-- 					csharp_enable_inlay_hints_for_lambda_parameter_types = true,
+			-- 					csharp_enable_inlay_hints_for_types = true,
+			-- 					dotnet_enable_inlay_hints_for_indexer_parameters = true,
+			-- 					dotnet_enable_inlay_hints_for_literal_parameters = true,
+			-- 					dotnet_enable_inlay_hints_for_object_creation_parameters = true,
+			-- 					dotnet_enable_inlay_hints_for_other_parameters = true,
+			-- 					dotnet_enable_inlay_hints_for_parameters = true,
+			-- 					dotnet_suppress_inlay_hints_for_parameters_that_differ_only_by_suffix = true,
+			-- 					dotnet_suppress_inlay_hints_for_parameters_that_match_argument_name = true,
+			-- 					dotnet_suppress_inlay_hints_for_parameters_that_match_method_intent = true,
+			-- 				},
+			-- 				["csharp|code_lens"] = {
+			-- 					dotnet_enable_references_code_lens = true,
+			-- 				},
+			-- 			},
+			-- 		},
+			-- 		-- exe = {
+			-- 		-- 	"dotnet",
+			-- 		-- 	vim.fs.joinpath(vim.fn.stdpath("data"), "roslyn", "Microsoft.CodeAnalysis.LanguageServer.dll"),
+			-- 		-- },
+			-- 		args = {
+			-- 			"--logLevel=Debug",
+			-- 			-- "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.get_log_path()),
+			-- 			"--extensionLogDirectory=C:/Users/DELL/.log",
+			-- 		},
+			-- 		-- filewatching = true,
+			-- 	})
+			-- end,
+
+			-- ["csharp"] = function()
+			-- 	lspconfig["csharp"].setup({
+			-- 		filetypes = { "cs" },
+			-- 		capabilities = capabilities,
+			-- 	})
+			-- end,
+
 			["omnisharp"] = function()
 				local lsp_server_omnisharp = vim.fn.expand("$HOME/.config/omnisharp/omnisharp.exe")
 				local pid = vim.fn.getpid()
@@ -288,19 +335,19 @@ return {
 						or util.root_pattern("sln")
 						or vim.fn.getcwd(),
 					autoformat = false,
-					-- cmd = { lsp_server_omnisharp, "--languageserver", "--hostPID", tostring(pid) },
-					cmd = {
-						lsp_server_omnisharp,
-						-- "-z",
-						-- "--hostPID",
-						-- tostring(pid),
-						-- "DotNet:enablePackageRestore=false",
-						-- "--encoding",
-						-- "utf-8",
-						-- "--languageserver",
-						-- "Sdk:IncludePrereleases=true",
-						-- "FormattingOptions:EnableEditorConfigSupport=true",
-					},
+					cmd = { lsp_server_omnisharp, "--languageserver", "--hostPID", tostring(pid) },
+					-- cmd = {
+					-- 	lsp_server_omnisharp,
+					-- 	-- "-z",
+					-- 	-- "--hostPID",
+					-- 	-- tostring(pid),
+					-- 	-- "DotNet:enablePackageRestore=false",
+					-- 	-- "--encoding",
+					-- 	-- "utf-8",
+					-- 	-- "--languageserver",
+					-- 	-- "Sdk:IncludePrereleases=true",
+					-- 	-- "FormattingOptions:EnableEditorConfigSupport=true",
+					-- },
 				})
 			end,
 
@@ -357,6 +404,7 @@ return {
 					},
 				})
 			end,
+
 			["lua_ls"] = function()
 				-- configure lua server (with special settings)
 				lspconfig["lua_ls"].setup({
