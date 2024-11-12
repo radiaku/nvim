@@ -10,7 +10,7 @@ return {
 				prev = "mp",
 				set_bookmark0 = "m0",
 				delete_buf = "dm<space>",
-				delete_line = "dm-",
+				delete_line = "dml",
 				-- delete_bookmark = "dmx",
 			},
 		})
