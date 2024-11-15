@@ -13,4 +13,4 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
 	callback = set_filetype,
 })
 
-vim.g.VM_show_warnings = 0
+-- vim.g.VM_show_warnings = 0
