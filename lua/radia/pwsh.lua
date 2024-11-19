@@ -13,6 +13,7 @@ vim.opt.shell = 'pwsh'
 vim.opt.shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;$PSStyle.OutputRendering = [System.Management.Automation.OutputRendering]::PlainText;"
 vim.opt.shellxquote = ''
 vim.opt.shellxescape = ''
+-- vim.opt.shellxescape = ''
 
 
 

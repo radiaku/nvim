@@ -55,7 +55,7 @@ keymap.set("n", "<leader>bd", "<cmd>bd!<CR>", { desc = "Close Buffer (bd)" }) --
 keymap.set("n", "<leader>ba", ":%bd|e#|bd#<CR>", { desc = "Close Buffer All except unsaved (bd)" }) --  Close Buffer (bd)
 -- keymap.set("n", "<leader>baf", ":qa!", { desc = "Kill all and exit" })
 keymap.set("n", "<leader>cc", ":cclose<CR>", { desc = "Close QuickFix" }) --  Close Buffer (bd)
-keymap.set("n", "<leader>co", "::only<CR>", { desc = "Close Other Split windows" })
+keymap.set("n", "<leader>co", ":only<CR>", { desc = "Close Other Split windows" })
 keymap.set("n", "<leader>bk", ":q!<CR>", { desc = "Quit " }) --  Close Buffer (bd)
 
 -- move between windows, uppside done on mac set to iterm2
