@@ -10,7 +10,7 @@ return {
 		return {
 			options = {
 				component_separators = { left = " ", right = " " },
-				theme = "sonokai",
+				theme = _G.themesname,
 				globalstatus = true,
 				disabled_filetypes = { statusline = { "dashboard", "alpha" } },
 			},
