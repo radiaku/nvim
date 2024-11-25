@@ -44,6 +44,13 @@ end
 
 vim.opt.smartindent = true
 
+-- Disable backup, already on github
+vim.cmd([[
+set nobackup
+set nowb
+set noswapfile
+]])
+
 -- cleaning shada
 -- vim.api.nvim_create_user_command("ClearShada", function()
 -- 	local shada_path = vim.fn.expand(vim.fn.stdpath("data") .. "/shada")
