@@ -5,6 +5,7 @@ return {
 	config = function()
 		require("marks").setup({
 			mappings = {
+				set = "m>",
 				set_next = "mm",
 				next = "mn",
 				prev = "mp",
