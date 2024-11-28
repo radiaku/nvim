@@ -247,7 +247,7 @@ keymap.set(
 	"<cmd>:lua require('telescope.builtin').keymaps({layout_strategy='vertical',layout_config={height=100}})<cr>",
 	{ desc = "Find Keymaps" }
 )
-keymap.set("n", "<leader>ff", "<cmd>Telescope find_files theme=dropdown<cr>", { desc = "Fuzzy find files in cwd" })
+keymap.set("n", "<leader>ff", "<cmd>Telescope find_files <cr>", { desc = "Fuzzy find files in cwd" })
 keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles theme=dropdown<cr>", { desc = "Fuzzy find recent files" })
 keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep <cr>", { desc = "Find string in cwd" })
 keymap.set(

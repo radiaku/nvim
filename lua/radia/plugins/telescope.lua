@@ -31,6 +31,12 @@ return {
 			defaults = {
 				path_display = { "truncate" },
 				layout_strategy = "horizontal",
+				find_files = {
+					theme = "dropdown",
+					layout_config = {
+						preview_width = 0.5, -- This controls the width of the preview
+					},
+				},
 				layout_config = {
 					horizontal = {
 						prompt_position = "top",
