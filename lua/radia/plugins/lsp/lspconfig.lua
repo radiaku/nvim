@@ -208,6 +208,7 @@ return {
 						"sass",
 						"scss",
 						"less",
+						"liquid",
 						"svelte",
 					},
 					capabilities = capabilities,
@@ -390,6 +391,13 @@ return {
 					-- cmd = { bin_path .. "vscode-html-language-server.cmd" },
 				})
 			end,
+			["theme_check"] = function()
+				lspconfig["theme_check"].setup({
+					capabilities = capabilities,
+					cmd = { "theme-check-liquid-server" },
+				})
+			end,
+
 			["emmet_ls"] = function()
 				-- configure emmet language server
 				lspconfig["emmet_ls"].setup({
@@ -401,6 +409,7 @@ return {
 						"scss",
 						"less",
 						"svelte",
+						"liquid",
 					},
 				})
 			end,
