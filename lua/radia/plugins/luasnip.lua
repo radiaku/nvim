@@ -2,6 +2,8 @@ return {
 	"L3MON4D3/LuaSnip",
 	-- version = "v2.*",
 	build = "make install_jsregexp",
+	-- build = "make install_jsregexp CC=gcc.exe SHELL=C:/Program Files/Git/bin/sh.exe .SHELLFLAGS=-c",
+
 	dependencies = {
 		"rafamadriz/friendly-snippets",
 	},
