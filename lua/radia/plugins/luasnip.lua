@@ -6,6 +6,7 @@ return {
 
   -- first time install
   -- cd $env:LOCALAPPDATA
+  -- cd ~/AppData/Local/nvim-data/lazy/LuaSnip
   -- & $env:LOCALAPPDATA/nvim/lua/radia/windows/ps_luasnip_build.ps1
 	-- build = "make install_jsregexp",
 	-- build = "make install_jsregexp CC=gcc.exe SHELL=C:/Program Files/Git/bin/sh.exe .SHELLFLAGS=-c",
