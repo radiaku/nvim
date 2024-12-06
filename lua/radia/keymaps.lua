@@ -120,7 +120,14 @@ keymap.set("n", "<M-0>", "<cmd>:GuiFont! JetBrainsMono Nerd Font:h14<CR>", { des
 -- save all
 keymap.set("n", "<leader>sa", ":wa<CR>", { desc = "Save all", noremap = true })
 -- quit force
-keymap.set("n", "<leader>qf", ":q!<CR>", { desc = "quit force all", noremap = true })
+keymap.set("n", "<leader>qf", ":copen<CR>", { desc = "quit force all", noremap = true })
+
+function ClearQuickfixList()
+  vim.fn.setqflist({})
+end
+vim.api.nvim_create_user_command('ClearQuickfixList', ClearQuickfixList, {})
+keymap.set('n', '<leader>cf', ':ClearQuickfixList<CR>', { desc= "clear QuickFix", noremap = true, silent = true })
+
 
 -- Plugin map
 local opts = { noremap = true, silent = true }
@@ -270,8 +277,9 @@ keymap.set(
 local live_grep_cmdc_buffer =
 	'<cmd>Telescope live_grep search_dirs={"%:p"} vimgrep_arguments=rg,--color=never,--no-heading,--with-filename,--line-number,--column,--smart-case,--fixed-strings --theme=dropdown<cr>'
 keymap.set("n", "<leader>fb", live_grep_cmdc_buffer, { desc = "Find string in current buffer" })
+
 local live_grep_cmd =
-	'<cmd>lua require("telescope.builtin").live_grep({grep_open_files=true,layout_strategy=vertical,layout_config={height=100}})<CR>'
+  '<cmd>lua require("telescope.builtin").live_grep({grep_open_files=true, search_dirs={"."}, layout_strategy="vertical", layout_config={height=100}})<CR>'
 keymap.set("n", "<leader>fl", live_grep_cmd, { desc = "Find string in all open buffers" })
 
 -- File Neotree
