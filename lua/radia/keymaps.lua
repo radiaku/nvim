@@ -7,7 +7,7 @@ set mouse=a
 " noremap Y "*y$
 "
 " imap <silent>  <C-R>+
-imap <C-v> <C-R>*
+" imap <C-v> <C-R>*
 cmap <S-Insert>  <C-R>+
 
 " ON toggleterm or terminal change to normal mode"
