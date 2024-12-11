@@ -208,7 +208,6 @@ return {
 						"typescriptreact",
 						"typescript",
 						"javascriptreact",
-						"javascript",
 						"sass",
 						"scss",
 						"less",
@@ -378,8 +377,6 @@ return {
 				lspconfig["html"].setup({
 					filetypes = {
 						"html",
-						"*.tmpl",
-						"gotexttmpl",
 					},
 					capabilities = capabilities,
 					init_options = {
@@ -411,7 +408,6 @@ return {
 						"typescriptreact",
 						"typescript",
 						"javascriptreact",
-						"javascript",
 						"css",
 						"sass",
 						"scss",
