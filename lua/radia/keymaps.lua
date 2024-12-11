@@ -40,6 +40,8 @@ keymap.set("i", "<A-P>", "<C-R>+", { noremap = true, silent = true, desc = "Past
 
 -- clear search highlights
 keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
+keymap.set("n", "<leader>cn", ":cn<CR>", { desc = "Go to the next error in the window" })
+keymap.set("n", "<leader>cp", ":cp<CR>", { desc = "Go to the previous error in the window" })
 
 -- Hop
 keymap.set("n", "t", "<cmd>HopPattern<CR>", { desc = "Hop", noremap = true })
@@ -52,7 +54,7 @@ keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" }
 
 -- destory buffer
 keymap.set("n", "<leader>bd", "<cmd>bd!<CR>", { desc = "Close Buffer (bd)" }) --  Close Buffer (bd)
-keymap.set("n", "<leader>ba", ":%bd|e#|bd#<CR>", { desc = "Close Buffer All except unsaved (bd)" }) --  Close Buffer (bd)
+keymap.set("n", "<leader>ba", ":%bd!|e#|bd#<CR>", { desc = "Close Buffer All except unsaved (bd)" }) --  Close Buffer (bd)
 -- keymap.set("n", "<leader>baf", ":qa!", { desc = "Kill all and exit" })
 keymap.set("n", "<leader>cc", ":cclose<CR>", { desc = "Close QuickFix" }) --  Close Buffer (bd)
 keymap.set("n", "<leader>co", ":only<CR>", { desc = "Close Other Split windows" })
@@ -102,11 +104,11 @@ keymap.set("n", "<leader>cd", ":cd %:p:h<CR>:pwd<CR>", { desc = "Changing Workin
 -- keymap.set("n", "<leader>cd", ":cd %:p:h<CR>:pwd<CR>", { desc = "Changing Working Directory", noremap = true })
 
 -- resize split
-keymap.set("n", "<C-,>", "<C-w>5<", { desc = "Resize to right" })
-keymap.set("n", "<C-.>", "<C-w>5>", { desc = "Resize to Left" })
-keymap.set("n", "<C-u>", "<C-w>+", { desc = "Resize Up" })
-keymap.set("n", "<C-d>", "<C-w>-", { desc = "Resize Down" })
-keymap.set("n", "<C-f>", "<C-w>=", { desc = "Resize F" })
+keymap.set("n", "<A-,>", "<C-w>5<", { desc = "Resize to right" })
+keymap.set("n", "<A-.>", "<C-w>5>", { desc = "Resize to Left" })
+keymap.set("n", "<A-u>", "<C-w>+", { desc = "Resize Up" })
+keymap.set("n", "<A-d>", "<C-w>-", { desc = "Resize Down" })
+keymap.set("n", "<A-f>", "<C-w>=", { desc = "Resize F" })
 
 -- keymap.set("n", "<M-,>", "<C-w>5<", { desc = "Resize to right" })
 -- keymap.set("n", "<M-.>", "<C-w>5>", { desc = "Resize to Left" })
