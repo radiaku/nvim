@@ -89,13 +89,13 @@ keymap.set(
 keymap.set(
 	"n",
 	"<C-l>",
-	"<CMD>BufferLineMoveNext<CR>",
+	"<Plug>(cokeline-switch-next)",
 	{ desc = "Move buffer to next left", noremap = true, silent = true }
 )
 keymap.set(
 	"n",
 	"<C-h>",
-	"<CMD>BufferLineMovePrev<CR>",
+	"<Plug>(cokeline-switch-prev)",
 	{ desc = "Move buffer to right", noremap = true, silent = true }
 )
 
