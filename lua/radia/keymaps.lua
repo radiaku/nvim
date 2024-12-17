@@ -76,13 +76,13 @@ keymap.set("n", "<M-k>", "<C-w>k", { desc = "Move to upper windows", noremap = t
 keymap.set(
 	"n",
 	"<S-l>",
-	"<CMD>BufferLineCycleNext<CR>",
+	"<Plug>(cokeline-focus-next)",
 	{ desc = "Move to left tab buffer", noremap = true, silent = true }
 )
 keymap.set(
 	"n",
 	"<S-h>",
-	"<CMD>BufferLineCyclePrev<CR>",
+	"<Plug>(cokeline-focus-prev)",
 	{ desc = "Move to right tab buffer", noremap = true, silent = true }
 )
 
