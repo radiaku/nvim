@@ -47,7 +47,7 @@ return {
 				-- null_ls.builtins.diagnostics.markdownlint,
 
 				null_ls.builtins.formatting.stylua,
-				null_ls.builtins.formatting.isortd,
+				-- null_ls.builtins.formatting.isortd,
 				null_ls.builtins.formatting.blackd,
 				null_ls.builtins.formatting.clang_format,
 				-- null_ls.builtins.formatting.markdownlint,
@@ -55,7 +55,7 @@ return {
 
 				-- null_ls.builtins.hover.printenv,
 				formatting.stylua, -- lua formatter
-				formatting.isort,
+				-- formatting.isort,
 				formatting.black,
 				diagnostics.pylint.with({
 				  extra_args = { "--disable", "c0114,c0115,c0116,c0301,w1203,w0703, W0511, C0321" },

@@ -13,18 +13,41 @@ return {
 				yaml = { "prettier" },
 				graphql = { "prettier" },
 				lua = { "stylua" },
-				python = { "isort", "black" },
+				-- python = { "isort", "black" },
+				python = {  "black" },
+			},
+			formatters = {
+				-- isort = {
+				-- 	command = "isort",
+				-- 	args = {
+				-- 		"--line-length",
+				-- 		"120",
+				-- 		"--lines-after-import",
+				-- 		"2",
+				-- 		"--quiet",
+				-- 		"-",
+				-- 	},
+				-- },
+				black = {
+					command = "black",
+					args = {
+						"--line-length",
+						"120",
+						"--quiet",
+						"-",
+					},
+				},
 			},
 
-			format_on_save = function(bufnr)
-				-- Disable with a global or buffer-local variable
-				if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
-					return
-				elseif BufIsBig then
-					return
-				end
-				return { async = false, timeout_ms = 500, lsp_fallback = true }
-			end,
+			-- format_on_save = function(bufnr)
+			-- 	-- Disable with a global or buffer-local variable
+			-- 	if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+			-- 		return
+			-- 	elseif BufIsBig then
+			-- 		return
+			-- 	end
+			-- 	return { async = false, timeout_ms = 500, lsp_fallback = true }
+			-- end,
 
 			-- lsp_fallback = true,
 			-- async = false,
@@ -49,6 +72,5 @@ return {
 		end, {
 			desc = "Re-enable autoformat-on-save",
 		})
-
 	end,
 }
