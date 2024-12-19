@@ -226,7 +226,6 @@ return {
 			["gopls"] = function()
 				lspconfig["gopls"].setup({
 					filetypes = { "go" },
-					capabilities = capabilities,
 				})
 			end,
 
@@ -404,7 +403,6 @@ return {
 			["emmet_ls"] = function()
 				-- configure emmet language server
 				lspconfig["emmet_ls"].setup({
-					capabilities = capabilities,
 					filetypes = {
 						"html",
 						"typescriptreact",
@@ -423,7 +421,6 @@ return {
 			["lua_ls"] = function()
 				-- configure lua server (with special settings)
 				lspconfig["lua_ls"].setup({
-					capabilities = capabilities,
 					settings = {
 						Lua = {
 							-- make the language server recognize "vim" global
