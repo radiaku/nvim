@@ -1,3 +1,5 @@
+---@diagnostic disable-next-line: missing-fields
+
 vim.cmd([[
 set mouse=a
 " source $VIMRUNTIME/mswin.vim
@@ -125,11 +127,10 @@ keymap.set("n", "<leader>sa", ":wa<CR>", { desc = "Save all", noremap = true })
 keymap.set("n", "<leader>qf", ":copen<CR>", { desc = "quit force all", noremap = true })
 
 function ClearQuickfixList()
-  vim.fn.setqflist({})
+	vim.fn.setqflist({})
 end
-vim.api.nvim_create_user_command('ClearQuickfixList', ClearQuickfixList, {})
-keymap.set('n', '<leader>cf', ':ClearQuickfixList<CR>', { desc= "clear QuickFix", noremap = true, silent = true })
-
+vim.api.nvim_create_user_command("ClearQuickfixList", ClearQuickfixList, {})
+keymap.set("n", "<leader>cf", ":ClearQuickfixList<CR>", { desc = "clear QuickFix", noremap = true, silent = true })
 
 -- Plugin map
 local opts = { noremap = true, silent = true }
@@ -281,7 +282,7 @@ local live_grep_cmdc_buffer =
 keymap.set("n", "<leader>fb", live_grep_cmdc_buffer, { desc = "Find string in current buffer" })
 
 local live_grep_cmd =
-  '<cmd>lua require("telescope.builtin").live_grep({grep_open_files=true, search_dirs={"."}, layout_strategy="vertical", layout_config={height=100}})<CR>'
+	'<cmd>lua require("telescope.builtin").live_grep({grep_open_files=true, search_dirs={"."}, layout_strategy="vertical", layout_config={height=100}})<CR>'
 keymap.set("n", "<leader>fl", live_grep_cmd, { desc = "Find string in all open buffers" })
 
 -- File Neotree
@@ -372,3 +373,9 @@ keymap.set("n", "<leader>so", "<cmd>ObsidianSearch<cr>", { desc = "Search Obsidi
 keymap.set("n", "<leader>sn", "<cmd>ObsidianNew<cr>", { desc = "New Obsidian Note", noremap = true })
 -- Mark
 keymap.set("n", "<leader>ml", "<cmd>:MarksQFListBuf<cr>", { desc = "List Mark On Buffer", noremap = true })
+
+keymap.set("i", "<C-space>", function()
+	require("blink.cmp").show()
+	require("blink.cmp").show_documentation()
+	require("blink.cmp").hide_documentation()
+end, { silent = false })
