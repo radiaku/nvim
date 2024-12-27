@@ -3,11 +3,9 @@ return {
 
 	version = "v0.7.6",
 	dependencies = {
-		"L3MON4D3/LuaSnip",
-		"rafamadriz/friendly-snippets", -- useful snippets
+		"rafamadriz/friendly-snippets",
 	},
 	opts = {
-		opts_extend = { "sources.completion.enabled_providers" },
 		keymap = {
 			preset = "default",
 			["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
@@ -31,7 +29,7 @@ return {
 		},
 		completion = {
 			list = {
-				max_items = 100,
+				max_items = 20,
 				selection = "auto_insert",
 				cycle = {
 					from_bottom = true,
@@ -44,50 +42,8 @@ return {
 			},
 			-- ghost_text = { enabled = true },
 		},
-		snippets = {
-			expand = function(snippet)
-				require("luasnip").lsp_expand(snippet)
-			end,
-			active = function(filter)
-				if filter and filter.direction then
-					return require("luasnip").jumpable(filter.direction)
-				end
-				return require("luasnip").in_snippet()
-			end,
-			jump = function(direction)
-				require("luasnip").jump(direction)
-			end,
-		},
 		sources = {
 			default = { "lsp", "luasnip", "snippets", "path", "buffer" },
-			-- providers = {
-			-- 	lsp = {
-			-- 		name = "lsp",
-			-- 		enabled = true,
-			-- 		module = "blink.cmp.sources.lsp",
-			-- 		kind = "LSP",
-			-- 		score_offset = 1000,
-			-- 	},
-			-- 	luasnip = {
-			-- 		name = "luasnip",
-			-- 		enabled = true,
-			-- 		module = "blink.cmp.sources.luasnip",
-			-- 		score_offset = 950,
-			-- 	},
-			-- 	snippets = {
-			-- 		name = "snippets",
-			-- 		min_keyword_length = 2, -- don't show when triggered manually, useful for JSON keys
-			-- 		enabled = true,
-			-- 		module = "blink.cmp.sources.snippets",
-			-- 		score_offset = 950,
-			-- 	},
-				-- buffer = {
-				-- 	fallback_for = {}, -- disable being fallback for LSP
-				-- 	max_items = 4,
-				-- 	min_keyword_length = 4,
-				-- 	score_offset = -3,
-				-- },
-			-- },
 		},
 	},
 }
