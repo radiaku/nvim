@@ -1,0 +1,14 @@
+# 
+# ln -s ~/.config/nvim/ghostty ~/.config/ghostty/config
+# 
+
+macos-option-as-alt = true
+keybind = cmd+l=text:\x17\x6C
+keybind = cmd+h=text:\x17\x68
+keybind = cmd+j=text:\x17\x6A
+keybind = cmd+k=text:\x17\x6B
+
+font-family = "JetBrainsMono NFM Regular"
+font-style = Regular
+font-size = 15 
+font-thicken = true
