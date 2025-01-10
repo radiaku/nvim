@@ -10,5 +10,5 @@ keybind = cmd+k=text:\x17\x6B
 
 font-family = "JetBrainsMono NFM Regular"
 font-style = Regular
-font-size = 15 
+font-size = 13 
 font-thicken = true
