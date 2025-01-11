@@ -15,8 +15,18 @@ plugins=(
   z
 )
 
+
 source $ZSH/oh-my-zsh.sh
 
+
+# Remove any existing alias
+unalias fzf-cd 2>/dev/null
+
+alias fzf-cd="cd ~ && cd \$(find ~/Dev -type d \( -name node_modules -o -name .git \) -prune -o -name '*'  -type d -print | fzf)"
+
+# Create a zsh widget
+zle -N fzf-cd
+bindkey '^F' fzf-cd
 
 HISTFILE=~/.zsh-histfile
 HISTSIZE=999999999
