@@ -18,6 +18,23 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
+# User configuration
+# Always work in a tmux session if tmux is installed
+# https://github.com/chrishunt/dot-files/blob/master/.zshrc
+# if which tmux 2>&1 >/dev/null; then
+#   # Check if we are not in a tmux session
+#   if [ "$TERM" != "screen-256color" ] && [ "$TERM" != "screen" ]; then
+#     # Check if the tmux session "hack" exists
+#     if tmux has-session -t hack 2>/dev/null; then
+#       # If it exists, attach to it
+#       tmux attach -t hack
+#     else
+#       # If it doesn't exist, create it
+#       tmux new -s hack
+#     fi
+#   fi
+# fi
+
 
 # Remove any existing alias
 unalias fzf-cd 2>/dev/null
@@ -46,39 +63,86 @@ fzf-cd() {
   test -f "$target" && target="${target%/*}"
 
   # Change to the selected directory
-  cd "$target" && zle && zle reset-prompt || return 1
-  # cd "$target" || return 1
+  # cd "$target" && zle && zle reset-prompt || return 1
+  
+  # Generate a unique session name (could be based on timestamp or directory)
+  session_name="fzf-$(basename "$target")"
+  if tmux has-session -t "$session_name" 2>/dev/null; then
+    exec </dev/tty
+    exec <&1
+    tmux attach -t "$session_name"
+  else 
+    exec </dev/tty
+    exec <&1
+    tmux new-session -s "$session_name" -c "$target"
+  fi
 
-  # Force prompt to refresh by re-sourcing the prompt information
-  # VIRTUAL_ENV_DISABLE_PROMPT=1; # Optional to avoid virtualenv prompt interfering
-  # source ~/.zshrc  # Re-source .zshrc to refresh the prompt
+  # Attach to the newly created tmux session
 }
 
 
 ff() {
-    local fd_options fzf_options target
+  local fd_options fzf_options target
 
-    fd_options=(
-        --type directory
-        --max-depth 2 
-    )
+  fd_options=(
+    --type directory
+    --max-depth 2 
+  )
 
-    fzf_options=(
-        --preview='tree -L 1 {}'
-        --bind=ctrl-space:toggle-preview
-        --exit-0
-    )
+  fzf_options=(
+    --preview='tree -L 1 {}'
+    --bind=ctrl-space:toggle-preview
+    --exit-0
+  )
 
-    target="$(fd . "${1:-.}" "${fd_options[@]}" | fzf "${fzf_options[@]}")"
+  target="$(fd . "${1:-.}" "${fd_options[@]}" | fzf "${fzf_options[@]}")"
 
-    test -f "$target" && target="${target%/*}"
+  test -f "$target" && target="${target%/*}"
 
-    cd "$target" || return 1
+  cd "$target" || return 1
 }
 
 # Create a zsh widget
 zle -N fzf-cd
 bindkey '^F' fzf-cd
+
+
+
+# Function to attach or create a tmux session
+attach_or_create_tmux_session() {
+  target_directory="~/Dev"
+
+  if which tmux 2>&1 >/dev/null; then
+    # Ensure that tmux is run in a proper TTY
+    # We use `tty` to determine the terminal, and if it's not a proper terminal, restore it
+    if [[ -z "$TTY" ]] || ! tty -s; then
+      export TTY=$(tty)
+    fi
+
+    # Check if we are not already inside a tmux session
+    if [ "$TERM" != "screen-256color" ] && [ "$TERM" != "screen" ]; then
+      # Check if the tmux session "hack" exists
+      if tmux has-session -t hack 2>/dev/null; then
+        # If it exists, attach to it
+        exec </dev/tty
+        exec <&1
+        tmux attach -t hack
+      else
+        # If it doesn't exist, create it and start in the target directory
+        exec </dev/tty
+        exec <&1
+        tmux new-session -s hack -c "$target_directory"
+      fi
+    fi
+  fi
+}
+
+# Create a widget out of the function (to be callable by keybinding)
+zle -N attach_or_create_tmux_session
+
+# Bind the function to the keybinding Ctrl+t
+bindkey '^t' attach_or_create_tmux_session
+
 
 
 HISTFILE=~/.zsh-histfile
