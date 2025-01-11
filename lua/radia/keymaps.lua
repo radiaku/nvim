@@ -260,7 +260,7 @@ keymap.set(
 keymap.set(
 	"n",
 	"<leader>ff",
-	"<cmd>Telescope find_files theme=dropdown previewer=false<cr>",
+	"<cmd>Telescope find_files theme=ivy previewer=false<cr>",
 	{ desc = "Fuzzy find files in cwd" }
 )
 keymap.set(
