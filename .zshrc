@@ -115,9 +115,9 @@ attach_or_create_tmux_session() {
   if which tmux 2>&1 >/dev/null; then
     # Ensure that tmux is run in a proper TTY
     # We use `tty` to determine the terminal, and if it's not a proper terminal, restore it
-    if [[ -z "$TTY" ]] || ! tty -s; then
-      export TTY=$(tty)
-    fi
+    # if [[ -z "$TTY" ]] || ! tty -s; then
+    #   export TTY=$(tty)
+    # fi
 
     # Check if we are not already inside a tmux session
     if [ "$TERM" != "screen-256color" ] && [ "$TERM" != "screen" ]; then
