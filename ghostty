@@ -12,6 +12,8 @@ keybind = cmd+k=text:\x17\x6B
 theme = GruvboxDark
 font-family = UbuntuMono Nerd Font
 # font-family = JetBrainsMono Nerd Font
+# adjust-cell-width = 1
+# adjust-cell-height = 1
 font-style = Regular
 font-size = 12 
 font-thicken = true
