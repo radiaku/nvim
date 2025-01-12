@@ -7,8 +7,12 @@ keybind = cmd+l=text:\x17\x6C
 keybind = cmd+h=text:\x17\x68
 keybind = cmd+j=text:\x17\x6A
 keybind = cmd+k=text:\x17\x6B
+# window-decoration = false
 
-font-family = "JetBrainsMono NFM Regular"
+theme = GruvboxDark
+font-family = UbuntuMono Nerd Font
+# font-family = JetBrainsMono Nerd Font
 font-style = Regular
-font-size = 13 
+font-size = 12 
 font-thicken = true
+window-padding-x = 2
