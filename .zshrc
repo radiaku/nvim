@@ -1,39 +1,32 @@
+# mv ~/.zshrc ~/.config/nvim/zshrc
 # ln -s ~/.config/nvim/.zshrc ~/.zshrc
+#
+# curl -sSL https://github.com/zthxxx/jovial/raw/master/installer.sh | sudo -E bash -s ${USER:=whoami}
+# brew install zsh-autocomplete
+# git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git $ZSH_CUSTOM/plugins/zsh-autocomplete
+# sudo scutil --set HostName macbookpro
+# or use source ~/.config/nvim/zshrc_mac
+
+# export TERM='xterm-256color'
+export TERM="xterm-256color"
+export EDITOR='nvim'
+export VISUAL='nvim'
+
+eval "$(/usr/local/bin/brew shellenv)"
 
 export ZSH="$HOME/.oh-my-zsh"
 
-# ZSH_THEME="ubunly"
 ZSH_THEME="jovial"
-# ZSH_THEME="suvash"
-# ZSH_THEME="kali-like"
-
 
 plugins=(
   git
-  zsh-syntax-highlighting
   zsh-autocomplete
+  jovial
   z
 )
 
 
 source $ZSH/oh-my-zsh.sh
-
-# User configuration
-# Always work in a tmux session if tmux is installed
-# https://github.com/chrishunt/dot-files/blob/master/.zshrc
-# if which tmux 2>&1 >/dev/null; then
-#   # Check if we are not in a tmux session
-#   if [ "$TERM" != "screen-256color" ] && [ "$TERM" != "screen" ]; then
-#     # Check if the tmux session "hack" exists
-#     if tmux has-session -t hack 2>/dev/null; then
-#       # If it exists, attach to it
-#       tmux attach -t hack
-#     else
-#       # If it doesn't exist, create it
-#       tmux new -s hack
-#     fi
-#   fi
-# fi
 
 
 # Remove any existing alias
@@ -43,11 +36,14 @@ unalias fzf-cd 2>/dev/null
 #
 # Define the fzf-cd function to search only for directories in ~/Dev, skipping node_modules and .git, limited to 2 levels deep
 fzf-cd() {
+  [ -n "$ZLE_STATE" ] && trap 'zle reset-prompt' EXIT
   local fd_options fzf_options target
 
   fd_options=(
     --type directory
     --max-depth 2
+    --exclude .git
+    --exclude node_modules
   )
 
   fzf_options=(
@@ -56,16 +52,16 @@ fzf-cd() {
     --exit-0
   )
 
-  # Search for directories inside ~/Dev, using fd with correct pattern
   target="$(fd . ~/Dev "${fd_options[@]}" | fzf "${fzf_options[@]}")"
 
-  # Ensure the result is a directory (strip filename if it's selected)
+  if [[ -z "$target" ]]; then
+    # echo "No directory selected, exiting." 
+    zle reset-prompt
+    return
+  fi
+
   test -f "$target" && target="${target%/*}"
 
-  # Change to the selected directory
-  # cd "$target" && zle && zle reset-prompt || return 1
-  
-  # Generate a unique session name (could be based on timestamp or directory)
   session_name="fzf-$(basename "$target")"
   if tmux has-session -t "$session_name" 2>/dev/null; then
     exec </dev/tty
@@ -76,9 +72,11 @@ fzf-cd() {
     exec <&1
     tmux new-session -s "$session_name" -c "$target"
   fi
-
-  # Attach to the newly created tmux session
 }
+
+# Create a zsh widget
+zle -N fzf-cd
+bindkey '^F' fzf-cd
 
 
 ff() {
@@ -102,73 +100,50 @@ ff() {
   cd "$target" || return 1
 }
 
-# Create a zsh widget
-zle -N fzf-cd
-bindkey '^F' fzf-cd
+
+# History
+#
+HISTSIZE=100000
+SAVEHIST=100000
+HISTFILE=~/.cache/zsh/history
 
 
+export HOMEBREW_NO_AUTO_UPDATE=true
 
-# Function to attach or create a tmux session
-attach_or_create_tmux_session() {
-  target_directory="~/Dev"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-  if which tmux 2>&1 >/dev/null; then
-    # Ensure that tmux is run in a proper TTY
-    # We use `tty` to determine the terminal, and if it's not a proper terminal, restore it
-    # if [[ -z "$TTY" ]] || ! tty -s; then
-    #   export TTY=$(tty)
-    # fi
+export PATH=~/.local/bin/:$PATH
+eval "$(rbenv init -)"
+export PATH="/usr/local/opt/openjdk/bin:$PATH"
 
-    # Check if we are not already inside a tmux session
-    if [ "$TERM" != "screen-256color" ] && [ "$TERM" != "screen" ]; then
-      # Check if the tmux session "hack" exists
-      if tmux has-session -t hack 2>/dev/null; then
-        # If it exists, attach to it
-        exec </dev/tty
-        exec <&1
-        tmux attach -t hack
-      else
-        # If it doesn't exist, create it and start in the target directory
-        exec </dev/tty
-        exec <&1
-        tmux new-session -s hack -c "$target_directory"
-      fi
-    fi
-  fi
+
+# Function to enter alternate screen mode and clear the screen
+ias() {
+    echo -e "\033[?1049h"
+    clear
+    printf '\e[3J'
 }
 
-# Create a widget out of the function (to be callable by keybinding)
-zle -N attach_or_create_tmux_session
+# Function to exit alternate screen mode, clear the screen, and attempt to clear the scrollback buffer
+cas() {
+    echo -e "\033[?1049l"
+    clear
+    printf '\e[3J'
+}
 
-# Bind the function to the keybinding Ctrl+t
-bindkey '^t' attach_or_create_tmux_session
+
+export PATH=$PATH:$HOME/go/bin
+
+eval "$(rbenv init - --no-rehash zsh)"
+eval "$(zoxide init zsh)"
 
 
 
-HISTFILE=~/.zsh-histfile
-HISTSIZE=999999999
+# export PATH="/usr/local/opt/go@1.22/bin:$PATH"
+# export PATH="/usr/local/opt/postgresql@15/bin:$PATH"
+export PATH="/Applications/Postgres.app/Contents/Versions/13/bin:$PATH"
+#
 
-bindkey "\e[H" beginning-of-line
-bindkey "\e[F" end-of-line
-
-# default editor to vim
-export VISUAL=vim
-export EDITOR="$VISUAL"
-
-export PATH=/usr/lib/postgresql/15/bin:$PATH
-
-# >>> juliaup initialize >>>
-
-# !! Contents within this block are managed by juliaup !!
-
-path=('/home/meradia/.juliaup/bin' $path)
-export PATH
-
-# <<< juliaup initialize <<<
-
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-export XDG_DATA_DIRS="/home/linuxbrew/.linuxbrew/share:$XDG_DATA_DIRS"
-export PATH="$PATH:$HOME/.local/bin"
-autoload bashcompinit
-bashcompinit
-source "/home/meradia/.local/share/bash-completion/completions/am"
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
