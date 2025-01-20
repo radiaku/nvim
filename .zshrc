@@ -18,8 +18,7 @@ ZSH_THEME="jovial"
 
 plugins=(
   git
-  zsh-autosuggestions
-  zsh-syntax-highlighting
+  zsh-autocomplete
   jovial
 )
 
