@@ -8,7 +8,7 @@
 
 # export TERM='xterm-256color'
 export TERM="xterm-256color"
-export EDITOR='nvim'
+export EDITOR='vim'
 export VISUAL='nvim'
 
 
@@ -19,7 +19,6 @@ ZSH_THEME="jovial"
 plugins=(
   git
   zsh-autocomplete
-  jovial
 )
 
 
@@ -92,12 +91,27 @@ ff() {
 }
 
 
+ias() {
+    echo -e "\033[?1049h"
+    clear
+    printf '\e[3J'
+}
+
+# Function to exit alternate screen mode, clear the screen, and attempt to clear the scrollback buffer
+cas() {
+    echo -e "\033[?1049l"
+    clear
+    printf '\e[3J'
+}
+
+
 # History
 #
 HISTSIZE=100000
 SAVEHIST=100000
 HISTFILE=~/.cache/zsh/history
 
+eval "$(zoxide init zsh)"
 
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
