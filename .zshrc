@@ -4,7 +4,6 @@
 # curl -sSL https://github.com/zthxxx/jovial/raw/master/installer.sh | sudo -E bash -s ${USER:=whoami}
 # brew install zsh-autocomplete
 # git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git $ZSH_CUSTOM/plugins/zsh-autocomplete
-# sudo scutil --set HostName macbookpro
 # or use source ~/.config/nvim/zshrc_mac
 
 # export TERM='xterm-256color'
@@ -12,7 +11,6 @@ export TERM="xterm-256color"
 export EDITOR='nvim'
 export VISUAL='nvim'
 
-eval "$(/usr/local/bin/brew shellenv)"
 
 export ZSH="$HOME/.oh-my-zsh"
 
@@ -28,13 +26,7 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-
-# Remove any existing alias
 unalias fzf-cd 2>/dev/null
-
-# alias fzf-cd="cd ~ && cd \$(find ~/Dev --max-depth 2 -type d \( -name node_modules -o -name .git \) -prune -o -name '*'  -type d -print | fzf)"
-#
-# Define the fzf-cd function to search only for directories in ~/Dev, skipping node_modules and .git, limited to 2 levels deep
 fzf-cd() {
   [ -n "$ZLE_STATE" ] && trap 'zle reset-prompt' EXIT
   local fd_options fzf_options target
