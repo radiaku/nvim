@@ -78,8 +78,6 @@ return {
 						-- pyright = {
 						-- 	disableLanguageServices = true,
 						-- 	disableOrganizeImports = true,
-						-- 	reportMissingModuleSource = "off",
-						-- 	reportMissingImports = "off",
 						-- 	reportUndefinedVariable = "off",
 						-- },
 						python = {
@@ -91,6 +89,7 @@ return {
 								useLibraryCodeForTypes = true,
 								diagnosticSeverityOverrides = {
 									["reportOptionalSubscript"] = "ignore",
+									["reportInvalidTypeArguments"] = "ignore",
 									["reportOptionalIterable"] = "none",
 									["reportArgumentType"] = "none",
 									["reportOptionalOperand"] = "none",
