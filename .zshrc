@@ -58,7 +58,7 @@ manage_tmux_session() {
 unalias fzf-cd 2>/dev/null
 
 fzf-cd() {
-  # [ -n "$ZLE_STATE" ] && trap 'zle reset-prompt' EXIT
+  [ -n "$ZLE_STATE" ] && trap 'zle reset-prompt' EXIT
   local fd_options fzf_options target
 
   fd_options=(
@@ -93,7 +93,7 @@ fzf-cd() {
   manage_tmux_session "$session_name" "$target"
 
   # Reset the prompt after exiting the tmux session
-  # zle reset-prompt
+  zle reset-prompt
 }
 
 # Create a zsh widget
