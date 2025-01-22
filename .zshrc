@@ -31,17 +31,23 @@ manage_tmux_session() {
   exec <&1
 
   if [ -z "$TMUX" ]; then
+    # echo "not inside tmux"
     # Not inside tmux: Create or attach to a session
     if tmux has-session -t "$1" 2>/dev/null; then
+      # echo "has session attach it"
       tmux attach -t "$1"
     else
       tmux new-session -s "$1" -c "$2"
     fi
   else
     # Inside tmux: Create or switch to the session
+    # echo "inside tmux"
     if tmux has-session -t "$1" 2>/dev/null; then
-      tmux attach -d "$1"
+      # echo "has session attach it"
+      tmux switch-client -t "$1"
+      # tmux attach -dt "$1"
     else 
+      # tmux new-session -A -s "$1"
       tmux new-session -ds "$1" -c "$2"
       tmux switch-client -t "$1"
     fi
@@ -52,7 +58,7 @@ manage_tmux_session() {
 unalias fzf-cd 2>/dev/null
 
 fzf-cd() {
-  [ -n "$ZLE_STATE" ] && trap 'zle reset-prompt' EXIT
+  # [ -n "$ZLE_STATE" ] && trap 'zle reset-prompt' EXIT
   local fd_options fzf_options target
 
   fd_options=(
@@ -87,7 +93,7 @@ fzf-cd() {
   manage_tmux_session "$session_name" "$target"
 
   # Reset the prompt after exiting the tmux session
-  zle reset-prompt
+  # zle reset-prompt
 }
 
 # Create a zsh widget
