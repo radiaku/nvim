@@ -89,7 +89,7 @@ return {
 								useLibraryCodeForTypes = true,
 								diagnosticSeverityOverrides = {
 									["reportOptionalSubscript"] = "ignore",
-									["reportInvalidTypeArguments"] = "ignore",
+									["reportInvalidTypeArguments"] = "none",
 									["reportOptionalIterable"] = "none",
 									["reportArgumentType"] = "none",
 									["reportOptionalOperand"] = "none",
