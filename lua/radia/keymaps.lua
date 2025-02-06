@@ -269,7 +269,7 @@ keymap.set(
 	"<cmd>Telescope oldfiles theme=dropdown previewer=false<cr>",
 	{ desc = "Fuzzy find recent files" }
 )
-keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep <cr>", { desc = "Find string in cwd" })
+keymap.set("n", "<leader>fs", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", { desc = "Find string in cwd" })
 keymap.set(
 	"n",
 	"<leader>fa",
