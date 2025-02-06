@@ -33,8 +33,9 @@ manage_tmux_session() {
   if [ -z "$TMUX" ]; then
     # echo "not inside tmux"
     # Not inside tmux: Create or attach to a session
-    if tmux has-session -t "$1" 2>/dev/null; then
-      # echo "has session attach it"
+    # if tmux has-session -t "$1" 2>/dev/null; then
+    if tmux ls | grep -q "^$1:"; then
+      # echo "not inside tmux has session attach it $1"
       tmux attach -t "$1"
     else
       tmux new-session -s "$1" -c "$2"
@@ -42,8 +43,9 @@ manage_tmux_session() {
   else
     # Inside tmux: Create or switch to the session
     # echo "inside tmux"
-    if tmux has-session -t "$1" 2>/dev/null; then
-      # echo "has session attach it"
+    # if tmux has-session -t "$1" 2>/dev/null; then
+    if tmux ls | grep -q "^$1:"; then
+      # echo "inside tmux has session attach it $1"
       tmux switch-client -t "$1"
       # tmux attach -dt "$1"
     else 
@@ -144,6 +146,13 @@ zle -N fzf_personal
 bindkey '^P' fzf_personal
 
 
+function ff() {
+  aerospace list-windows --all | fzf --bind 'enter:execute(bash -c "aerospace focus --window-id {1}")+abort'
+}
+
+
+
+# Function to enter alternate screen mode and clear the screen
 ias() {
     echo -e "\033[?1049h"
     clear
