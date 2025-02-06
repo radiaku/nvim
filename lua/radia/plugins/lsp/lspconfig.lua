@@ -420,15 +420,25 @@ return {
 			["lua_ls"] = function()
 				-- configure lua server (with special settings)
 				lspconfig["lua_ls"].setup({
+					-- capabilities = capabilities,
 					settings = {
 						Lua = {
 							-- make the language server recognize "vim" global
 							diagnostics = {
 								globals = { "vim" },
+								disable = { "missing-fields" },
 							},
 							workspace = {
 								-- Make the server aware of Neovim runtime files
-								library = vim.api.nvim_get_runtime_file("", true),
+								library = {
+									vim.env.VIMRUNTIME,
+									vim.api.nvim_get_runtime_file("", true),
+									vim.fn.expand("$VIMRUNTIME/lua"),
+									vim.fn.expand("$VIMRUNTIME/lua/vim/lsp"),
+									vim.fn.stdpath("data") .. "/lazy/ui/nvchad_types",
+									vim.fn.stdpath("data") .. "/lazy/lazy.nvim/lua/lazy",
+									"${3rd}/luv/library",
+								},
 							},
 							-- Do not send telemetry data containing a randomized but unique identifier
 							telemetry = {
