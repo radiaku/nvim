@@ -24,6 +24,17 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
+
+function vim() {
+    if command -v vimx &> /dev/null; then
+        vimx "$@"
+    elif command -v vim &> /dev/null; then
+        vim "$@"
+    else
+        vi "$@"
+    fi
+}
+
 unalias manage_tmux_session 2>/dev/null
 manage_tmux_session() {
   # Access the session name and target directly using positional parameters
@@ -178,3 +189,4 @@ eval "$(zoxide init zsh)"
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init - zsh)"
+
