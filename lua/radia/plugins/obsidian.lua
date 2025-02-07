@@ -33,5 +33,7 @@ if vim.fn.isdirectory(obsidian_vault_path) == 1 then
         },
     }
 else
-    print("Obsidian vault not found at: " .. obsidian_vault_path)
+   return {}
 end
+
+
