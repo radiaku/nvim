@@ -8,8 +8,6 @@
 
 # export TERM='xterm-256color'
 export TERM="xterm-256color"
-export EDITOR='vim'
-export VISUAL='nvim'
 
 
 export ZSH="$HOME/.oh-my-zsh"
@@ -21,9 +19,23 @@ plugins=(
   zsh-autocomplete
 )
 
-
 source $ZSH/oh-my-zsh.sh
 
+
+function set_editor() {
+    if command -v vimx &> /dev/null; then
+        export EDITOR='vimx'
+        export VISUAL='vimx'
+    elif command -v vim &> /dev/null; then
+        export EDITOR='vim'
+        export VISUAL='vim'
+    else
+        export EDITOR='vi'
+        export VISUAL='vi'
+    fi
+}
+
+set_editor
 
 function vim() {
     if command -v vimx &> /dev/null; then
