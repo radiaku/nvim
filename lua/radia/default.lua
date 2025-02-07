@@ -20,7 +20,7 @@ _G.themesname = "sonokai"
 
 
 -- vim.opt.clipboard = "unnamed"
-vim.opt.clipboard = "unnamed,unnamedplus" -- allows neovim to access the system clipboard
+vim.opt.clipboard = "unnamedplus"
 
 if vim.fn.has("win32") == 1 then
 	-- Use win32yank for clipboard support
@@ -37,6 +37,7 @@ if vim.fn.has("win32") == 1 then
 		cache_enabled = 0,
 	}
 end
+
 
 if vim.fn.has("win32") == 1 then
 	require("radia.pwsh")

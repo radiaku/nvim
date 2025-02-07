@@ -1,3 +1,4 @@
+# mkdir -p ~/.config/alacritty
 # ln -s ~/.config/nvim/alacritty.toml ~/.config/alacritty/alacritty.toml
 # [terminal.shell]
 # program = "/usr/local/bin/zsh"
@@ -22,10 +23,10 @@ save_to_clipboard = true
 semantic_escape_chars = ",│`|:\"' ()[]{}<>"
 
 [font]
-# normal                = { family = "CaskaydiaCove Nerd Font Mono", style = "Regular" }
-normal                = { family = "UbuntuMono Nerd Font Mono", style = "Regular" }
-bold                  = { family = "UbuntuMono Nerd Font Mono", style = "Bold" }
-italic                = { family = "UbuntuMono Nerd Font Mono", style = "Italic" }
+normal                = { family = "CaskaydiaCove Nerd Font Mono", style = "Regular" }
+# normal                = { family = "UbuntuMono Nerd Font Mono", style = "Regular" }
+# bold                  = { family = "UbuntuMono Nerd Font Mono", style = "Bold" }
+# italic                = { family = "UbuntuMono Nerd Font Mono", style = "Italic" }
 # bold_italic           = { family = "CaskaydiaCove Nerd Font Mono", style = "Bold Italic" }
 size                  = 12
 offset                = { x = 0, y = 0 }
