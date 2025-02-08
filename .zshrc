@@ -8,6 +8,7 @@
 
 # export TERM='xterm-256color'
 export TERM="xterm-256color"
+export TERMINAL="alacritty"
 
 
 export ZSH="$HOME/.oh-my-zsh"
