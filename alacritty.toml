@@ -24,7 +24,7 @@ semantic_escape_chars = ",│`|:\"' ()[]{}<>"
 
 [font]
 normal                = { family = "CaskaydiaCove Nerd Font Mono", style = "Regular" }
-# normal                = { family = "UbuntuMono Nerd Font Mono", style = "Regular" }
+# normal                = { family = "Ubuntu Nerd Font", style = "Light" }
 # bold                  = { family = "UbuntuMono Nerd Font Mono", style = "Bold" }
 # italic                = { family = "UbuntuMono Nerd Font Mono", style = "Italic" }
 # bold_italic           = { family = "CaskaydiaCove Nerd Font Mono", style = "Bold Italic" }
