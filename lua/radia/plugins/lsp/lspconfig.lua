@@ -33,6 +33,7 @@ return {
 			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 		end
 
+		local server_namepy = vim.fn.has("win32") == 1 and "pyright" or "basedpyright"
 		mason_lspconfig.setup_handlers({
 			function(server_name)
 				-- https://github.com/neovim/nvim-lspconfig/pull/3232
@@ -42,9 +43,9 @@ return {
 				})
 			end,
 
-			["pyright"] = function()
+			[server_namepy] = function()
 				local python_root_files = {
-					"WORKSPACE", -- added for Bazel; items below are from default config
+					"WORKSPACE",
 					"pyproject.toml",
 					"setup.py",
 					"setup.cfg",
@@ -62,12 +63,10 @@ return {
 					python_install_path = vim.fn.exepath("python3")
 				end
 
-				lspconfig["pyright"].setup({
+				lspconfig[server_namepy].setup({
 					filetypes = { "python", ".py" },
 					capabilities = capabilities,
-
-					cmd = { "pyright-langserver", "--stdio" },
-
+					-- cmd = { server_name .. "-langserver", "--stdio" },
 					root_dir = function(fname)
 						table.unpack = table.unpack or unpack -- 5.1 compatibility
 						return util.root_pattern(table.unpack(python_root_files))(fname)
@@ -75,20 +74,17 @@ return {
 							or util.path.dirname(fname)
 					end,
 					settings = {
-						-- pyright = {
-						-- 	disableLanguageServices = true,
-						-- 	disableOrganizeImports = true,
-						-- 	reportUndefinedVariable = "off",
-						-- },
-						python = {
+						[server_namepy] = {
 							analysis = {
-								typeCheckingMode = "basic",
+								typeCheckingMode = "openFilesOnly",
 								autoSearchPaths = true,
 								diagnosticMode = "workspace",
 								extraPaths = { site_packages_path },
 								useLibraryCodeForTypes = true,
 								diagnosticSeverityOverrides = {
 									["reportOptionalSubscript"] = "none",
+									["reportUnknownVariableType"] = "none",
+									["reportOperatorIssue"] = "none",
 									["reportOptionalIterable"] = "none",
 									["reportArgumentType"] = "none",
 									["reportIndexIssue"] = "none",
@@ -96,6 +92,7 @@ return {
 									["reportAssignmentType"] = "none",
 									["reportOptionalOperand"] = "none",
 									["reportAttributeAccessIssue"] = "none",
+									["reportUnknownMemberType"] = "none",
 									["reportOptionalMemberAccess"] = "none",
 									["reportCallIssue"] = "none",
 								},

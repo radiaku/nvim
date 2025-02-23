@@ -8,7 +8,6 @@ return {
 			features = {
 				"indent_blankline",
 				"illuminate",
-				"highlight",
 				"lsp",
 				"treesitter",
 				"syntax",
