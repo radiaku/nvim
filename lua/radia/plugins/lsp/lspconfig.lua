@@ -76,7 +76,7 @@ return {
 					settings = {
 						[server_namepy] = {
 							analysis = {
-								typeCheckingMode = "openFilesOnly",
+								typeCheckingMode = "basic",
 								autoSearchPaths = true,
 								diagnosticMode = "workspace",
 								extraPaths = { site_packages_path },
