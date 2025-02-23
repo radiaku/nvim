@@ -25,24 +25,32 @@ return {
 			},
 		})
 
+		local ensure_installed = {
+			"html",
+			"cssls",
+			"lua_ls",
+			"jsonls",
+			"gopls",
+			-- "tsserver",
+			"vtsls",
+			"tailwindcss",
+			-- "jedi_language_server",
+			-- "basedpyright",
+			-- "pylsp",
+			"intelephense",
+			"emmet_ls",
+		}
+
+		-- Check the operating system and append the appropriate Python language server
+		if vim.fn.has("win32") == 1 then
+			table.insert(ensure_installed, "pyright")
+		else
+			table.insert(ensure_installed, "basedpyright")
+		end
+
 		mason_lspconfig.setup({
 			-- list of servers for mason to install
-			ensure_installed = {
-				"html",
-				"cssls",
-				"lua_ls",
-				"jsonls",
-				"gopls",
-				-- "tsserver",
-				"vtsls",
-				"tailwindcss",
-				-- "jedi_language_server",
-				-- "basedpyright",
-				"pyright",
-				-- "pylsp",
-				"intelephense",
-				"emmet_ls",
-			},
+			ensure_installed = ensure_installed,
 			-- auto-install configured servers (with lspconfig)
 			automatic_installation = true, -- not the same as ensure_installed
 		})
