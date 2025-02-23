@@ -82,6 +82,7 @@ return {
 								extraPaths = { site_packages_path },
 								useLibraryCodeForTypes = true,
 								diagnosticSeverityOverrides = {
+									["reportMissingTypeStubs"] = "none",
 									["reportOptionalSubscript"] = "none",
 									["reportUnknownVariableType"] = "none",
 									["reportOperatorIssue"] = "none",
@@ -101,67 +102,6 @@ return {
 					},
 				})
 			end,
-
-			-- ["basedpyright"] = function()
-			-- 	local python_root_files = {
-			-- 		"WORKSPACE", -- added for Bazel; items below are from default config
-			-- 		"pyproject.toml",
-			-- 		"setup.py",
-			-- 		"setup.cfg",
-			-- 		"requirements.txt",
-			-- 		"Pipfile",
-			-- 	}
-			--
-			-- 	local site_packages_path = ""
-			-- 	local python_install_path = ""
-			-- 	if vim.fn.has("win32") == 1 then
-			-- 		python_install_path = vim.fn.exepath("python")
-			-- 		local python_directory = python_install_path:match("(.*)\\[^\\]*$")
-			-- 		site_packages_path = python_directory .. "\\lib\\site-packages"
-			-- 	else
-			-- 		python_install_path = vim.fn.exepath("python3")
-			-- 	end
-			--
-			-- 	lspconfig["basedpyright"].setup({
-			-- 		filetypes = { "python", ".py" },
-			-- 		capabilities = capabilities,
-			--
-			-- 		root_dir = function(fname)
-			-- 			table.unpack = table.unpack or unpack -- 5.1 compatibility
-			-- 			return util.root_pattern(table.unpack(python_root_files))(fname)
-			-- 				or util.find_git_ancestor(fname)
-			-- 				or util.path.dirname(fname)
-			-- 		end,
-			-- 		settings = {
-			-- python = {
-			-- 	analysis = {
-			-- 		typeCheckingMode = "basic",
-			-- 		autoSearchPaths = true,
-			-- 		diagnosticMode = "workspace",
-			-- 		extraPaths = { site_packages_path },
-			-- 		useLibraryCodeForTypes = true,
-			-- 		diagnosticSeverityOverrides = {
-			-- 			["reportOptionalSubscript"] = "ignore",
-			-- 			["reportOptionalIterable"] = "none",
-			-- 			["reportArgumentType"] = "none",
-			-- 			["reportOptionalOperand"] = "none",
-			-- 			["reportAttributeAccessIssue"] = "none",
-			-- 			["reportOptionalMemberAccess"] = "none",
-			-- 			["reportCallIssue"] = "none",
-			-- 		},
-			-- 	},
-			-- },
-			-- 		},
-			-- 	})
-			-- end,
-
-			-- ["tsserver"] = function()
-			-- 	lspconfig["tsserver"].setup({
-			-- 		capabilities = capabilities,
-			-- 		root_dir = util.root_pattern("package.json") or vim.fn.getcwd(),
-			-- 		-- cmd = { bin_path .. "typescript-language-server.cmd" },
-			-- 	})
-			-- end,
 
 			["vtsls"] = function()
 				lspconfig["vtsls"].setup({
