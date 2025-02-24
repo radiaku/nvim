@@ -23,30 +23,30 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 
-function set_editor() {
-    if command -v vimx &> /dev/null; then
-        export EDITOR='vimx'
-        export VISUAL='vimx'
-    elif command -v vim &> /dev/null; then
-        export EDITOR='vim'
-        export VISUAL='vim'
-    else
-        export EDITOR='vi'
-        export VISUAL='vi'
-    fi
-}
+# function set_editor() {
+#     if command -v vimx &> /dev/null; then
+#         export EDITOR='vimx'
+#         export VISUAL='vimx'
+#     elif command -v vim &> /dev/null; then
+#         export EDITOR='vim'
+#         export VISUAL='vim'
+#     else
+#         export EDITOR='vi'
+#         export VISUAL='vi'
+#     fi
+# }
+#
+# set_editor
 
-set_editor
-
-function vim() {
-    if command -v vimx &> /dev/null; then
-        vimx "$@"
-    elif command -v vim &> /dev/null; then
-        vim "$@"
-    else
-        vi "$@"
-    fi
-}
+# function vim() {
+#     if command -v vimx &> /dev/null; then
+#         vimx "$@"
+#     elif command -v vim &> /dev/null; then
+#         vim "$@"
+#     else
+#         vi "$@"
+#     fi
+# }
 
 unalias manage_tmux_session 2>/dev/null
 manage_tmux_session() {
@@ -177,14 +177,14 @@ function ff() {
 
 
 # Function to enter alternate screen mode and clear the screen
-ias() {
+function ias() {
     echo -e "\033[?1049h"
     clear
     printf '\e[3J'
 }
 
 # Function to exit alternate screen mode, clear the screen, and attempt to clear the scrollback buffer
-cas() {
+function cas() {
     echo -e "\033[?1049l"
     clear
     printf '\e[3J'
