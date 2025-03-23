@@ -1,8 +1,9 @@
+local blink_ok, blink = pcall(require, "blink.cmp")
 return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
-		"saghen/blink.cmp",
+		(not blink_ok) and "hrsh7th/cmp-nvim-lsp" or nil,
 		-- "hrsh7th/cmp-nvim-lsp",
 		-- "williamboman/mason-lspconfig.nvim",
 		-- { "antosha417/nvim-lsp-file-operations", config = true },
@@ -20,10 +21,20 @@ return {
 
 		-- import cmp-nvim-lsp plugin
 		-- local cmp_nvim_lsp = require("cmp_nvim_lsp")
-
+		local capabilities
 		-- used to enable autocompletion (assign to every lsp server config)
 		-- local capabilities = cmp_nvim_lsp.default_capabilities()
-		local capabilities = require("blink.cmp").get_lsp_capabilities()
+		-- local capabilities = require("blink.cmp").get_lsp_capabilities()
+		if blink_ok then
+			capabilities = blink.get_lsp_capabilities()
+		else
+			local cmp_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+			if cmp_ok then
+				capabilities = cmp_nvim_lsp.default_capabilities()
+			else
+				error("Neither 'blink.cmp' nor 'cmp_nvim_lsp' could be loaded.")
+			end
+		end
 
 		-- Change the Diagnostic symbols in the sign column (gutter)
 		-- (not in youtube nvim video)
@@ -82,10 +93,8 @@ return {
 								extraPaths = { site_packages_path },
 								useLibraryCodeForTypes = true,
 								diagnosticSeverityOverrides = {
-									["reportMissingTypeStubs"] = "none",
-									["reportOptionalSubscript"] = "none",
-									["reportUnknownVariableType"] = "none",
 									["reportOperatorIssue"] = "none",
+									["reportOptionalSubscript"] = "none",
 									["reportOptionalIterable"] = "none",
 									["reportArgumentType"] = "none",
 									["reportIndexIssue"] = "none",
@@ -93,9 +102,12 @@ return {
 									["reportAssignmentType"] = "none",
 									["reportOptionalOperand"] = "none",
 									["reportAttributeAccessIssue"] = "none",
-									["reportUnknownMemberType"] = "none",
 									["reportOptionalMemberAccess"] = "none",
 									["reportCallIssue"] = "none",
+									["reportUnusedImport"] = "none",
+									["reportUnusedParameter"] = "none",
+									["reportUnusedVariable"] = "none",
+									["reportPrivateImportUsage"] = "none",
 								},
 							},
 						},
