@@ -5,14 +5,18 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 
--- default 
-require("radia.default")
+-- default settings
+require("radia.default_settings")
 -- Load Core
 require("radia.core")
--- Load Lazy and plugins
+-- Load Lazy
 require("radia.lazy")
 -- Load Keymaps for plugin etc
-require("radia.keymaps")
+require("radia.default_keymaps")
+-- Load custom keymaps
+require("radia.custom_keymaps")
+-- Load custom function keymaps
+require("radia.custom_function_keymaps")
 -- setting themes
 require("radia.themes")
 -- settings neovide
