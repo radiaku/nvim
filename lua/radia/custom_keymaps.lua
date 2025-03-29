@@ -12,9 +12,6 @@ keymap.set("n", "<S-l>", "<CMD>BufferLineCycleNext<CR>", opts)
 opts = { desc = "Move to right tab buffer" }
 keymap.set("n", "<S-h>", "<CMD>BufferLineCyclePrev<CR>", opts)
 
--- Move between buffers
--- keymap.set("n", "<S-l>", ":bnext<CR>", { desc = "Move to left tab buffer", opts })
--- keymap.set("n", "<S-h>", ":bprevious<CR>", { desc = "Move to right tab buffer", opts })
 
 opts = { desc = "Move buffer to next left" }
 keymap.set("n", "<C-l>", "<CMD>BufferLineMoveNext<CR>", opts)
