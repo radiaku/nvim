@@ -104,14 +104,14 @@ keymap.set("n", "<leader>dc", ":DBUIAddConnection<CR>", opts)
 -- opts = { desc = "Move to upper windows"}
 -- keymap.set("n", "<M-k>", "<C-w>k", opts)
 
--- opts = { desc = "Move to left windows"}
--- keymap.set("n", "<C-h>", "<C-w>h", opts)
--- opts = { desc = "Move to right windows"}
--- keymap.set("n", "<C-l>", "<C-w>l", opts)
--- opts = { desc = "Move to down windows"}
--- keymap.set("n", "<C-j>", "<C-w>j", opts)
--- opts = { desc = "Move to upper windows"}
--- keymap.set("n", "<C-k>", "<C-w>k", opts)
+opts = { desc = "Move to left windows"}
+keymap.set("n", "<A-h>", "<C-w>h", opts)
+opts = { desc = "Move to right windows"}
+keymap.set("n", "<A-l>", "<C-w>l", opts)
+opts = { desc = "Move to down windows"}
+keymap.set("n", "<A-j>", "<C-w>j", opts)
+opts = { desc = "Move to upper windows"}
+keymap.set("n", "<A-k>", "<C-w>k", opts)
 
 -- change working directory to the location of the current file
 opts = { desc = "Changing Working Directory" }
