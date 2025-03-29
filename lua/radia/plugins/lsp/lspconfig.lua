@@ -63,7 +63,7 @@ return {
 					"requirements.txt",
 					"Pipfile",
 				}
-				print(vim.fn.exepath("python"))
+				-- print(vim.fn.exepath("python"))
 				local site_packages_path = ""
 				-- local python_install_path = ""
 				-- if vim.fn.has("win32") == 1 then
