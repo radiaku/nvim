@@ -63,16 +63,16 @@ return {
 					"requirements.txt",
 					"Pipfile",
 				}
-
+				print(vim.fn.exepath("python"))
 				local site_packages_path = ""
-				local python_install_path = ""
-				if vim.fn.has("win32") == 1 then
-					python_install_path = vim.fn.exepath("python")
-					local python_directory = python_install_path:match("(.*)\\[^\\]*$")
-					site_packages_path = python_directory .. "\\lib\\site-packages"
-				else
-					python_install_path = vim.fn.exepath("python3")
-				end
+				-- local python_install_path = ""
+				-- if vim.fn.has("win32") == 1 then
+				-- 	python_install_path = vim.fn.exepath("python")
+				-- 	local python_directory = python_install_path:match("(.*)\\[^\\]*$")
+				-- 	site_packages_path = python_directory .. "\\lib\\site-packages"
+				-- else
+				-- 	python_install_path = vim.fn.exepath("python3")
+				-- end
 
 				lspconfig[server_namepy].setup({
 					filetypes = { "python", ".py" },
