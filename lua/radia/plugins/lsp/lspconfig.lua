@@ -89,7 +89,7 @@ return {
 							analysis = {
 								typeCheckingMode = "basic",
 								autoSearchPaths = true,
-								diagnosticMode = "workspace",
+								diagnosticMode = "openFilesOnly",
 								extraPaths = { site_packages_path },
 								useLibraryCodeForTypes = true,
 								diagnosticSeverityOverrides = {
