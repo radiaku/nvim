@@ -25,7 +25,7 @@ sanitize_session_name() {
   echo "${cleaned%"_"}"
 }
 
-# Function to manage tmux sessions
+
 manage_tmux_session() {
   exec </dev/tty
   exec <&1
@@ -34,19 +34,40 @@ manage_tmux_session() {
     if tmux ls | grep -q "^$1:"; then
       tmux attach -t "$1"
     else
-      tmux new-session -s "$1"
-      tmux send-keys "cd $2" C-m  # Change directory after creating the session
+      tmux new-session -s "$1" -c "$2"
     fi
   else
     if tmux ls | grep -q "^$1:"; then
       tmux switch-client -t "$1"
     else 
-      tmux new-session -ds "$1"
-      tmux send-keys "cd $2" C-m  # Change directory after creating the session
+      tmux new-session -ds "$1" -c "$2"
       tmux switch-client -t "$1"
     fi
   fi
 }
+
+# Function to manage tmux sessions
+# manage_tmux_session() {
+#   exec </dev/tty
+#   exec <&1
+#
+#   if [ -z "$TMUX" ]; then
+#     if tmux ls | grep -q "^$1:"; then
+#       tmux attach -t "$1"
+#     else
+#       tmux new-session -s "$1"
+#       tmux send-keys "cd $2" C-m  # Change directory after creating the session
+#     fi
+#   else
+#     if tmux ls | grep -q "^$1:"; then
+#       tmux switch-client -t "$1"
+#     else 
+#       tmux new-session -ds "$1"
+#       tmux send-keys "cd $2" C-m  # Change directory after creating the session
+#       tmux switch-client -t "$1"
+#     fi
+#   fi
+# }
 
 # Remove any existing alias
 unalias fzf-cd 2>/dev/null
