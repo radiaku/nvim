@@ -46,6 +46,32 @@ manage_tmux_session() {
   fi
 }
 
+# manage_tmux_session() {
+#   local session_name="$1"
+#   local target_dir="$2"
+#
+#   # Fall back to home if no directory passed
+#   [ -z "$target_dir" ] && target_dir="$HOME"
+#
+#   exec </dev/tty
+#   exec <&1
+#
+#   if [ -z "$TMUX" ]; then
+#     if tmux has-session -t "$session_name" 2>/dev/null; then
+#       tmux attach -t "$session_name"
+#     else
+#       (cd "$target_dir" && tmux new-session -s "$session_name")
+#     fi
+#   else
+#     if tmux has-session -t "$session_name" 2>/dev/null; then
+#       tmux switch-client -t "$session_name"
+#     else
+#       (cd "$target_dir" && tmux new-session -ds "$session_name")
+#       tmux switch-client -t "$session_name"
+#     fi
+#   fi
+# }
+
 # Function to manage tmux sessions
 # manage_tmux_session() {
 #   exec </dev/tty
