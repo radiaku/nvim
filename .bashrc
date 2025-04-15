@@ -8,6 +8,7 @@
 # git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git $ZSH_CUSTOM/plugins/zsh-autocomplete
 # sudo scutil --set HostName macbookpro
 # or use source ~/.config/nvim/zshrc_mac
+# sudo ln --symbolic $(which fdfind) /usr/local/bin/fd
 
 # export TERM='xterm-256color'
 export TERM="xterm-256color"
@@ -200,5 +201,18 @@ export PATH=$PATH:$HOME/go/bin
 eval "$(zoxide init zsh)"
 
 
+# Load system-wide bash completion
+if [ -f /etc/profile.d/bash_completion.sh ]; then
+    source /etc/profile.d/bash_completion.sh
+fi
+
+# Enable history search with up/down arrows (only if commented out above)
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
+
+# Load fzf keybindings (for fuzzy history search with Ctrl+R, Ctrl+T, etc.)
+if [ -f /usr/share/doc/fzf/examples/key-bindings.bash ]; then
+    source /usr/share/doc/fzf/examples/key-bindings.bash
+fi
 
 
