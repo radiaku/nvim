@@ -30,6 +30,9 @@ export TERM="xterm-256color"
 export EDITOR='vim'
 export VISUAL='vim'
 
+# make cursor on below
+export PS1="\u@\h:\w\n\$ "
+
 alias nv='nvim'
 alias v='vim'
 alias py3='python3'
