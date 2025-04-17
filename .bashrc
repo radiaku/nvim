@@ -198,7 +198,7 @@ export PATH=~/.local/bin/:$PATH
 eval "$(rbenv init - --no-rehash zsh)"
 
 export PATH=$PATH:$HOME/go/bin
-eval "$(zoxide init zsh)"
+eval "$(zoxide init bash)"
 
 
 # Load system-wide bash completion
