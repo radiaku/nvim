@@ -6,18 +6,25 @@ local opts = { noremap = true, silent = true }
 local cmd = ""
 
 -- Move Between tab buffer
+-- opts = { desc = "Navigate to left tab from current buffer" }
+-- keymap.set("n", "<S-l>", ":BufferLineCycleNext<cr>", opts)
+--
+-- opts = { desc = "Navigate to to right tab from current buffer" }
+-- keymap.set("n", "<S-h>", ":BufferLineCyclePrev<cr>", opts)
+
+-- Move Between tab buffer
 opts = { desc = "Navigate to left tab from current buffer" }
-keymap.set("n", "<S-l>", "<CMD>BufferLineCycleNext<CR>", opts)
+keymap.set("n", "<S-l>", ":bn<cr>", opts)
 
 opts = { desc = "Navigate to to right tab from current buffer" }
-keymap.set("n", "<S-h>", "<CMD>BufferLineCyclePrev<CR>", opts)
+keymap.set("n", "<S-h>", ":bp<cr>", opts)
 
 
-opts = { desc = "Move buffer to next left" }
-keymap.set("n", "<C-l>", "<CMD>BufferLineMoveNext<CR>", opts)
-
-opts = { desc = "Move buffer to right" }
-keymap.set("n", "<C-h>", "<CMD>BufferLineMovePrev<CR>", opts)
+-- opts = { desc = "Move buffer to next left" }
+-- keymap.set("n", "<C-l>", ":BufferLineMoveNext<CR>", opts)
+--
+-- opts = { desc = "Move buffer to right" }
+-- keymap.set("n", "<C-h>", ":BufferLineMovePrev<CR>", opts)
 
 function ClearQuickfixList()
   vim.fn.setqflist({})
@@ -29,8 +36,7 @@ keymap.set("n", "<leader>cf", ":ClearQuickfixList<CR>", opts)
 -- conform
 local conform = require("conform")
 opts = { desc = "Format file" }
-keymap.set({ "n", "v" }, "<leader>rf", function()
-  conform.format({
+keymap.set({ "n", "v" }, "<leader>rf", function() conform.format({
     lsp_fallback = true,
     async = false,
     timeout_ms = 5000,
