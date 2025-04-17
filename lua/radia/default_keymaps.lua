@@ -130,10 +130,10 @@ opts = { desc = "Resize Down" }
 keymap.set("n", "<M-d>", "<C-w>-", opts)
 
 -- Move between buffers
-opts = { desc = "Next Buffer"}
-keymap.set("n", "<S-l>", ":bnext<CR>", opts)
-opts = { desc = "Previous Buffer"}
-keymap.set("n", "<S-h>", ":bprevious<CR>",opts)
+-- opts = { desc = "Next Buffer"}
+-- keymap.set("n", "<S-l>", ":bnext<CR>", opts)
+-- opts = { desc = "Previous Buffer"}
+-- keymap.set("n", "<S-h>", ":bprevious<CR>",opts)
 
 -- set previous and next opened buffer
 -- opts = { desc = "Next Buffer"}
