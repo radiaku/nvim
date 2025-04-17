@@ -18,7 +18,7 @@ return {
 	-- taken from this for fixing on windows https://github.com/LunarVim/LunarVim/issues/1804	}
 	--
 	"nvim-telescope/telescope.nvim",
-	branch = "0.1.x",
+	-- branch = "0.1.x",
 	dependencies = {
 		-- 	{ "nvim-telescope/telescope-fzy-native.nvim" },
 		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
