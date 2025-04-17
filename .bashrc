@@ -10,6 +10,21 @@
 # or use source ~/.config/nvim/zshrc_mac
 # sudo ln --symbolic $(which fdfind) /usr/local/bin/fd
 
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+export LC_TIME="en_US.UTF-8"
+export DATE_FORMAT="%Y %m %d %H:%M:%S"
+
+HISTSIZE=10000
+HISTFILESIZE=200000
+HISTCONTROL=ignoreboth
+shopt -s histappend
+shopt -s checkwinsize
+
+
 # export TERM='xterm-256color'
 export TERM="xterm-256color"
 export EDITOR='vim'
