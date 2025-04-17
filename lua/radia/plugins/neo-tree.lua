@@ -62,7 +62,11 @@ return {
 						local node = state.tree:get_node()
 						local filename = node.name
 						vim.fn.setreg("*", filename)
+            vim.fn.setreg('"', filename)
+            vim.fn.setreg("1", filename)
+            vim.fn.setreg("+", filename)
 						vim.notify("Copied: " .. filename)
+
 					end,
 					["Y"] = function(state)
 						-- NeoTree is based on [NuiTree](https://github.com/MunifTanjim/nui.nvim/tree/main/lua/nui/tree)
@@ -106,6 +110,7 @@ return {
 							show_path = "none",
 						},
 					},
+
 					["A"] = "add_directory",
 					["d"] = "delete",
 					["r"] = "rename",
