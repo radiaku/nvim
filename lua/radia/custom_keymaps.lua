@@ -82,7 +82,7 @@ opts = { desc = "Fuzzy find files in cwd" }
 keymap.set("n", "<leader>ff", "<cmd>Telescope find_files theme=ivy previewer=false<cr>", opts)
 
 opts = { desc = "Fuzzy find files in cwd with hidden" }
-keymap.set("n", "<leader>fh", "<cmd>Telescope find_files theme=ivy previewer=false hidden=true<cr>", opts)
+keymap.set("n", "<leader>fh", "<cmd>Telescope find_files theme=ivy previewer=false hidden=true no_ignore=true<cr>", opts)
 
 opts = { desc = "Fuzzy find recent files" }
 keymap.set("n", "<leader>fn", "<cmd>Telescope oldfiles theme=dropdown previewer=false<cr>", opts)
