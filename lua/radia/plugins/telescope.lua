@@ -18,11 +18,12 @@ return {
 	-- taken from this for fixing on windows https://github.com/LunarVim/LunarVim/issues/1804	}
 	--
 	"nvim-telescope/telescope.nvim",
+	commit = "a4ed82",
 	-- branch = "0.1.x",
 	dependencies = {
 		-- 	{ "nvim-telescope/telescope-fzy-native.nvim" },
-		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-		"nvim-telescope/telescope-live-grep-args.nvim",
+		{ "nvim-telescope/telescope-fzf-native.nvim", commit = "1f08ed", build = "make" },
+		{ "nvim-telescope/telescope-live-grep-args.nvim", commit = "b80ec2" },
 	},
 	config = function()
 		local telescope = require("telescope")
@@ -121,14 +122,14 @@ return {
 						["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
 						["<C-Q>"] = actions.smart_send_to_qflist + actions.open_qflist,
 					},
-          n = {
+					n = {
 						["x"] = actions.toggle_selection + actions.move_selection_better,
 						["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
 						["<C-k>"] = actions.move_selection_previous,
 						["<C-j>"] = actions.move_selection_next,
 						["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
 						["<C-Q>"] = actions.smart_send_to_qflist + actions.open_qflist,
-          },
+					},
 				},
 			},
 		})

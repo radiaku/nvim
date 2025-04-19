@@ -1,10 +1,11 @@
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",
+		commit = "7bbed4",
 		event = { "BufReadPre", "BufNewFile" },
 		-- build = ":TSUpdate",
 		dependencies = {
-			"windwp/nvim-ts-autotag",
+			{ "windwp/nvim-ts-autotag", commit = "a1d526" },
 		},
 		config = function()
 			-- import nvim-treesitter plugin
@@ -12,12 +13,12 @@ return {
 
 			-- configure treesitter
 			treesitter.setup({
-        -- enable syntax highlighting
+				-- enable syntax highlighting
 				highlight = {
 					enable = true,
 				},
 				-- enable indentation
-				indent = { enable = true},
+				indent = { enable = true },
 				-- enable autotagging (w/ nvim-ts-autotag plugin)
 				autotag = {
 					enable = false,

@@ -1,8 +1,9 @@
 return {
 	"williamboman/mason.nvim",
+	commit = "fc9883",
 	dependencies = {
 		"williamboman/mason-lspconfig.nvim",
-		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		{ "WhoIsSethDaniel/mason-tool-installer.nvim", commit = "125551" },
 	},
 	config = function()
 		-- import mason

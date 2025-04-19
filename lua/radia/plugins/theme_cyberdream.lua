@@ -1,5 +1,6 @@
 return {
 	"scottmckendry/cyberdream.nvim",
+	commit = "274eac",
 	lazy = false,
 	priority = 1000,
 	config = function()

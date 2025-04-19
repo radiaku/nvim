@@ -1,9 +1,11 @@
 return {
 	"nvimtools/none-ls.nvim", -- configure formatters & linters
+	commit = "1280b7",
 	lazy = true,
 	-- event = { "BufReadPre", "BufNewFile" }, -- to enable uncomment this
 	dependencies = {
 		"jay-babu/mason-null-ls.nvim",
+		commit = "de1972",
 	},
 	config = function()
 		local mason_null_ls = require("mason-null-ls")
@@ -58,12 +60,12 @@ return {
 				-- formatting.isort,
 				formatting.black,
 				diagnostics.pylint.with({
-				  extra_args = { "--disable", "c0114,c0115,c0116,c0301,w1203,w0703, W0511, C0321" },
+					extra_args = { "--disable", "c0114,c0115,c0116,c0301,w1203,w0703, W0511, C0321" },
 				}),
 				diagnostics.eslint_d.with({ -- js/ts linter
-				  condition = function(utils)
-				    return utils.root_has_file({ ".eslintrc.js", ".eslintrc.cjs" }) -- only enable if root has .eslintrc.js or .eslintrc.cjs
-				  end,
+					condition = function(utils)
+						return utils.root_has_file({ ".eslintrc.js", ".eslintrc.cjs" }) -- only enable if root has .eslintrc.js or .eslintrc.cjs
+					end,
 				}),
 			},
 

@@ -1,7 +1,8 @@
 return {
 	"kevinhwang91/nvim-ufo",
+	commit = "a02636",
 	dependencies = {
-		"kevinhwang91/promise-async",
+		{ "kevinhwang91/promise-async", commit = "119e89" },
 	},
 
 	config = function()
@@ -15,7 +16,7 @@ return {
 		-- Option 3: treesitter as a main provider instead
 		-- (Note: the `nvim-treesitter` plugin is *not* needed.)
 		-- ufo uses the same query files for folding (queries/<lang>/folds.scm)
-    -- performance and stability are better than `foldmethod=nvim_treesitter#foldexpr()`
+		-- performance and stability are better than `foldmethod=nvim_treesitter#foldexpr()`
 
 		-- local cmp_nvim_lsp = require("cmp_nvim_lsp")
 		-- local capabilities = cmp_nvim_lsp.default_capabilities()
@@ -25,7 +26,7 @@ return {
 		--       capabilities = capabilities
 		--     })
 		--   end
-    require('ufo').setup()
-    --
-  end,
+		require("ufo").setup()
+		--
+	end,
 }
