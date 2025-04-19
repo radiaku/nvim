@@ -90,6 +90,23 @@ keymap.set("n", "<leader>fn", "<cmd>Telescope oldfiles theme=dropdown previewer=
 opts = { desc = "Find string in cwd" }
 keymap.set("n", "<leader>fs", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", opts)
 
+opts = { desc = "Find string in cwd (including hidden)" }
+vim.keymap.set("n", "<leader>fx", function()
+  require("telescope").extensions.live_grep_args.live_grep_args({
+    vimgrep_arguments = {
+      "rg",
+      "--color=never",
+      "--no-heading",
+      "--with-filename",
+      "--line-number",
+      "--column",
+      "--smart-case",
+      "--hidden",       -- include hidden files
+      "--glob", "!.git/"
+    },
+  })
+end, opts)
+
 opts = { desc = "Find buffer on buffers" }
 cmd = "<cmd>Telescope buffers show_all_buffers=true sort_lastused=true theme=dropdown<cr>"
 keymap.set("n", "<leader>fa", cmd, opts)
