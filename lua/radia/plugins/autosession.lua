@@ -1,5 +1,6 @@
 return {
 	"rmagatti/auto-session",
+	commit = "095b0b",
 	config = function()
 		require("auto-session").setup({
 			log_level = "error",

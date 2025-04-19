@@ -20,11 +20,21 @@ local all_buffers = function()
 	local get_buffers = function()
 		local buffers = {}
 		for buffer = 1, vim.fn.bufnr("$") do
-			local name = vim.fn.bufname(buffer)
-			if name ~= "" then
+			if vim.fn.bufexists(buffer) == 1 then
+				local name = vim.fn.bufname(buffer)
+				if name == "" then
+					name = "[No Name]"
+				end
+
+				local listed = vim.fn.getbufvar(buffer, "&buflisted") == 1
+				local hidden = vim.fn.getbufvar(buffer, "&bufhidden")
+
 				table.insert(buffers, {
 					bufnum = buffer,
 					name = string.format("%3d: %s", buffer, name),
+					realname = name,
+					listed = listed,
+					hidden = hidden,
 				})
 			end
 		end

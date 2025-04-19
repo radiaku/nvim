@@ -1,5 +1,6 @@
 return {
 	"kdheepak/lazygit.nvim",
+	commit = "b9eae3",
 	dependencies = {
 		"nvim-telescope/telescope.nvim",
 		"nvim-lua/plenary.nvim",
@@ -15,6 +16,5 @@ return {
 
 		vim.g.lazygit_use_custom_config_file_path = 0
 		vim.g.lazygit_config_file_path = ""
-
 	end,
 }

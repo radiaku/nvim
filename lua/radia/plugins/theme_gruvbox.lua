@@ -1,3 +1,4 @@
 return {
-  "ellisonleao/gruvbox.nvim"
+	"ellisonleao/gruvbox.nvim",
+	commit = "12b542",
 }

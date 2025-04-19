@@ -1,5 +1,6 @@
 return {
 	"nvim-lualine/lualine.nvim",
+	commit = "86fe39",
 	event = "VeryLazy",
 	opts = function()
 		-- local colors = require("cyberdream.colors").default

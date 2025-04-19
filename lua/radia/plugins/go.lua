@@ -1,5 +1,7 @@
 return {
 	"ray-x/go.nvim",
+	commit = "ef3882",
+	-- commit =   "d78319",
 	dependencies = {
 		"ray-x/guihua.lua",
 	},
@@ -10,7 +12,6 @@ return {
 				enable = false,
 			},
 		})
-
 	end,
 	event = { "CmdlineEnter" },
 	filetypes = { "go", "gomod" },

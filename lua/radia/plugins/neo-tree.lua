@@ -1,9 +1,10 @@
 return {
 	"nvim-neo-tree/neo-tree.nvim",
+	commit = "522446",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"nvim-tree/nvim-web-devicons",
-		"MunifTanjim/nui.nvim",
+		{ "MunifTanjim/nui.nvim", commit = "8d3bce" },
 	},
 	event = "VeryLazy",
 	config = function()
@@ -62,11 +63,10 @@ return {
 						local node = state.tree:get_node()
 						local filename = node.name
 						vim.fn.setreg("*", filename)
-            vim.fn.setreg('"', filename)
-            vim.fn.setreg("1", filename)
-            vim.fn.setreg("+", filename)
+						vim.fn.setreg('"', filename)
+						vim.fn.setreg("1", filename)
+						vim.fn.setreg("+", filename)
 						vim.notify("Copied: " .. filename)
-
 					end,
 					["Y"] = function(state)
 						-- NeoTree is based on [NuiTree](https://github.com/MunifTanjim/nui.nvim/tree/main/lua/nui/tree)

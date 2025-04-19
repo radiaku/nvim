@@ -1,6 +1,7 @@
 return {
 	"akinsho/toggleterm.nvim",
-	version = "*",
+	commit = "50ea08",
+	-- version = "*",
 	config = function()
 		require("toggleterm").setup()
 
@@ -36,6 +37,5 @@ return {
 		-- 	lazygit:toggle()
 		-- end
 		-- vim.api.nvim_set_keymap("n", "<leader>gg", "<cmd>lua LAZYGIT_TOGGLE()<CR>", { desc = "Lazygit" })
-
 	end,
 }

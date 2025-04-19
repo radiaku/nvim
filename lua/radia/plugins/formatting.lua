@@ -1,5 +1,6 @@
 return {
 	"stevearc/conform.nvim",
+	commit = "6632e7",
 	event = { "BufReadPre", "BufNewFile" },
 	config = function()
 		local conform = require("conform")
@@ -31,7 +32,7 @@ return {
 				black = {
 					command = "black",
 					-- args = {
-     --        "--fast",
+					--        "--fast",
 					-- 	"--line-length",
 					-- 	"120",
 					-- 	"--quiet",

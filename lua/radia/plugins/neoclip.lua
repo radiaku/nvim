@@ -1,5 +1,6 @@
 return {
 	"AckslD/nvim-neoclip.lua",
+	commit = "831a97",
 	dependencies = {
 		{ "nvim-telescope/telescope.nvim" },
 	},

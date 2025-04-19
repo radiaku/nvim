@@ -1,9 +1,10 @@
 local blink_ok, blink = pcall(require, "blink.cmp")
 return {
 	"neovim/nvim-lspconfig",
+	commit = "1a31f8",
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
-		(not blink_ok) and "hrsh7th/cmp-nvim-lsp" or nil,
+		(not blink_ok) and { "hrsh7th/cmp-nvim-lsp", commit = "a8912b" } or nil,
 		-- "hrsh7th/cmp-nvim-lsp",
 		-- "williamboman/mason-lspconfig.nvim",
 		-- { "antosha417/nvim-lsp-file-operations", config = true },
