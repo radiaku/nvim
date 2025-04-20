@@ -15,7 +15,14 @@ font-family = Iosevka Nerd Font
 # adjust-cell-width = 1
 # adjust-cell-height = 1
 font-style = Regular
-font-size = 17
+font-size = 15
 # font-thicken = true
 window-padding-x = 2
 mouse-hide-while-typing = true
+cursor-color = #de2d26
+cursor-style = bar
+cursor-style-blink = false
+
+#clipboard
+copy-on-select = clipboard
+clipboard-trim-trailing-spaces = true
