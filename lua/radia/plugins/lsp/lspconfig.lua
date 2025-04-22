@@ -45,7 +45,8 @@ return {
 			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 		end
 
-		local server_namepy = vim.fn.has("win32") == 1 and "pyright" or "basedpyright"
+		-- local server_namepy = vim.fn.has("win32") == 1 and "pyright" or "basedpyright"
+		local server_namepy = "basedpyright"
 		mason_lspconfig.setup_handlers({
 			function(server_name)
 				-- https://github.com/neovim/nvim-lspconfig/pull/3232
