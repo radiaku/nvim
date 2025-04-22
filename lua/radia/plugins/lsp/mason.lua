@@ -36,18 +36,18 @@ return {
 			"vtsls",
 			"tailwindcss",
 			-- "jedi_language_server",
-			-- "basedpyright",
+			"basedpyright",
 			-- "pylsp",
 			"intelephense",
 			"emmet_ls",
 		}
 
 		-- Check the operating system and append the appropriate Python language server
-		if vim.fn.has("win32") == 1 then
-			table.insert(ensure_installed, "pyright")
-		else
-			table.insert(ensure_installed, "basedpyright")
-		end
+		-- if vim.fn.has("win32") == 1 then
+		-- 	table.insert(ensure_installed, "pyright")
+		-- else
+		-- 	table.insert(ensure_installed, "basedpyright")
+		-- end
 
 		mason_lspconfig.setup({
 			-- list of servers for mason to install
