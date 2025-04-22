@@ -84,9 +84,9 @@ return {
 		telescope.setup({
 			defaults = {
 				borderchars = {
-					prompt = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-					results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
-					preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+					preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+					prompt = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+					results = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
 				},
 				file_ignore_patterns = {
 					"node_modules",
