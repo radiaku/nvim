@@ -237,5 +237,5 @@ bind '"\e[B": history-search-forward'
 if [ -f /usr/share/doc/fzf/examples/key-bindings.bash ]; then
     source /usr/share/doc/fzf/examples/key-bindings.bash
 fi
-
+eval "$(ssh-agent -s)"
 
