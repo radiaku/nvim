@@ -1,6 +1,6 @@
 return {
 	"ray-x/go.nvim",
-	commit = "ef3882",
+	commit = "ef38820e413e10f47d83688dee41785bd885fb2a",
 	-- commit =   "d78319",
 	dependencies = {
 		"ray-x/guihua.lua",
