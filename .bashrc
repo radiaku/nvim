@@ -223,6 +223,7 @@ eval "$(rbenv init - --no-rehash zsh)"
 export PATH=$PATH:$HOME/go/bin
 eval "$(zoxide init bash)"
 
+export PATH="$HOME/miniconda/bin:$PATH"
 
 # Load system-wide bash completion
 if [ -f /etc/profile.d/bash_completion.sh ]; then
@@ -237,5 +238,5 @@ bind '"\e[B": history-search-forward'
 if [ -f /usr/share/doc/fzf/examples/key-bindings.bash ]; then
     source /usr/share/doc/fzf/examples/key-bindings.bash
 fi
-eval "$(ssh-agent -s)"
+# eval "$(ssh-agent -s)"
 
