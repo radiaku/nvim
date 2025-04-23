@@ -238,8 +238,10 @@ bind '"\e[B": history-search-forward'
 if [ -f /usr/share/doc/fzf/examples/key-bindings.bash ]; then
     source /usr/share/doc/fzf/examples/key-bindings.bash
 fi
+
 if ! pgrep -u "$USER" ssh-agent > /dev/null; then
     eval "$(ssh-agent -s)"
+    eval $(keychain --eval --agents ssh id_ed25519_global)
 fi
 
 
