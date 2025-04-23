@@ -23,12 +23,14 @@ save_to_clipboard = true
 semantic_escape_chars = ",│`|:\"' ()[]{}<>"
 
 [font]
-normal                = { family = "CaskaydiaCove Nerd Font Mono", style = "Regular" }
+normal                = { family = "Iosevka Nerd Font Mono", style = "Regular" }
+# normal                = { family = "Iosevka Nerd Font", style = "Regular" }
+# normal                = { family = "CaskaydiaCove Nerd Font Mono", style = "Regular" }
 # normal                = { family = "Ubuntu Nerd Font", style = "Light" }
 # bold                  = { family = "UbuntuMono Nerd Font Mono", style = "Bold" }
 # italic                = { family = "UbuntuMono Nerd Font Mono", style = "Italic" }
 # bold_italic           = { family = "CaskaydiaCove Nerd Font Mono", style = "Bold Italic" }
-size                  = 12
+size                  = 15
 offset                = { x = 0, y = 0 }
 glyph_offset          = { x = 0, y = 0 }
 builtin_box_drawing   = true
