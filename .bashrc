@@ -58,13 +58,16 @@ manage_tmux_session() {
     if tmux ls | grep -q "^$1:"; then
       tmux attach -t "$1"
     else
-      tmux new-session -s "$1" -c "$2"
+      tmux new-session -ds "$1"  # Create a detached session
+      tmux send-keys -t "$1" "cd $2" C-m  # Change directory to $2
+      tmux attach -t "$1"  # Attach the session
     fi
   else
     if tmux ls | grep -q "^$1:"; then
       tmux switch-client -t "$1"
-    else 
-      tmux new-session -ds "$1" -c "$2"
+    else
+      tmux new-session -ds "$1"
+      tmux send-keys -t "$1" "cd $2" C-m  # Change directory to $2
       tmux switch-client -t "$1"
     fi
   fi
@@ -223,7 +226,8 @@ eval "$(rbenv init - --no-rehash zsh)"
 export PATH=$PATH:$HOME/go/bin
 eval "$(zoxide init bash)"
 
-export PATH="$HOME/miniconda/bin:$PATH"
+export PATH="$HOME/miniconda3/bin:$PATH"
+source "$HOME/miniconda3/etc/profile.d/conda.sh"
 
 # Load system-wide bash completion
 if [ -f /etc/profile.d/bash_completion.sh ]; then
