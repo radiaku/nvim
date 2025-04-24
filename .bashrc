@@ -243,9 +243,20 @@ if [ -f /usr/share/doc/fzf/examples/key-bindings.bash ]; then
     source /usr/share/doc/fzf/examples/key-bindings.bash
 fi
 
+# Ensure only one ssh-agent is running and set the correct environment variables
 if ! pgrep -u "$USER" ssh-agent > /dev/null; then
-    eval "$(ssh-agent -s)"
-    eval $(keychain --eval --agents ssh id_ed25519_global)
+    eval "$(ssh-agent -s)"  # Start ssh-agent if not running
+    eval $(keychain --eval --agents ssh id_ed25519_global)  # Load the SSH key with keychain
+else
+    # If ssh-agent is already running, use its environment variables
+    export SSH_AUTH_SOCK=$(pgrep -u "$USER" -a ssh-agent | awk '{print $2}' | head -n 1)
+    export SSH_AGENT_PID=$(pgrep -u "$USER" -a ssh-agent | awk '{print $1}' | head -n 1)
+    # Ensure the key is loaded if not already
+    if ! ssh-add -l > /dev/null 2>&1; then
+        ssh-add "$HOME/.ssh/id_ed25519_global"  # Add the SSH key
+    fi
 fi
 
-
+# Ensure the ssh-agent's environment variables are available to the shell
+export SSH_AUTH_SOCK
+export SSH_AGENT_PID
