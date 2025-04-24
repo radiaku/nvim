@@ -248,15 +248,16 @@ if ! pgrep -u "$USER" ssh-agent > /dev/null; then
     eval "$(ssh-agent -s)"  # Start ssh-agent if not running
     eval $(keychain --eval --agents ssh id_ed25519_global)  # Load the SSH key with keychain
 else
-    # If ssh-agent is already running, use its environment variables
-    export SSH_AUTH_SOCK=$(pgrep -u "$USER" -a ssh-agent | awk '{print $2}' | head -n 1)
-    export SSH_AGENT_PID=$(pgrep -u "$USER" -a ssh-agent | awk '{print $1}' | head -n 1)
-    # Ensure the key is loaded if not already
+    # Check if ssh-agent is running and set SSH_AUTH_SOCK
+    if pgrep -u "$USER" ssh-agent > /dev/null; then
+        export SSH_AUTH_SOCK=$(find /tmp/ssh-* -name "agent.*" -exec echo {} \; | head -n 1)
+        export SSH_AGENT_PID=$(pgrep -u "$USER" -a ssh-agent | awk '{print $1}' | head -n 1)
+    fi
     if ! ssh-add -l > /dev/null 2>&1; then
         ssh-add "$HOME/.ssh/id_ed25519_global"  # Add the SSH key
     fi
 fi
 
-# Ensure the ssh-agent's environment variables are available to the shell
+# Export variables for future sessions
 export SSH_AUTH_SOCK
 export SSH_AGENT_PID
