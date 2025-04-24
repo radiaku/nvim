@@ -5,7 +5,7 @@ if vim.fn.isdirectory(obsidian_vault_path) == 1 then
 	return {
 		{
 			"epwalsh/obsidian.nvim",
-			commit = "bb25ae",
+			commit = "14e042",
 			event = "VeryLazy",
 			ft = "markdown",
 			dependencies = {
