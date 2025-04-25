@@ -1,8 +1,13 @@
 # mkdir -p ~/.config/alacritty
 # ln -s ~/.config/nvim/alacritty.toml ~/.config/alacritty/alacritty.toml
+# ln -s ~/.config/nvim/alacritty.toml ~/AppData/Local/nvim/alacritty.toml
+
+
 # [terminal.shell]
 # program = "/usr/local/bin/zsh"
 # args = ["--nologo"]
+
+~\AppData\Local\nvim
 
 
 # live_config_reload = true
