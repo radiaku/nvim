@@ -7,7 +7,6 @@
 # program = "/usr/local/bin/zsh"
 # args = ["--nologo"]
 
-~\AppData\Local\nvim
 
 
 # live_config_reload = true
