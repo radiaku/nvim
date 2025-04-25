@@ -1,6 +1,6 @@
 # mkdir -p ~/.config/alacritty
 # ln -s ~/.config/nvim/alacritty.toml ~/.config/alacritty/alacritty.toml
-# ln -s ~/.config/nvim/alacritty.toml ~/AppData/Local/nvim/alacritty.toml
+# ln -s ~/AppData/Local/nvim/alacritty.toml ~/AppData/Local/alacritty/alacritty.toml
 
 
 # [terminal.shell]
