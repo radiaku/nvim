@@ -223,7 +223,9 @@ cas() {
 export PATH=~/.local/bin/:$PATH
 eval "$(rbenv init - --no-rehash zsh)"
 
+export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:$HOME/go/bin
+
 eval "$(zoxide init bash)"
 
 export PATH="$HOME/miniconda3/bin:$PATH"
