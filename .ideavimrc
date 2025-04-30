@@ -1,0 +1,80 @@
+Plug 'easymotion/vim-easymotion'
+Plug 'vim-scripts/ReplaceWithRegister'
+Plug 'machakann/vim-highlightedyank'
+Plug 'preservim/nerdtree'
+Plug 'michaeljsmith/vim-indent-object'
+
+let g:highlightedyank_highlight_duration = "200"
+let g:highlightedyank_highlight_color = "rgba(154,205,50, 155)"
+
+let mapleader=" "
+set multiple-cursors
+set commentary
+set nerdtree
+
+set clipboard+=unnamed
+
+imap jk <Esc>
+map <S-l> gt
+map <S-h> gT 
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Fix some vim annoyances
+
+" make Y behave like D and C, yanking till end of line
+map Y y$
+
+" don't overwrite register when pasting over selection
+" vnoremap p pgvy
+
+" paste over rest of line
+" nnoremap <leader>p v$<Left>pgvy
+nnoremap <leader>p v$<Left>p
+
+" don't lose selection when indenting
+vnoremap < <gv
+vnoremap > >gv
+vnoremap = =gv
+
+" TODO: smart home
+nmap <Home> ^
+imap <silent> <Home> <C-O>^
+
+" edit ideavim config
+nnoremap <leader>sa :wa<CR>
+nnoremap <leader>bd :q<CR>
+nnoremap <leader>vv :e ~/.ideavimrc<CR>
+nnoremap <leader>vr :source ~/.ideavimrc<CR>
+
+
+nnoremap <A-h> <C-w>h
+nnoremap <A-l> <C-w>l
+
+nnoremap <C-t> :action ActivateTerminalToolWindow<CR> 
+map <C-n> :NERDTreeToggle<CR>
+nnoremap <C-h> :action HideActiveWindow<CR> 
+
+
+" IntelliJ-specific Actions
+" -------------------------
+"
+" Run :actionlist to get a list of these. mapleader isn't supported yet.
+" Look for a dismiss action for Ctrl-[
+
+nmap <Space><CR>  :action GotoAction<CR>
+nmap <Space>o     :action GotoFile<CR>
+nmap <Space><C-o> :action RecentFiles<CR>
+nmap <Space>f     :action FileStructurePopup<CR>
+nmap <Space><C-f> :action GotoSymbol<CR>
+nmap <Space>[     :action ActivateProjectToolWindow<CR>
+nmap <Space>]     :action ActivateStructureToolWindow<CR>
+nmap <Space>k     :action DashLauncherAction<CR>
+nmap <Space>w     :action SaveDocument<CR>
+" I prefer Git.Menu, but the action seems to have gotten broken :-(
+nmap <Space>g :action Git.Menu<CR>
+nmap <Space>v :action Vcs.QuickListPopupAction<CR>
+
+" More like quick definition -- shows source in pop-up
+nnoremap gD :action QuickImplementations<CR>
+nnoremap gr :action Refactorings.QuickListPopupAction<CR>
+
