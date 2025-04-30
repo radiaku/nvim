@@ -146,6 +146,18 @@ return {
 				})
 			end,
 
+			["kotlin_language_server"] = function()
+				lspconfig["kotlin_language_server"].setup({
+					filetypes = {
+						"kotlin",
+						"kt",
+					},
+					capabilities = capabilities,
+					root_dir = util.root_pattern("package.json", ".git") or vim.fn.getcwd(),
+					cmd = { "kotlin-language-server.cmd" },
+				})
+			end,
+
 			["clangd"] = function()
 				lspconfig["clangd"].setup({
 					filetypes = {
