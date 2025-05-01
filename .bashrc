@@ -59,7 +59,7 @@ manage_tmux_session() {
       tmux attach -t "$1"
     else
       tmux new-session -ds "$1"  # Create a detached session
-      tmux send-keys -t "$1" "cd $2" C-m  # Change directory to $2
+      tmux send-keys -t "$1" "cd $2" C-m > /dev/null 2>&1
       tmux attach -t "$1"  # Attach the session
     fi
   else
@@ -67,7 +67,7 @@ manage_tmux_session() {
       tmux switch-client -t "$1"
     else
       tmux new-session -ds "$1"
-      tmux send-keys -t "$1" "cd $2" C-m  # Change directory to $2
+      tmux send-keys -t "$1" "cd $2" C-m > /dev/null 2>&1
       tmux switch-client -t "$1"
     fi
   fi
