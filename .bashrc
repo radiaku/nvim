@@ -263,3 +263,13 @@ fi
 # Export variables for future sessions
 export SSH_AUTH_SOCK
 export SSH_AGENT_PID
+
+# __fzf_history_search() {
+#   local selected
+#   selected=$(history | fzf --tac +s --tiebreak=index --ansi --no-sort --reverse --prompt='History> ' | sed 's/ *[0-9]* *//')
+#   if [ -n "$selected" ]; then
+#     READLINE_LINE="$selected"
+#     READLINE_POINT=${#READLINE_LINE}
+#   fi
+# }
+# bind -x '"\C-r": __fzf_history_search'
