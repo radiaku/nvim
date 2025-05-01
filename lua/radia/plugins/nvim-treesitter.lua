@@ -6,6 +6,7 @@ return {
 		-- build = ":TSUpdate",
 		dependencies = {
 			{ "windwp/nvim-ts-autotag", commit = "a1d526" },
+			{ "nvim-treesitter/nvim-treesitter-textobjects" },
 		},
 		config = function()
 			-- import nvim-treesitter plugin
@@ -49,6 +50,49 @@ return {
 					-- 	scope_incremental = false,
 					-- 	node_decremental = "<bs>",
 					-- },
+				},
+				textobjects = {
+					select = {
+						enable = true,
+
+						lookahead = true,
+
+						keymaps = {
+
+							-- ["sa"] = { query = "@attribute.outer", desc = "Select outer part of a assignment" },
+							-- ["si"] = { query = "@attribute.inner", desc = "Select inner part of a assignment" },
+							--
+							-- ["ta"] = { query = "@attribute.outer", desc = "Select outer part of a attribute" },
+							-- ["ti"] = { query = "@attribute.inner", desc = "Select inner part of a attribute" },
+
+							-- ["ga"] = { query = "@parameter.outer", desc = "Select outer part of a parameter/argument" },
+							-- ["gi"] = { query = "@parameter.inner", desc = "Select inner part of a parameter/argument" },
+
+							["ab"] = { query = "@block.outer", desc = "Select outer part of a block" },
+							["ib"] = { query = "@block.inner", desc = "Select inner part of a block" },
+
+							["al"] = { query = "@loop.outer", desc = "Select outer part of a loop" },
+							["il"] = { query = "@loop.inner", desc = "Select inner part of a loop" },
+
+							["ac"] = {
+								query = "@conditional.outer",
+								desc = "Select outer part of a conditional definition",
+							},
+							["ic"] = {
+								query = "@conditional.inner",
+								desc = "Select inner part of a conditional definition",
+							},
+
+							["af"] = {
+								query = "@function.outer",
+								desc = "Select outer part of a method/function definition",
+							},
+							["if"] = {
+								query = "@function.inner",
+								desc = "Select inner part of a method/function definition",
+							},
+						},
+					},
 				},
 			})
 
