@@ -253,7 +253,8 @@ if ! pgrep -u "$USER" ssh-agent > /dev/null; then
 else
     # Check if ssh-agent is running and set SSH_AUTH_SOCK
     if pgrep -u "$USER" ssh-agent > /dev/null; then
-        export SSH_AUTH_SOCK=$(find /tmp/ssh-* -name "agent.*" -exec echo {} \; | head -n 1)
+        # export SSH_AUTH_SOCK=$(find /tmp/ssh-* -name "agent.*" -exec echo {} \; | head -n 1)
+        export SSH_AUTH_SOCK=$(find /tmp/ssh-* -name "agent.*" -print -quit)
         export SSH_AGENT_PID=$(pgrep -u "$USER" -a ssh-agent | awk '{print $1}' | head -n 1)
     fi
     if ! ssh-add -l > /dev/null 2>&1; then
