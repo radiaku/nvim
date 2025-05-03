@@ -1,5 +1,5 @@
 # 
-# ln -s ~/.config/nvim/ghostty ~/.config/ghostty/config
+#
 # 
 
 macos-option-as-alt = true
@@ -15,7 +15,7 @@ font-family = Iosevka Nerd Font
 # adjust-cell-width = 1
 # adjust-cell-height = 1
 font-style = Regular
-font-size = 15
+font-size = 17
 # font-thicken = true
 window-padding-x = 2
 mouse-hide-while-typing = true
