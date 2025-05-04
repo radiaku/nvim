@@ -15,8 +15,12 @@ proc_fan=$(sensors | awk '/dell_smm-isa-0000/,/^$/' | awk '/Processor Fan:/ { pr
 mobo_fan=$(sensors | awk '/dell_smm-isa-0000/,/^$/' | awk '/Motherboard Fan:/ { print $3 " RPM" }')
 
 # Extract NVIDIA GPU temperature
-nvidia_temp=$(nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits)
-nvidia_temp="${nvidia_temp}°C"
+nvidia_raw=$(nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits 2>/dev/null)
+if [[ "$nvidia_raw" =~ ^[0-9]+$ && ${#nvidia_raw} -le 3 ]]; then
+    nvidia_temp="${nvidia_raw}°C"
+else
+    nvidia_temp="N/A"
+fi
 
 # Output in one line
 echo "RYZEN CPU: $cpu_temp | AMD GPU: $gpu_temp | NVIDIA GPU: $nvidia_temp | CPU Fan: $proc_fan | MB Fan: $mobo_fan"
