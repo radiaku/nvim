@@ -19,4 +19,4 @@ nvidia_temp=$(nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nouni
 nvidia_temp="${nvidia_temp}°C"
 
 # Output in one line
-echo "AMD GPU: $gpu_temp | NVIDIA GPU: $nvidia_temp | CPU: $cpu_temp | CPU Fan: $proc_fan | MB Fan: $mobo_fan"
+echo "RYZEN CPU: $cpu_temp | AMD GPU: $gpu_temp | NVIDIA GPU: $nvidia_temp | CPU Fan: $proc_fan | MB Fan: $mobo_fan"
