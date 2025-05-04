@@ -247,8 +247,8 @@ fi
 
 # Ensure only one ssh-agent is running and set the correct environment variables
 if ! pgrep -u "$USER" ssh-agent > /dev/null; then
-    eval "$(ssh-agent -s > /dev/null)" 
-    eval $(keychain --eval --agents ssh id_ed25519_global > /dev/null) 
+    eval "$(ssh-agent -s)" > /dev/null
+    eval $(keychain --eval --quiet --agents ssh id_ed25519_global)
     # eval $(keychain --eval --agents ssh id_ed25519_global) > /dev/null
 else
     # Check if ssh-agent is running and set SSH_AUTH_SOCK
@@ -258,7 +258,7 @@ else
         export SSH_AGENT_PID=$(pgrep -u "$USER" -a ssh-agent | awk '{print $1}' | head -n 1)
     fi
     if ! ssh-add -l > /dev/null 2>&1; then
-        ssh-add "$HOME/.ssh/id_ed25519_global"  > /dev/null
+        ssh-add "$HOME/.ssh/id_ed25519_global" > /dev/null
     fi
 fi
 
