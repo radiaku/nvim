@@ -2,7 +2,7 @@ return {
 	"williamboman/mason.nvim",
 	commit = "fc9883",
 	dependencies = {
-		"williamboman/mason-lspconfig.nvim",
+        {"williamboman/mason-lspconfig.nvim", commit = "8e46de"},
 		{ "WhoIsSethDaniel/mason-tool-installer.nvim", commit = "125551" },
 	},
 	config = function()
