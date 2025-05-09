@@ -20,37 +20,37 @@ git clone https://github.com/radiaku/nvim ~/.config/nvim
 - Install fzf https://github.com/junegunn/fzf
 
 # Requirement Linux:
-    - Install Dependencies:
+  - Install Dependencies:
 
-    ```
-    sudo apt install tree fzf fd-find git ripgrep bat p7zip-full p7zip-rar luajit xsel xclip lua5.1 liblua5.1-0-dev zoxide tmux unzip xsel xclip
-    ```
+  ```
+  sudo apt install tree fzf fd-find git ripgrep bat p7zip-full p7zip-rar luajit xsel xclip lua5.1 liblua5.1-0-dev zoxide tmux unzip xsel xclip
+  ```
 
 # Requirement Windows:
-    - Install https://www.msys2.org/
-      - Add it to path, usually: `C:\msys64\mingw64\bin`
+  - Install https://www.msys2.org/
+    - Add it to path, usually: `C:\msys64\mingw64\bin`
 
-    - Install Scoop
-    ```
-    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-    Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
-    ```
-
-    - or Advanced Scoop (optional)
-    ```
-    irm get.scoop.sh -outfile 'install.ps1'
-    then
-    .\install.ps1 -ScoopDir 'C:\Scoop' -ScoopGlobalDir 'C:\GlobalScoop' -NoProxy
-    ```
-
-    - Run Scoop 
-
-    ```
-    scoop bucket add extras
-    scoop bucket add nerd-fonts
-
-    scoop install 7zip cacert curl fzf fd gawk gzip innounp lazygit  lua-for-windows luarocks ripgrep sed sudo unzip vim wget 
-    ```
+  - Install Scoop
+  ```
+  Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+  Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+  ```
+ 
+  - or Advanced Scoop (optional)
+  ```
+  irm get.scoop.sh -outfile 'install.ps1'
+  then
+  .\install.ps1 -ScoopDir 'C:\Scoop' -ScoopGlobalDir 'C:\GlobalScoop' -NoProxy
+  ```
+ 
+  - Run Scoop 
+ 
+  ```
+  scoop bucket add extras
+  scoop bucket add nerd-fonts
+ 
+  scoop install 7zip cacert curl fzf fd gawk gzip innounp lazygit  lua-for-windows luarocks ripgrep sed sudo unzip vim wget 
+  ```
 
 - Install NODE js 
   - Linux:
