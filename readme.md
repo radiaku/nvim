@@ -19,59 +19,76 @@ git clone https://github.com/radiaku/nvim ~/.config/nvim
 - Install ripgrep https://github.com/BurntSushi/ripgrep 
 - Install fzf https://github.com/junegunn/fzf
 
-# Linux
-```
-sudo apt install fzf
-sudo apt install fd 
-sudo apt install lua 
-sudo apt install luarocks 
-sudo apt install luajit 
-sudo apt install python3-pip
-sudo apt install python3-venv -y
-apt install unzip 7z
+# Requirement Linux:
+    - Install Dependencies:
 
-```
-- Install rust https://rustup.rs/
+    ```
+    sudo apt install tree fzf fd-find git ripgrep bat p7zip-full p7zip-rar luajit xsel xclip lua5.1 liblua5.1-0-dev zoxide tmux unzip xsel xclip
+    ```
 
-# Windows
-- Install https://www.msys2.org/
-    - Add it to path, usually: `C:\msys64\mingw64\bin`
+# Requirement Windows:
+    - Install https://www.msys2.org/
+      - Add it to path, usually: `C:\msys64\mingw64\bin`
 
-- Install Scoop
-```
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+    - Install Scoop
+    ```
+    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+    Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+    ```
 
-```    
-- or Advanced Scoop 
-```
-irm get.scoop.sh -outfile 'install.ps1'
-then
-.\install.ps1 -ScoopDir 'C:\Scoop' -ScoopGlobalDir 'C:\GlobalScoop' -NoProxy
+    - or Advanced Scoop (optional)
+    ```
+    irm get.scoop.sh -outfile 'install.ps1'
+    then
+    .\install.ps1 -ScoopDir 'C:\Scoop' -ScoopGlobalDir 'C:\GlobalScoop' -NoProxy
+    ```
 
-```
-- Run Scoop 
-```
-scoop bucket add extras
-scoop bucket add nerd-fonts
+    - Run Scoop 
 
-scoop install 7zip cacert curl fzf fd gawk gzip innounp lazygit  lua-for-windows luarocks ripgrep sed sudo unzip vim wget 
-```
+    ```
+    scoop bucket add extras
+    scoop bucket add nerd-fonts
 
-- Install NODE js  https://nodejs.org/en
-```
-npm install -g neovim
+    scoop install 7zip cacert curl fzf fd gawk gzip innounp lazygit  lua-for-windows luarocks ripgrep sed sudo unzip vim wget 
+    ```
 
-    - if you dont install rust
-    npm install -g tree-sitter-cli
-```
-- Install rust https://rustup.rs/
-```
-rustup toolchain install stable-x86_64-pc-windows-gnu
-cargo install cargo-update
-cargo install tree-sitter-cli
-```
+- Install NODE js 
+  - Linux:
+  ```
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
+  ```
+  - Windows:
+  ```
+  https://nodejs.org/en
+  ```
 
+  - run this
+  ```
+  npm install -g neovim
+  ```
+
+  - if you dont want install rust
+  ```
+  npm install -g tree-sitter-cli
+  ```
+
+- cargo RUST chain
+  - Linux:
+  ```
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+  ```
+
+  - Windows:
+  ```
+  https://rustup.rs/
+  ```
+
+  -- run This:
+
+  ```
+  cargo install cargo-update
+  cargo install tree-sitter-cli
+  ```
 
 
 # Note
