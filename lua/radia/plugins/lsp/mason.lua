@@ -35,9 +35,11 @@ return {
 			"cssls",
 			"lua_ls",
 			"jsonls",
-			"tailwindcss",
-			"emmet_ls",
 			"intelephense",
+		}
+
+		local tools = {
+			"stylua", -- lua formatter
 		}
 
 		if has_go then
@@ -48,17 +50,22 @@ return {
 
 		if has_node then
 			table.insert(servers, "vtsls")
+			table.insert(servers, "emmet_ls")
+			table.insert(servers, "tailwindcss")
+			table.insert(tools, "prettier")
+			table.insert(tools, "eslint_d")
 		else
 			vim.notify("Node.js not found in PATH: skipping vtsls", vim.log.levels.WARN)
 		end
 
 		if has_python then
 			table.insert(servers, "basedpyright")
+			table.insert(tools, "black")
+			table.insert(tools, "pylint")
 		else
 			vim.notify("Python not found in PATH: skipping basedpyright", vim.log.levels.WARN)
 		end
 
-		local ensure_installed = servers
 
 		-- Check the operating system and append the appropriate Python language server
 		-- if vim.fn.has("win32") == 1 then
@@ -69,32 +76,14 @@ return {
 
 		mason_lspconfig.setup({
 			-- list of servers for mason to install
-			ensure_installed = ensure_installed,
+			ensure_installed = servers,
 			-- auto-install configured servers (with lspconfig)
 			automatic_installation = true, -- not the same as ensure_installed
 		})
 
-		local tools = {
-			"stylua", -- lua formatter
-		}
 
-		if has_node then
-			table.insert(tools, "prettier")
-			table.insert(tools, "eslint_d")
-		else
-			vim.notify("Node.js not found in PATH: skipping prettier and eslint_d", vim.log.levels.WARN)
-		end
-
-		if has_python then
-			table.insert(tools, "black")
-			table.insert(tools, "pylint")
-		else
-			vim.notify("Python not found in PATH: skipping black and pylint", vim.log.levels.WARN)
-		end
-
-		local formatter_ensure_installed = tools
 		mason_tool_installer.setup({
-			ensure_installed = formatter_ensure_installed,
+			ensure_installed = tools
 		})
 	end,
 }
