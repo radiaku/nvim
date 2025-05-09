@@ -1,7 +1,6 @@
 return {
 	"ray-x/go.nvim",
 	commit = "ef38820e413e10f47d83688dee41785bd885fb2a",
-	-- commit =   "d78319",
 	dependencies = {
 		"ray-x/guihua.lua",
 	},
@@ -15,5 +14,11 @@ return {
 	end,
 	event = { "CmdlineEnter" },
 	filetypes = { "go", "gomod" },
-	build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
+	build = function()
+		if vim.fn.executable("go") == 1 then
+			require("go.install").update_all_sync()
+		else
+			vim.notify("Go is not installed or not in PATH", vim.log.levels.WARN)
+		end
+	end,
 }
