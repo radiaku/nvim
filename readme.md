@@ -1,4 +1,18 @@
-Config for my neovim, you need atleast neovim 0.10.1
+Config for my neovim, you need atleast neovim 0.10.1+ until neovim 0.10.4 ( many breaking change )
+
+# install neovim linux
+```
+curl -LO https://github.com/neovim/neovim/releases/download/v0.10.4/nvim-linux-x86_64.appimage
+chmod u+x nvim-linux-x86_64.appimage
+sudo mv nvim-linux-x86_64.appimage /usr/local/bin/nvim
+```
+
+# Install:
+```
+git clone https://github.com/radiaku/nvim ~/.config/nvim
+```
+
+
 
 # Tool
 - Install fd-find https://github.com/sharkdp/fd
