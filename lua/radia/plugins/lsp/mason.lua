@@ -31,11 +31,7 @@ return {
 		local has_python = vim.fn.executable("python") == 1 or vim.fn.executable("python3") == 1
 
 		local servers = {
-			"html",
-			"cssls",
 			"lua_ls",
-			"jsonls",
-			"intelephense",
 		}
 
 		local tools = {
@@ -45,17 +41,22 @@ return {
 		if has_go then
 			table.insert(servers, "gopls")
 		else
-			vim.notify("Go not found in PATH: skipping gopls", vim.log.levels.WARN)
+			-- vim.notify("Go not found in PATH: skipping gopls", vim.log.levels.WARN)
 		end
 
 		if has_node then
 			table.insert(servers, "vtsls")
+			table.insert(servers, "cssls")
+			table.insert(servers, "html")
 			table.insert(servers, "emmet_ls")
 			table.insert(servers, "tailwindcss")
+			table.insert(servers, "html")
+			table.insert(servers, "intelephense")
+			table.insert(servers, "jsonls")
 			table.insert(tools, "prettier")
 			table.insert(tools, "eslint_d")
 		else
-			vim.notify("Node.js not found in PATH: skipping vtsls", vim.log.levels.WARN)
+			-- vim.notify("Node.js not found in PATH: skipping vtsls", vim.log.levels.WARN)
 		end
 
 		if has_python then
@@ -63,7 +64,7 @@ return {
 			table.insert(tools, "black")
 			table.insert(tools, "pylint")
 		else
-			vim.notify("Python not found in PATH: skipping basedpyright", vim.log.levels.WARN)
+			-- vim.notify("Python not found in PATH: skipping basedpyright", vim.log.levels.WARN)
 		end
 
 
