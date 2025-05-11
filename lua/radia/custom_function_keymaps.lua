@@ -122,4 +122,4 @@ end
 
 -- Optionally, you can create a Telescope command
 opts = { desc = "Find and manage buffers" }
-vim.keymap.set("n", "<leader>fu", all_buffers, opts)
+vim.keymap.set("n", "<leader>fmu", all_buffers, opts)
