@@ -63,35 +63,32 @@ keymap.set("n", "<C-t>", ":ToggleTerm<CR>", opts)
 -- opts = {desc = "Find Clipboard on Insert"}
 -- keymap.set("i", "<C-o>", "<cmd>:Telescope neoclip <CR>", opts)
 opts = { desc = "Find Clipboard Normal" }
-keymap.set("n", "<leader>fmc", "<cmd>:Telescope neoclip <CR>", opts)
+keymap.set("n", "<leader>fc", "<cmd>:Telescope neoclip <CR>", opts)
 
 opts = { desc = "Find Clipboard Visual" }
 cmd =
   "<cmd>:lua require('telescope.builtin').registers({ layout_strategy='vertical', layout_config={ height=100 } })<CR>"
-keymap.set("v", "<leader>fmc", cmd, opts)
+keymap.set("v", "<leader>fc", cmd, opts)
 
 opts = { desc = "Find Registers" }
 cmd = "<cmd>:lua require('telescope.builtin').registers({layout_strategy='vertical',layout_config={height=100}})<cr>"
-keymap.set("n", "<leader>fmr", cmd, opts)
+keymap.set("n", "<leader>fr", cmd, opts)
 
 opts = { desc = "Find Keymaps" }
 cmd = "<cmd>:lua require('telescope.builtin').keymaps({layout_strategy='vertical',layout_config={height=100}})<cr>"
-keymap.set("n", "<leader>fmm", cmd, opts)
+keymap.set("n", "<leader>fm", cmd, opts)
 
 opts = { desc = "Fuzzy find files in cwd" }
-keymap.set("n", "<leader>fmf", "<cmd>Telescope find_files theme=ivy previewer=false<cr>", opts)
+keymap.set("n", "<leader>ff", "<cmd>Telescope find_files theme=ivy previewer=false<cr>", opts)
 
 opts = { desc = "Fuzzy find files in cwd with hidden" }
-keymap.set("n", "<leader>fmh", "<cmd>Telescope find_files theme=ivy previewer=false hidden=true no_ignore=true<cr>", opts)
-
--- opts = { desc = "Fuzzy find recent files" }
--- keymap.set("n", "<leader>fmn", "<cmd>Telescope oldfiles theme=dropdown previewer=false<cr>", opts)
+keymap.set("n", "<leader>fh", "<cmd>Telescope find_files theme=ivy previewer=false hidden=true no_ignore=true<cr>", opts)
 
 opts = { desc = "Find string in cwd" }
-keymap.set("n", "<leader>fis", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", opts)
+keymap.set("n", "<leader>fs", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", opts)
 
 opts = { desc = "Find string in cwd (including hidden)" }
-vim.keymap.set("n", "<leader>fix", function()
+vim.keymap.set("n", "<leader>fx", function()
   require("telescope").extensions.live_grep_args.live_grep_args({
     vimgrep_arguments = {
       "rg",
@@ -109,7 +106,7 @@ end, opts)
 
 opts = { desc = "Find buffer on buffers" }
 cmd = "<cmd>Telescope buffers show_all_buffers=true sort_lastused=true theme=dropdown<cr>"
-keymap.set("n", "<leader>fia", cmd, opts)
+keymap.set("n", "<leader>fa", cmd, opts)
 
 
 -- opts = { desc = "Find string under cursor in cwd"}
@@ -117,12 +114,12 @@ keymap.set("n", "<leader>fia", cmd, opts)
 local live_grep_cmdc_buffer =
   '<cmd>Telescope live_grep search_dirs={"%:p"} vimgrep_arguments=rg,--color=never,--no-heading,--with-filename,--line-number,--column,--smart-case,--fixed-strings --theme=ivy<cr>'
 opts = { desc = "Find string in current buffer" }
-keymap.set("n", "<leader>fic", live_grep_cmdc_buffer, opts)
+keymap.set("n", "<leader>fc", live_grep_cmdc_buffer, opts)
 
 local live_grep_cmd =
   '<cmd>lua require("telescope.builtin").live_grep({grep_open_files=true,layout_strategy=vertical,layout_config={height=100}})<CR>'
 opts = { desc = "Find string in all open buffers" }
-keymap.set("n", "<leader>fib", live_grep_cmd, opts)
+keymap.set("n", "<leader>fb", live_grep_cmd, opts)
 
 -- File Neotree
 opts = { desc = "Float File Explore" }
