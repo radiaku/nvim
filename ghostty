@@ -1,5 +1,5 @@
 # 
-#
+# ln -s ~/.config/nvim/ghostty ~/.config/ghostty/config
 # 
 
 macos-option-as-alt = true
