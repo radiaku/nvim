@@ -15,15 +15,14 @@ case $- in
       *) return;;
 esac
 
-export LC_TIME="en_US.UTF-8"
-export DATE_FORMAT="%Y %m %d %H:%M:%S"
+# export LC_TIME="en_US.UTF-8"
+# export DATE_FORMAT="%Y %m %d %H:%M:%S"
 
 HISTSIZE=10000
 HISTFILESIZE=200000
 HISTCONTROL=ignoreboth
 shopt -s histappend
 shopt -s checkwinsize
-
 
 # export TERM='xterm-256color'
 export TERM="xterm-256color"
