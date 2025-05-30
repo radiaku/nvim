@@ -224,7 +224,7 @@ function jump_to_tmux_session() {
       fzf --reverse --header "Jump to session" \
           --preview 'tmux capture-pane -pt {} | head -20' \
           --bind 'ctrl-d:execute-silent(tmux kill-session -t {})+reload(tmux list-sessions -F "#{session_name}" | sort -r)' | \
-      xargs -r tmux switch-client -t
+      xargs -r0 tmux switch-client -t
   fi
 }
 
