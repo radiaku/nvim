@@ -20,11 +20,11 @@ keymap.set("n", "<S-h>", ":BufferLineCyclePrev<cr>", opts)
 -- keymap.set("n", "<S-h>", ":bp<cr>", opts)
 
 
--- opts = { desc = "Move buffer to next left" }
--- keymap.set("n", "<C-l>", ":BufferLineMoveNext<CR>", opts)
---
--- opts = { desc = "Move buffer to right" }
--- keymap.set("n", "<C-h>", ":BufferLineMovePrev<CR>", opts)
+opts = { desc = "Move buffer to next left" }
+keymap.set("n", "<C-l>", ":BufferLineMoveNext<CR>", opts)
+
+opts = { desc = "Move buffer to right" }
+keymap.set("n", "<C-h>", ":BufferLineMovePrev<CR>", opts)
 
 function ClearQuickfixList()
   vim.fn.setqflist({})
