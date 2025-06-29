@@ -6,18 +6,18 @@ local opts = { noremap = true, silent = true }
 local cmd = ""
 
 -- Move Between tab buffer
--- opts = { desc = "Navigate to left tab from current buffer" }
--- keymap.set("n", "<S-l>", ":BufferLineCycleNext<cr>", opts)
---
--- opts = { desc = "Navigate to to right tab from current buffer" }
--- keymap.set("n", "<S-h>", ":BufferLineCyclePrev<cr>", opts)
-
--- Move Between tab buffer
 opts = { desc = "Navigate to left tab from current buffer" }
-keymap.set("n", "<S-l>", ":bn<cr>", opts)
+keymap.set("n", "<S-l>", ":BufferLineCycleNext<cr>", opts)
 
 opts = { desc = "Navigate to to right tab from current buffer" }
-keymap.set("n", "<S-h>", ":bp<cr>", opts)
+keymap.set("n", "<S-h>", ":BufferLineCyclePrev<cr>", opts)
+
+-- Move Between tab buffer
+-- opts = { desc = "Navigate to left tab from current buffer" }
+-- keymap.set("n", "<S-l>", ":bn<cr>", opts)
+--
+-- opts = { desc = "Navigate to to right tab from current buffer" }
+-- keymap.set("n", "<S-h>", ":bp<cr>", opts)
 
 
 -- opts = { desc = "Move buffer to next left" }
