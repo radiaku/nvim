@@ -137,9 +137,14 @@ return {
 					},
 				},
 			},
+      extensions = {
+         live_grep_args = {
+           auto_quoting = true,  -- ← this makes special chars literal
+         },
+       },
 		})
 
-		-- telescope.load_extension("fzy_native")
+
 		telescope.load_extension("neoclip")
 		telescope.load_extension("fzf")
 		telescope.load_extension("live_grep_args")

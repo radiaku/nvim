@@ -85,7 +85,11 @@ opts = { desc = "Fuzzy find files in cwd with hidden" }
 keymap.set("n", "<leader>fh", "<cmd>Telescope find_files theme=ivy previewer=false hidden=true no_ignore=true<cr>", opts)
 
 opts = { desc = "Find string in cwd" }
-keymap.set("n", "<leader>fs", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", opts)
+keymap.set("n", "<leader>fs", function ()
+  require('telescope').extensions.live_grep_args.live_grep_args({
+    default_text = '-F ',
+  })
+end, opts)
 
 opts = { desc = "Find string in cwd (including hidden)" }
 vim.keymap.set("n", "<leader>fx", function()
