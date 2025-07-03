@@ -28,3 +28,4 @@ shell-integration-features = no-cursor
 #clipboard
 copy-on-select = clipboard
 clipboard-trim-trailing-spaces = true
+app-notifications = no-clipboard-copy
