@@ -92,8 +92,9 @@ keymap.set("n", "<leader>fs", function ()
 end, opts)
 
 opts = { desc = "Find string in cwd (including hidden)" }
-vim.keymap.set("n", "<leader>fx", function()
+keymap.set("n", "<leader>fx", function()
   require("telescope").extensions.live_grep_args.live_grep_args({
+    default_text = '-F ',
     vimgrep_arguments = {
       "rg",
       "--color=never",
