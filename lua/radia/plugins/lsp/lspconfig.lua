@@ -138,6 +138,14 @@ return {
 				})
 			end,
 
+			["jdtls"] = function()
+				lspconfig["jdtls"].setup({
+					capabilities = capabilities,
+					root_dir = util.root_pattern("package.json", "pom.xml") or vim.fn.getcwd(),
+					-- cmd = { bin_path .. "typescript-language-server.cmd" },
+				})
+			end,
+
 			["vtsls"] = function()
 				lspconfig["vtsls"].setup({
 					capabilities = capabilities,
