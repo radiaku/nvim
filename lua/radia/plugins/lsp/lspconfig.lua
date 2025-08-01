@@ -146,6 +146,14 @@ return {
 				})
 			end,
 
+			["templ"] = function()
+				lspconfig["templ"].setup({
+					capabilities = capabilities,
+					root_dir = util.root_pattern("go.mod", ".git"), -- Templ uses Go project roots
+					-- cmd = { bin_path .. "typescript-language-server.cmd" },
+				})
+			end,
+
 			["vtsls"] = function()
 				lspconfig["vtsls"].setup({
 					capabilities = capabilities,
@@ -203,6 +211,7 @@ return {
 						"typescriptreact",
 						"typescript",
 						"javascriptreact",
+						"templ",
 						"sass",
 						"scss",
 						"less",
