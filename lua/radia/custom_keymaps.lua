@@ -65,6 +65,9 @@ keymap.set("n", "<C-t>", ":ToggleTerm<CR>", opts)
 opts = { desc = "Find Clipboard Normal" }
 keymap.set("n", "<leader>fc", "<cmd>:Telescope neoclip <CR>", opts)
 
+opts = { desc = "Find lsp_document_symbols" }
+keymap.set("n", "<leader>fd", "<cmd>:Telescope lsp_document_symbols <CR>", opts)
+
 opts = { desc = "Find Clipboard Visual" }
 cmd =
   "<cmd>:lua require('telescope.builtin').registers({ layout_strategy='vertical', layout_config={ height=100 } })<CR>"
