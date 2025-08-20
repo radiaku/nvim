@@ -7,10 +7,10 @@ local cmd = ""
 
 -- Move Between tab buffer
 opts = { desc = "Navigate to left tab from current buffer" }
-keymap.set("n", "<S-l>", ":BufferLineCycleNext<cr>", opts)
+keymap.set("n", "<C-l>", ":BufferLineCycleNext<cr>", opts)
 
 opts = { desc = "Navigate to to right tab from current buffer" }
-keymap.set("n", "<S-h>", ":BufferLineCyclePrev<cr>", opts)
+keymap.set("n", "<C-h>", ":BufferLineCyclePrev<cr>", opts)
 
 -- Move Between tab buffer
 -- opts = { desc = "Navigate to left tab from current buffer" }
@@ -20,11 +20,11 @@ keymap.set("n", "<S-h>", ":BufferLineCyclePrev<cr>", opts)
 -- keymap.set("n", "<S-h>", ":bp<cr>", opts)
 
 
-opts = { desc = "Move buffer to next left" }
-keymap.set("n", "<C-l>", ":BufferLineMoveNext<CR>", opts)
-
-opts = { desc = "Move buffer to right" }
-keymap.set("n", "<C-h>", ":BufferLineMovePrev<CR>", opts)
+-- opts = { desc = "Move buffer to next left" }
+-- keymap.set("n", "<C-l>", ":BufferLineMoveNext<CR>", opts)
+--
+-- opts = { desc = "Move buffer to right" }
+-- keymap.set("n", "<C-h>", ":BufferLineMovePrev<CR>", opts)
 
 function ClearQuickfixList()
   vim.fn.setqflist({})
