@@ -40,7 +40,7 @@ end
 
 
 if vim.fn.has("win32") == 1 then
-	require("radia.pwsh")
+	require("radia.core.pwsh")
 end
 
 vim.opt.smartindent = true
