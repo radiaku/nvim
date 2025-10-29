@@ -280,26 +280,45 @@ if [ -f /usr/share/doc/fzf/examples/key-bindings.bash ]; then
     source /usr/share/doc/fzf/examples/key-bindings.bash
 fi
 
-# Ensure only one ssh-agent is running and set the correct environment variables
-if ! pgrep -u "$USER" ssh-agent > /dev/null; then
-    eval "$(ssh-agent -s)" > /dev/null
-    eval $(keychain --eval --quiet --agents ssh id_ed25519_global)
-    # eval $(keychain --eval --agents ssh id_ed25519_global) > /dev/null
-else
-    # Check if ssh-agent is running and set SSH_AUTH_SOCK
-    if pgrep -u "$USER" ssh-agent > /dev/null; then
-        # export SSH_AUTH_SOCK=$(find /tmp/ssh-* -name "agent.*" -exec echo {} \; | head -n 1)
-        export SSH_AUTH_SOCK=$(find /tmp/ssh-* -name "agent.*" -print -quit)
-        export SSH_AGENT_PID=$(pgrep -u "$USER" -a ssh-agent | awk '{print $1}' | head -n 1)
-    fi
-    if ! ssh-add -l > /dev/null 2>&1; then
-        ssh-add "$HOME/.ssh/id_ed25519_global" > /dev/null
-    fi
+# # Ensure only one ssh-agent is running and set the correct environment variables
+# if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+#     eval "$(ssh-agent -s)" > /dev/null
+#     eval $(keychain --eval --quiet --agents ssh id_ed25519_global)
+#     # eval $(keychain --eval --agents ssh id_ed25519_global) > /dev/null
+# else
+#     # Check if ssh-agent is running and set SSH_AUTH_SOCK
+#     if pgrep -u "$USER" ssh-agent > /dev/null; then
+#         # export SSH_AUTH_SOCK=$(find /tmp/ssh-* -name "agent.*" -exec echo {} \; | head -n 1)
+#         export SSH_AUTH_SOCK=$(find /tmp/ssh-* -name "agent.*" -print -quit)
+#         export SSH_AGENT_PID=$(pgrep -u "$USER" -a ssh-agent | awk '{print $1}' | head -n 1)
+#     fi
+#     if ! ssh-add -l > /dev/null 2>&1; then
+#         ssh-add "$HOME/.ssh/id_ed25519_global" > /dev/null
+#     fi
+# fi
+#
+# # Export variables for future sessions
+# export SSH_AUTH_SOCK
+# export SSH_AGENT_PID
+
+
+# ==== SSH agent bootstrap ====
+# Reuse an existing agent if possible
+if [ -z "$SSH_AUTH_SOCK" ] && [ -f "$HOME/.ssh/agent.env" ]; then
+  . "$HOME/.ssh/agent.env" >/dev/null 2>&1
+  # drop stale env if agent died
+  ssh-add -l >/dev/null 2>&1 || rm -f "$HOME/.ssh/agent.env"
 fi
 
-# Export variables for future sessions
-export SSH_AUTH_SOCK
-export SSH_AGENT_PID
+# Start a new agent if needed
+if ! ssh-add -l >/dev/null 2>&1; then
+  eval "$(ssh-agent -s)" >/dev/null
+  echo "export SSH_AUTH_SOCK=$SSH_AUTH_SOCK" > "$HOME/.ssh/agent.env"
+  echo "export SSH_AGENT_PID=$SSH_AGENT_PID" >> "$HOME/.ssh/agent.env"
+  # try to add your default key (skip if it doesn't exist)
+  [ -f "$HOME/.ssh/id_ed25519" ] && ssh-add "$HOME/.ssh/id_ed25519"
+fi
+# ==== end SSH agent bootstrap ====
 
 # # Load fzf keybindings (for fuzzy history search with Ctrl+R, Ctrl+T, etc.)
 # if [ -f /usr/share/doc/fzf/examples/key-bindings.bash ]; then
