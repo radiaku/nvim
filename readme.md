@@ -1,100 +1,52 @@
-Config for my neovim, you need atleast neovim 0.10.1+ until neovim 0.10.4 ( many breaking change )
+Radia’s Neovim configuration — fast, pragmatic, and organized.
 
-# install neovim linux
-```
-curl -LO https://github.com/neovim/neovim/releases/download/v0.10.4/nvim-linux-x86_64.appimage
-chmod u+x nvim-linux-x86_64.appimage
-sudo mv nvim-linux-x86_64.appimage /usr/local/bin/nvim
-```
+This README is a friendly overview. For full setup details and all key mappings, see:
+- [Installer Guide](installer.md)
+- [Keymaps](keymaps.md)
+- [Git Profile Setup](.gitconfig.md)
 
-# Install:
-```
-git clone https://github.com/radiaku/nvim ~/.config/nvim
-```
+**What you get**
+- Clean plugin grouping by function (UI, files, navigation, git, editing, diagnostics, language, terminal, session, tools, notes, LSP).
+- Smart defaults and helpful keymaps for everyday workflows.
+- Optional integrations like Lazygit, Obsidian, and Yazi.
 
+**Quick Start**
+- Put this repo at `~/.config/nvim`:
+  - `git clone https://github.com/radiaku/nvim ~/.config/nvim`
+- Launch Neovim: `nvim`
+- Open plugin UI and install: `:Lazy sync`
+- Install Treesitter parsers: `:TSUpdate`
 
+**Requirements (short list)**
+- Neovim 0.10.x
+- `git`, compiler toolchain (`gcc`/`clang`, `make`)
+- `ripgrep` and `fd`
+- Nerd Font (set in your terminal)
+- Optional: Node, Python, Go, JDK, .NET, `lazygit`, `yazi`
 
-# Tool
-- Install fd-find https://github.com/sharkdp/fd
-- Install ripgrep https://github.com/BurntSushi/ripgrep 
-- Install fzf https://github.com/junegunn/fzf
+See `installer.md` for macOS/Linux commands and details.
 
-# Requirement Linux:
-  - Install Dependencies:
+**Themes**
+- Set `_G.themesname` before plugin setup (e.g., `tokyonight`, `cyberdream`, `gruvbox`, `sonokai`).
+- Colorscheme application lives in `lua/radia/themes.lua`.
 
-  ```
-  sudo apt install tree fzf fd-find git ripgrep bat p7zip-full p7zip-rar luajit xsel xclip lua5.1 liblua5.1-0-dev zoxide tmux unzip xsel xclip
-  ```
+**Learn the Keys**
+- Read `keymaps.md` for a human-friendly overview.
+- In Neovim: `:Telescope keymaps` or `<leader>fm`.
 
-# Requirement Windows:
-  - Install https://www.msys2.org/
-    - Add it to path, usually: `C:\msys64\mingw64\bin`
+**Common Commands**
+- `:Lazy` — manage plugins
+- `:Mason` — install LSPs/formatters
+- `:TSUpdate` — Treesitter
+- `:CheckHealth` — environment checks
 
-  - Install Scoop
-  ```
-  Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-  Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
-  ```
- 
-  - or Advanced Scoop (optional)
-  ```
-  irm get.scoop.sh -outfile 'install.ps1'
-  then
-  .\install.ps1 -ScoopDir 'C:\Scoop' -ScoopGlobalDir 'C:\GlobalScoop' -NoProxy
-  ```
- 
-  - Run Scoop 
- 
-  ```
-  scoop bucket add extras
-  scoop bucket add nerd-fonts
- 
-  scoop install 7zip cacert curl fzf fd gawk gzip innounp lazygit  lua-for-windows luarocks ripgrep sed sudo unzip vim wget 
-  ```
+**Structure**
+- `lua/radia/plugins/*` — grouped plugin specs
+- `lua/radia/keymaps/*` — keymap files
+- `lua/radia/lazy.lua` — plugin loader
+**Windows Notes**
+- If using Scoop/MSYS2, ensure paths are set and tools installed.
+- For FZF, verify search utilities exist and are detected (`fd`, `rg`).
 
-- Install NODE js 
-  - Linux:
-  ```
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
-  ```
-  - Windows:
-  ```
-  https://nodejs.org/en
-  ```
-
-  - run this
-  ```
-  npm install -g neovim
-  ```
-
-  - if you dont want install rust
-  ```
-  npm install -g tree-sitter-cli
-  ```
-
-- cargo RUST chain
-  - Linux:
-  ```
-  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-  ```
-
-  - Windows:
-  ```
-  https://rustup.rs/
-  ```
-
-  -- run This:
-
-  ```
-  cargo install cargo-update
-  cargo install tree-sitter-cli
-  ```
-
-
-# Note
-```
-Dont forget checking for fzf searching on windows
-check on keymaps.lua for all map keymap
-telescope.lua
-```
+Enjoy, and tweak freely. If anything feels rough, check `installer.md` first — it covers most gotchas.
 
