@@ -16,14 +16,25 @@ vim.opt.rtp:prepend(lazypath)
 -- local themesname = "tokyonight"
 local themesname = _G.themesname
 require("lazy").setup({
-	{ import = "radia.plugins" },
-	{ import = "radia.plugins.lsp" },
+    { import = "radia.plugins" },
+    { import = "radia.plugins.ui" },
+    { import = "radia.plugins.files" },
+    { import = "radia.plugins.navigation" },
+    { import = "radia.plugins.git" },
+    { import = "radia.plugins.editing" },
+    { import = "radia.plugins.diagnostics" },
+    { import = "radia.plugins.language" },
+    { import = "radia.plugins.terminal" },
+    { import = "radia.plugins.session" },
+    { import = "radia.plugins.tools" },
+    { import = "radia.plugins.notes" },
+    { import = "radia.plugins.lsp" },
 }, {
-	install = {
-		colorscheme = { themesname },
-	},
-	checker = {
-		enabled = false,
+    install = {
+        colorscheme = { themesname },
+    },
+    checker = {
+        enabled = false,
 		notify = false,
 	},
 	change_detection = {
