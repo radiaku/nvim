@@ -1,4 +1,4 @@
 require("radia.core.default")
 require("radia.core.settings")
 require("radia.core.utility")
-require("radia.core.lazy")
+require("radia.core.lazygitnvim")
