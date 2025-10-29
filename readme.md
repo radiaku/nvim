@@ -6,7 +6,7 @@ This README is a friendly overview. For full setup details and all key mappings,
 - [Git Profile Setup](.gitconfig.md)
 
 **What you get**
-- Clean plugin grouping by function (UI, files, navigation, git, editing, diagnostics, language, terminal, session, tools, notes, LSP).
+- Plugins cleanly grouped by function: `ui`, `files`, `navigation`, `git`, `editing`, `diagnostics`, `language`, `terminal`, `session`, `tools`, `notes`, `lsp` (plus `disabled` for parked specs).
 - Smart defaults and helpful keymaps for everyday workflows.
 - Optional integrations like Lazygit, Obsidian, and Yazi.
 
@@ -24,14 +24,14 @@ This README is a friendly overview. For full setup details and all key mappings,
 - Nerd Font (set in your terminal)
 - Optional: Node, Python, Go, JDK, .NET, `lazygit`, `yazi`
 
-See `installer.md` for macOS/Linux commands and details.
+See the [Installer Guide](installer.md) for macOS/Linux commands and details.
 
 **Themes**
 - Set `_G.themesname` before plugin setup (e.g., `tokyonight`, `cyberdream`, `gruvbox`, `sonokai`).
 - Colorscheme application lives in `lua/radia/themes.lua`.
 
 **Learn the Keys**
-- Read `keymaps.md` for a human-friendly overview.
+- Read the [Keymaps](keymaps.md) for a human-friendly overview.
 - In Neovim: `:Telescope keymaps` or `<leader>fm`.
 
 **Common Commands**
@@ -44,6 +44,7 @@ See `installer.md` for macOS/Linux commands and details.
 - `lua/radia/plugins/*` — grouped plugin specs
 - `lua/radia/keymaps/*` — keymap files
 - `lua/radia/lazy.lua` — plugin loader
+ 
 **Windows Notes**
 - If using Scoop/MSYS2, ensure paths are set and tools installed.
 - For FZF, verify search utilities exist and are detected (`fd`, `rg`).
