@@ -40,7 +40,6 @@ return {
 		local servers = {}
 		if not is_termux then
 			table.insert(servers, "lua_ls")
-            table.insert(servers, "jdtls")
 		end
 
 		local tools = {}

@@ -139,28 +139,7 @@ CGO_ENABLED=0 go install golang.org/x/tools/gopls@latest
 which gopls  # should print $PREFIX/bin/gopls
 ```
 
-### ☕ Java (JDK 17+/21 + jdtls)
-```bash
-# Install OpenJDK provided by your Termux repo (17 or 21)
-pkg update -y && pkg upgrade -y
-pkg install -y openjdk-21  # if 21 is unavailable, use: pkg install -y openjdk-17
-
-# Set JAVA_HOME dynamically based on the java binary
-echo 'export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))' >> ~/.bashrc
-echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc
-source ~/.bashrc
-java -version
-
-# Install jdtls to the default location used by this config
-mkdir -p "$HOME/.local/share/jdtls" && cd "$HOME/.local/share/jdtls"
-wget -O jdtls.tar.gz \
-  https://download.eclipse.org/jdtls/milestones/latest/jdt-language-server-latest.tar.gz
-tar -xzf jdtls.tar.gz
-
-# Optional: make it explicit for Neovim
-echo 'export JDTLS_HOME=$HOME/.local/share/jdtls' >> ~/.bashrc
-source ~/.bashrc
-```
+<!-- Java/JDTLS intentionally unsupported on Termux in this config. -->
 
 Mason-friendly servers (inside Neovim):
 ```
@@ -276,18 +255,7 @@ nvim
 
 Some Mason packages don’t ship Android builds. Use system installs or build from source.
 
-### jdtls download fails (404 / `wget` exit 8)
-The milestone tarball URL often changes. Install manually:
-
-```bash
-pkg install -y openjdk-21  # if unavailable, use: pkg install -y openjdk-17
-mkdir -p "$HOME/.local/share/jdtls" && cd "$HOME/.local/share/jdtls"
-wget -O jdtls.tar.gz \
-  https://download.eclipse.org/jdtls/milestones/latest/jdt-language-server-latest.tar.gz
-tar -xzf jdtls.tar.gz
-```
-
-Then configure `nvim-jdtls` to point at this install (use `java -jar` with `-configuration` from that folder).
+<!-- jdtls removed from Termux docs to prevent confusion and unwanted installs. -->
 
 ### gopls fails with `runtime/cgo` and `aarch64-linux-android-clang`
 Disable CGO and install to Termux’s bin:
