@@ -174,7 +174,7 @@ return {
 				lspconfig[server_namepy].setup({
 					filetypes = { "python", ".py" },
 					capabilities = capabilities,
-					-- cmd = { server_name .. "-langserver", "--stdio" },
+					cmd = { cmd, "--stdio" },
 					root_dir = function(fname)
 						table.unpack = table.unpack or unpack -- 5.1 compatibility
 						return util.root_pattern(table.unpack(python_root_files))(fname)
