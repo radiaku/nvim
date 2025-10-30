@@ -13,7 +13,7 @@
 - [3. Install Rust & Cargo](#3-install-rust--cargo)
 - [4. Clone Config](#4-clone-config)
 - [5. Build Telescope Native](#5-build-telescope-native)
-- [6. LSPs via Mason](#6-lsps-via-mason)
+- [6. LSPs on Termux](#6-lsps-on-termux)
 - [7. Formatters & Linters](#7-formatters--linters)
 - [8. Configure PATH in Neovim](#8-configure-path-in-neovim)
 - [9. Verify Installation](#9-verify-installation)
@@ -37,6 +37,15 @@ pkg update -y && pkg upgrade -y
 
 ```bash
 pkg install -y git curl wget unzip tar neovim nodejs python clang make cmake ripgrep fd
+```
+
+```bash
+pkg update -y && pkg upgrade -y
+pkg install -y git curl wget ca-certificates openssl-tool \
+               clang make cmake \
+               neovim nodejs python \
+               golang \
+               openjdk-21
 ```
 
 Optional extras for better experience:
@@ -103,24 +112,29 @@ pkg install -y clang make cmake
 
 ---
 
-## 6️⃣ LSPs via Mason
+## 6️⃣ LSPs on Termux
 <details>
 <summary>Click to expand</summary>
 
-Inside Neovim:
+On Termux, prefer system packages for Lua and Go, and use Mason for Node-based servers.
+
+System installs (copy-paste):
+```bash
+pkg install -y lua-language-server golang
+# gopls: build without CGO so it works on Android
+CGO_ENABLED=0 go install golang.org/x/tools/gopls@latest
+```
+
+Mason-friendly servers (inside Neovim):
 ```
 :Mason
 ```
+- `vtsls`, `cssls`, `html`, `emmet_ls`, `tailwindcss`, `jsonls`, `bash-language-server`
+- Python: `basedpyright` (requires Node)
 
-Install servers you need:
-- `lua-language-server`
-- `pyright` or `pylsp`
-- (optional) `bash-language-server`, `json-lsp`, etc.
-
-If `lua-language-server` build fails:
-```bash
-cd ~/.local/share/nvim/mason/packages/lua-language-server
-./install.sh || ./3rd/luamake/luamake rebuild
+Verify:
+```
+:checkhealth
 ```
 </details>
 
@@ -193,6 +207,7 @@ You should see ✅ for:
 ## 🔟 Quick Summary
 ```bash
 pkg install -y neovim git nodejs python rust clang make cmake ripgrep fd
+pkg install -y lua-language-server
 git clone https://github.com/radiaku/nvim ~/.config/nvim
 cargo install stylua --locked
 pip install --user black pylint
@@ -216,6 +231,55 @@ nvim
   ```bash
   source ~/.bashrc
   ```
+
+---
+
+## 🚑 Troubleshooting (Termux-specific)
+
+Some Mason packages don’t ship Android builds. Use system installs or build from source.
+
+### jdtls download fails (404 / `wget` exit 8)
+The milestone tarball URL often changes. Install manually:
+
+```bash
+pkg install -y openjdk-17
+mkdir -p "$HOME/.local/share/jdtls" && cd "$HOME/.local/share/jdtls"
+wget -O jdtls.tar.gz \
+  https://download.eclipse.org/jdtls/milestones/latest/jdt-language-server-latest.tar.gz
+tar -xzf jdtls.tar.gz
+```
+
+Then configure `nvim-jdtls` to point at this install (use `java -jar` with `-configuration` from that folder).
+
+### gopls fails with `runtime/cgo` and `aarch64-linux-android-clang`
+Disable CGO and install to Termux’s bin:
+
+```bash
+pkg install -y golang
+export GOPATH="$HOME/.local/share/go"
+export GOBIN="$PREFIX/bin"
+mkdir -p "$GOBIN" "$GOPATH"
+CGO_ENABLED=0 go install golang.org/x/tools/gopls@latest
+which gopls
+```
+
+### lua-language-server “current platform is unsupported”
+Use the Termux package instead of Mason:
+
+```bash
+pkg install -y lua-language-server
+```
+
+### stylua “current platform is unsupported”
+Build via Cargo:
+
+```bash
+pkg install -y rust
+cargo install stylua --locked
+which stylua
+```
+
+After installing these system binaries, Neovim will prefer tools found on `PATH` even if Mason couldn’t install them.
 
 ---
 
