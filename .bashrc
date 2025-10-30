@@ -70,6 +70,11 @@ alias nv='nvim'
 alias v='vim'
 alias py3='python3'
 
+# Enable fast directory jumping via zoxide (z/zi) when available
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init bash)"
+fi
+
 # Function to sanitize session names
 sanitize_session_name() {
   local input="$1"
@@ -339,5 +344,5 @@ fi
 #     fi
 # }
 #
-# bind -x '"\C-r": __fzf_history_search'   
+# bind -x '"\C-r": __fzf_history_search'
 
