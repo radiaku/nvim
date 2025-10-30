@@ -12,7 +12,9 @@ This README is a friendly overview. For full setup details and all key mappings,
 
 **Quick Start**
 - Put this repo at `~/.config/nvim`:
-  - `git clone https://github.com/radiaku/nvim ~/.config/nvim`
+  ```sh
+  git clone https://github.com/radiaku/nvim ~/.config/nvim
+  ```
 - Launch Neovim: `nvim`
 - Open plugin UI and install: `:Lazy sync`
 - Install Treesitter parsers: `:TSUpdate`
