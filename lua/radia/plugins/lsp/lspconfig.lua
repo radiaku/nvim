@@ -146,6 +146,11 @@ return {
 			end,
 
 			["jdtls"] = function()
+				-- Prefer nvim-jdtls when available; skip generic lspconfig setup
+				local has_jdtls_plugin = pcall(require, "jdtls")
+				if has_jdtls_plugin or is_termux then
+					return
+				end
 				lspconfig["jdtls"].setup({
 					capabilities = capabilities,
 					root_dir = util.root_pattern("package.json", "pom.xml") or vim.fn.getcwd(),
@@ -480,6 +485,18 @@ return {
 			lspconfig["lua_ls"].setup({
 				capabilities = capabilities,
 			})
+			if vim.fn.executable("gopls") == 1 then
+				lspconfig["gopls"].setup({
+					capabilities = capabilities,
+					root_dir = util.root_pattern("go.mod", ".git") or vim.fn.getcwd(),
+					settings = {
+						gopls = {
+							analyses = { unusedparams = true },
+							staticcheck = true,
+						},
+					},
+				})
+			end
 		end
 	end,
 }

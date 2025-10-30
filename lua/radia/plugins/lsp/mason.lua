@@ -48,7 +48,7 @@ return {
 			table.insert(tools, "stylua")
 		end
 
-		if has_go then
+		if has_go and not is_termux then
 			table.insert(servers, "gopls")
 		else
 			-- vim.notify("Go not found in PATH: skipping gopls", vim.log.levels.WARN)
@@ -77,7 +77,6 @@ return {
 			-- vim.notify("Python not found in PATH: skipping basedpyright", vim.log.levels.WARN)
 		end
 
-
 		-- Check the operating system and append the appropriate Python language server
 		-- if vim.fn.has("win32") == 1 then
 		-- 	table.insert(ensure_installed, "pyright")
@@ -92,9 +91,8 @@ return {
 			automatic_installation = not is_termux, -- disable on Termux to avoid failed installs
 		})
 
-
 		mason_tool_installer.setup({
-			ensure_installed = tools
+			ensure_installed = tools,
 		})
 	end,
 }
