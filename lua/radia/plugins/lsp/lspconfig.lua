@@ -145,11 +145,7 @@ return {
 				})
 			end,
 
-			["jdtls"] = function()
-				-- Always skip generic jdtls setup to avoid Mason auto-install.
-				-- Use nvim-jdtls plugin on non-Termux systems and skip entirely on Termux.
-				return
-			end,
+			-- jdtls removed entirely
 
 			["templ"] = function()
 				lspconfig["templ"].setup({
