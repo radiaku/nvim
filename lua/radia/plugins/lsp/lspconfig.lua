@@ -118,7 +118,6 @@ return {
 								-- Make the server aware of Neovim runtime files
 								library = {
 									vim.api.nvim_get_runtime_file("", true),
-									checkThirdParty = false,
 									vim.env.VIMRUNTIME,
 									vim.api.nvim_get_runtime_file("", true),
 									vim.fn.expand("$VIMRUNTIME/lua"),
@@ -522,23 +521,5 @@ return {
 			end,
 		})
 
-		-- On Termux, Mason cannot install lua-language-server. Configure it directly
-		if is_termux then
-			lspconfig["lua_ls"].setup({
-				capabilities = capabilities,
-			})
-			if vim.fn.executable("gopls") == 1 then
-				lspconfig["gopls"].setup({
-					capabilities = capabilities,
-					root_dir = util.root_pattern("go.mod", ".git") or vim.fn.getcwd(),
-					settings = {
-						gopls = {
-							analyses = { unusedparams = true },
-							staticcheck = true,
-						},
-					},
-				})
-			end
-		end
 	end,
 }
