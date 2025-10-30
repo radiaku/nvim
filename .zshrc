@@ -238,3 +238,11 @@ export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init - zsh)"
 
+# Initialize Miniconda if installed (Termux/macOS friendly)
+if [ -d "$HOME/miniconda3" ]; then
+  export PATH="$HOME/miniconda3/bin:$PATH"
+  if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
+    source "$HOME/miniconda3/etc/profile.d/conda.sh"
+  fi
+fi
+

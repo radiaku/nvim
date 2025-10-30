@@ -261,15 +261,31 @@ cas() {
 
 
 export PATH=~/.local/bin/:$PATH
-eval "$(rbenv init - --no-rehash zsh)"
+# Initialize rbenv only if installed
+if command -v rbenv >/dev/null 2>&1; then
+  eval "$(rbenv init - --no-rehash zsh)"
+fi
 
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:$HOME/go/bin
 
-eval "$(zoxide init bash)"
+# Initialize zoxide only if installed (avoid errors when absent)
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init bash)"
+fi
 
-export PATH="$HOME/miniconda3/bin:$PATH"
-source "$HOME/miniconda3/etc/profile.d/conda.sh"
+
+# Initialize Miniconda if installed (avoids errors when absent)
+if [ -d "$HOME/miniconda3" ]; then
+  export PATH="$HOME/miniconda3/bin:$PATH"
+  if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
+    . "$HOME/miniconda3/etc/profile.d/conda.sh"
+  fi
+fi
+# If conda is present, also source its profile (guarded)
+if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
+  . "$HOME/miniconda3/etc/profile.d/conda.sh"
+fi
 
 # Load system-wide bash completion
 if [ -f /etc/profile.d/bash_completion.sh ]; then
@@ -279,11 +295,6 @@ fi
 # Enable history search with up/down arrows (only if commented out above)
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
-
-# Load fzf keybindings (for fuzzy history search with Ctrl+R, Ctrl+T, etc.)
-if [ -f /usr/share/doc/fzf/examples/key-bindings.bash ]; then
-    source /usr/share/doc/fzf/examples/key-bindings.bash
-fi
 
 # # Ensure only one ssh-agent is running and set the correct environment variables
 # if ! pgrep -u "$USER" ssh-agent > /dev/null; then
@@ -325,13 +336,12 @@ if ! ssh-add -l >/dev/null 2>&1; then
 fi
 # ==== end SSH agent bootstrap ====
 
-# # Load fzf keybindings (for fuzzy history search with Ctrl+R, Ctrl+T, etc.)
-# if [ -f /usr/share/doc/fzf/examples/key-bindings.bash ]; then
-#     source /usr/share/doc/fzf/examples/key-bindings.bash
-# else 
-#     source $HOME/.fzf-keybinding.bash
-#
-# fi
+# Load fzf keybindings (for fuzzy history search with Ctrl+R, Ctrl+T, etc.)
+if [ -f /usr/share/doc/fzf/examples/key-bindings.bash ]; then
+    source /usr/share/doc/fzf/examples/key-bindings.bash
+elif [ -f "$HOME/.fzf-keybinding.bash" ]; then
+    source "$HOME/.fzf-keybinding.bash"
+fi
 #
 # __fzf_history_search() {
 #     local query="${READLINE_LINE}"
