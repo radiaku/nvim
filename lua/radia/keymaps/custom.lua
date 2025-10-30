@@ -94,22 +94,11 @@ keymap.set("n", "<leader>fs", function ()
   })
 end, opts)
 
-opts = { desc = "Find string in cwd (including hidden)" }
+opts = { desc = "Find string in config (hidden, fixed)" }
 keymap.set("n", "<leader>fx", function()
   require("telescope").extensions.live_grep_args.live_grep_args({
-    default_text = '-F ',
-    vimgrep_arguments = {
-      "rg",
-      "--color=never",
-      "--no-heading",
-      "--with-filename",
-      "--line-number",
-      "--column",
-      "--smart-case",
-      "--no-ignore",   -- include files ignored by .gitignore/.ignore
-      "--hidden",       -- include hidden files
-      "--glob", "!.git/"
-    },
+    cwd = vim.fn.stdpath("config"),
+    default_text = "-F ",
   })
 end, opts)
 
