@@ -14,6 +14,12 @@ return {
 	config = function()
 		-- import lspconfig plugin
 		local lspconfig = require("lspconfig")
+
+		local function exepath(bin)
+			local p = vim.fn.exepath(bin)
+			return p ~= "" and p or nil
+		end
+
 		local util = require("lspconfig/util")
 
 		-- import mason_lspconfig plugin
@@ -53,7 +59,41 @@ return {
 		end
 
 		-- local server_namepy = vim.fn.has("win32") == 1 and "pyright" or "basedpyright"
+		local function exepath(bin)
+			local p = vim.fn.exepath(bin)
+			return p ~= "" and p or nil
+		end
+
+		-- Ensure project node bin is on PATH so nvim can see global/local binaries
+		do
+			local project_bin = vim.fn.getcwd() .. "/node_modules/.bin"
+			if vim.fn.isdirectory(project_bin) == 1 then
+				local path = vim.env.PATH or ""
+				if not path:find(vim.pesc(project_bin), 1, true) then
+					vim.env.PATH = project_bin .. ":" .. path
+				end
+			end
+		end
+
+		-- Optional: best-effort venv site-packages discovery for extraPaths
+		local function find_site_packages(start_dir)
+			local root = util.find_git_ancestor(start_dir) or start_dir
+			local candidates = {
+				root .. "/.venv/lib/python*/site-packages",
+				root .. "/venv/lib/python*/site-packages",
+				root .. "/env/lib/python*/site-packages",
+			}
+			-- expand the glob with vim.fn.glob; return first existing
+			for _, pat in ipairs(candidates) do
+				local match = vim.fn.glob(pat, true, true) -- list
+				if match and #match > 0 then
+					return match[1]
+				end
+			end
+		end
+
 		local server_namepy = "basedpyright"
+
 		mason_lspconfig.setup_handlers({
 			function(server_name)
 				-- https://github.com/neovim/nvim-lspconfig/pull/3232
@@ -82,6 +122,16 @@ return {
 				-- else
 				-- 	python_install_path = vim.fn.exepath("python3")
 				-- end
+
+				-- Prefer npm-based server on Termux/Linux/macOS
+				local cmd = exepath("basedpyright-langserver") or exepath("pyright-langserver")
+				if not cmd then
+					vim.notify(
+						"[LSP] basedpyright-langserver not found on PATH; install with: npm i -g basedpyright",
+						vim.log.levels.WARN
+					)
+					return
+				end
 
 				lspconfig[server_namepy].setup({
 					filetypes = { "python", ".py" },
