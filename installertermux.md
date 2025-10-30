@@ -45,7 +45,7 @@ pkg install -y git curl wget ca-certificates openssl-tool \
                clang make cmake \
                neovim nodejs python \
                golang \
-               openjdk-21
+               openjdk-17
 ```
 
 Optional extras for better experience:
@@ -123,6 +123,32 @@ System installs (copy-paste):
 pkg install -y lua-language-server golang
 # gopls: build without CGO so it works on Android
 CGO_ENABLED=0 go install golang.org/x/tools/gopls@latest
+# ensure Go bin is on PATH
+echo 'export PATH="$HOME/go/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+### ☕ Java (JDK 17 + jdtls)
+```bash
+# Install Java 17 (required by jdtls)
+pkg update -y && pkg upgrade -y
+pkg install -y openjdk-17
+
+# Set JAVA_HOME so tools and nvim-jdtls can find it
+echo 'export JAVA_HOME=/data/data/com.termux/files/usr/lib/jvm/java-17-openjdk' >> ~/.bashrc
+echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc
+source ~/.bashrc
+java -version
+
+# Install jdtls to the default location used by this config
+mkdir -p "$HOME/.local/share/jdtls" && cd "$HOME/.local/share/jdtls"
+wget -O jdtls.tar.gz \
+  https://download.eclipse.org/jdtls/milestones/latest/jdt-language-server-latest.tar.gz
+tar -xzf jdtls.tar.gz
+
+# Optional: make it explicit for Neovim
+echo 'export JDTLS_HOME=$HOME/.local/share/jdtls' >> ~/.bashrc
+source ~/.bashrc
 ```
 
 Mason-friendly servers (inside Neovim):
@@ -207,7 +233,8 @@ You should see ✅ for:
 ## 🔟 Quick Summary
 ```bash
 pkg install -y neovim git nodejs python rust clang make cmake ripgrep fd
-pkg install -y lua-language-server
+pkg install -y openjdk-17 lua-language-server golang
+CGO_ENABLED=0 go install golang.org/x/tools/gopls@latest
 git clone https://github.com/radiaku/nvim ~/.config/nvim
 cargo install stylua --locked
 pip install --user black pylint

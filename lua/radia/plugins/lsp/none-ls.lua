@@ -49,10 +49,13 @@ return {
 			do
 				local stylua_cmd = exepath("stylua")
 				if stylua_cmd then
-					table.insert(sources, null_ls.builtins.formatting.stylua.with({
-						command = stylua_cmd,
-						extra_args = { "--respect-ignores" },
-					}))
+					table.insert(
+						sources,
+						null_ls.builtins.formatting.stylua.with({
+							command = stylua_cmd,
+							extra_args = { "--respect-ignores" },
+						})
+					)
 				end
 			end
 
@@ -60,9 +63,12 @@ return {
 			do
 				local black_cmd = python_venv_bin("black")
 				if black_cmd then
-					table.insert(sources, null_ls.builtins.formatting.black.with({
-						command = black_cmd,
-					}))
+					table.insert(
+						sources,
+						null_ls.builtins.formatting.black.with({
+							command = black_cmd,
+						})
+					)
 				end
 			end
 
@@ -70,16 +76,21 @@ return {
 			do
 				local pylint_cmd = python_venv_bin("pylint")
 				if pylint_cmd then
-					table.insert(sources, null_ls.builtins.diagnostics.pylint.with({
-						command = pylint_cmd,
-						-- Speed up a bit and avoid colored output
-						args = { "-f", "text", "--score", "n", "--output-format", "text", "-" },
-						method = null_ls.methods.DIAGNOSTICS_ON_SAVE, -- or ON_OPEN / ON_CHANGE
-						diagnostics_postprocess = function(d)
-							-- Make pylint codes visible, e.g. [E1101]
-							if d.code then d.message = string.format("[%s] %s", d.code, d.message) end
-						end,
-					}))
+					table.insert(
+						sources,
+						null_ls.builtins.diagnostics.pylint.with({
+							command = pylint_cmd,
+							-- Speed up a bit and avoid colored output
+							args = { "-f", "text", "--score", "n", "--output-format", "text", "-" },
+							method = null_ls.methods.DIAGNOSTICS_ON_SAVE, -- or ON_OPEN / ON_CHANGE
+							diagnostics_postprocess = function(d)
+								-- Make pylint codes visible, e.g. [E1101]
+								if d.code then
+									d.message = string.format("[%s] %s", d.code, d.message)
+								end
+							end,
+						})
+					)
 				end
 			end
 
@@ -103,9 +114,15 @@ return {
 
 			-- Friendly notices (optional)
 			local missing = {}
-			if not exepath("stylua") then table.insert(missing, "stylua") end
-			if not python_venv_bin("black") then table.insert(missing, "black") end
-			if not python_venv_bin("pylint") then table.insert(missing, "pylint") end
+			if not exepath("stylua") then
+				table.insert(missing, "stylua")
+			end
+			if not python_venv_bin("black") then
+				table.insert(missing, "black")
+			end
+			if not python_venv_bin("pylint") then
+				table.insert(missing, "pylint")
+			end
 			if #missing > 0 then
 				vim.schedule(function()
 					vim.notify(
