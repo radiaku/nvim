@@ -20,7 +20,7 @@ return {
 			return p ~= "" and p or nil
 		end
 
-		local util = require("lspconfig/util")
+		local util = require("lspconfig.util") -- NOT "lspconfig/util"
 
 		-- import mason_lspconfig plugin
 		local mason = require("mason")
