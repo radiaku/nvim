@@ -1,8 +1,13 @@
 return {
-	"mfussenegger/nvim-jdtls",
-	ft = { "java" },
-	dependencies = { "nvim-lua/plenary.nvim" },
-	config = function()
+    "mfussenegger/nvim-jdtls",
+    -- Completely disable on Termux so Lazy won't install/download this plugin
+    enabled = function()
+        local prefix = vim.env.PREFIX or ""
+        return not prefix:find("com%.termux")
+    end,
+    ft = { "java" },
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
 		local ok, jdtls = pcall(require, "jdtls")
 		if not ok then
 			return
