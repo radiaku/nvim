@@ -1,3 +1,4 @@
+require("radia.core.early")
 require("radia.core.default")
 require("radia.core.settings")
 require("radia.core.utility")
