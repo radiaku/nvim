@@ -106,6 +106,7 @@ keymap.set("n", "<leader>fx", function()
       "--line-number",
       "--column",
       "--smart-case",
+      "--no-ignore",   -- include files ignored by .gitignore/.ignore
       "--hidden",       -- include hidden files
       "--glob", "!.git/"
     },
