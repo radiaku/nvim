@@ -128,6 +128,17 @@ echo 'export PATH="$HOME/go/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
+### 🟦 Go: gopls alternative install (to `$PREFIX/bin`)
+If your shell does not pick up `$HOME/go/bin` reliably, install `gopls` directly to Termux’s bin:
+```bash
+pkg install -y golang
+export GOPATH="$HOME/.local/share/go"
+export GOBIN="$PREFIX/bin"
+mkdir -p "$GOBIN" "$GOPATH"
+CGO_ENABLED=0 go install golang.org/x/tools/gopls@latest
+which gopls  # should print $PREFIX/bin/gopls
+```
+
 ### ☕ Java (JDK 17+/21 + jdtls)
 ```bash
 # Install OpenJDK provided by your Termux repo (17 or 21)
