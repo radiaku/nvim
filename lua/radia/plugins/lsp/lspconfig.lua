@@ -146,16 +146,9 @@ return {
 			end,
 
 			["jdtls"] = function()
-				-- Prefer nvim-jdtls when available; skip generic lspconfig setup
-				local has_jdtls_plugin = pcall(require, "jdtls")
-				if has_jdtls_plugin or is_termux then
-					return
-				end
-				lspconfig["jdtls"].setup({
-					capabilities = capabilities,
-					root_dir = util.root_pattern("package.json", "pom.xml") or vim.fn.getcwd(),
-					-- cmd = { bin_path .. "typescript-language-server.cmd" },
-				})
+				-- Always skip generic jdtls setup to avoid Mason auto-install.
+				-- Use nvim-jdtls plugin on non-Termux systems and skip entirely on Termux.
+				return
 			end,
 
 			["templ"] = function()

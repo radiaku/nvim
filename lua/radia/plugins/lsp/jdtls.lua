@@ -18,8 +18,16 @@ return {
 		local prefix = vim.env.PREFIX or ""
 		local is_termux = prefix:find("com%.termux") ~= nil
 
-		-- Where JDTLS is installed. Override with JDTLS_HOME if you installed elsewhere.
-		local jdtls_home = vim.env.JDTLS_HOME or (home .. "/.local/share/jdtls")
+		-- Where JDTLS is installed. Prefer Mason’s package, then JDTLS_HOME, then ~/.local/share/jdtls
+		local mason_pkg = vim.fn.stdpath("data") .. "/mason/packages/jdtls"
+		local jdtls_home = vim.env.JDTLS_HOME
+		if not jdtls_home or jdtls_home == "" then
+			if vim.fn.isdirectory(mason_pkg) == 1 then
+				jdtls_home = mason_pkg
+			else
+				jdtls_home = home .. "/.local/share/jdtls"
+			end
+		end
 
 		-- Workspace directory per project
 		local workspace_root = home .. "/.cache/jdtls/workspace"
