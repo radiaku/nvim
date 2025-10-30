@@ -249,6 +249,17 @@ nvim
   source ~/.bashrc
   ```
 
+- Fast directory jumping (zoxide):
+  ```bash
+  pkg install -y zoxide fzf
+  # bash
+  echo 'eval "$(zoxide init bash)"' >> ~/.bashrc && source ~/.bashrc
+  # zsh
+  echo 'eval "$(zoxide init zsh)"' >> ~/.zshrc
+  ```
+  - Use `z <keyword>` to jump; `zi` opens an interactive fzf picker.
+  - Works inside tmux automatically since it loads your shell configs.
+
 ---
 
 ## 🚑 Troubleshooting (Termux-specific)
