@@ -50,18 +50,16 @@ return {
 			end
 		end
 
+		pcall(function()
+			require("neodev").setup({})
+		end)
+
 		-- Change the Diagnostic symbols in the sign column (gutter)
 		-- (not in youtube nvim video)
 		local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
 		for type, icon in pairs(signs) do
 			local hl = "DiagnosticSign" .. type
 			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-		end
-
-		-- local server_namepy = vim.fn.has("win32") == 1 and "pyright" or "basedpyright"
-		local function exepath(bin)
-			local p = vim.fn.exepath(bin)
-			return p ~= "" and p or nil
 		end
 
 		-- Ensure project node bin is on PATH so nvim can see global/local binaries
@@ -100,6 +98,42 @@ return {
 				-- server_name = server_name == "tsserver" and "ts_ls" or server_name
 				lspconfig[server_name].setup({
 					capabilities = capabilities,
+				})
+			end,
+
+			["lua_ls"] = function()
+				-- configure lua server (with special settings)
+				lspconfig["lua_ls"].setup({
+					-- capabilities = capabilities,
+					settings = {
+						Lua = {
+							-- make the language server recognize "vim" global
+							diagnostics = {
+								globals = { "vim" },
+								disable = { "missing-fields" },
+							},
+							workspace = {
+								-- Make the server aware of Neovim runtime files
+								library = {
+									vim.env.VIMRUNTIME,
+									vim.api.nvim_get_runtime_file("", true),
+									vim.fn.expand("$VIMRUNTIME/lua"),
+									vim.fn.expand("$VIMRUNTIME/lua/vim/lsp"),
+									vim.fn.stdpath("config") .. "/lua",
+									vim.fn.stdpath("data") .. "/lazy/ui/nvchad_types",
+									vim.fn.stdpath("data") .. "/lazy/lazy.nvim/lua/lazy",
+									"${3rd}/luv/library",
+								},
+							},
+							-- Do not send telemetry data containing a randomized but unique identifier
+							telemetry = {
+								enable = false,
+							},
+							-- completion = {
+							-- 	callSnippet = "Replace",
+							-- },
+						},
+					},
 				})
 			end,
 
@@ -479,41 +513,6 @@ return {
 						"less",
 						"svelte",
 						"liquid",
-					},
-				})
-			end,
-
-			["lua_ls"] = function()
-				-- configure lua server (with special settings)
-				lspconfig["lua_ls"].setup({
-					-- capabilities = capabilities,
-					settings = {
-						Lua = {
-							-- make the language server recognize "vim" global
-							diagnostics = {
-								globals = { "vim" },
-								disable = { "missing-fields" },
-							},
-							workspace = {
-								-- Make the server aware of Neovim runtime files
-								library = {
-									vim.env.VIMRUNTIME,
-									vim.api.nvim_get_runtime_file("", true),
-									vim.fn.expand("$VIMRUNTIME/lua"),
-									vim.fn.expand("$VIMRUNTIME/lua/vim/lsp"),
-									vim.fn.stdpath("data") .. "/lazy/ui/nvchad_types",
-									vim.fn.stdpath("data") .. "/lazy/lazy.nvim/lua/lazy",
-									"${3rd}/luv/library",
-								},
-							},
-							-- Do not send telemetry data containing a randomized but unique identifier
-							telemetry = {
-								enable = false,
-							},
-							-- completion = {
-							-- 	callSnippet = "Replace",
-							-- },
-						},
 					},
 				})
 			end,
