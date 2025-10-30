@@ -20,6 +20,13 @@ return {
 		local mason = require("mason")
 		local mason_lspconfig = require("mason-lspconfig")
 
+		-- Detect Termux (Android) environment
+		local is_termux = false
+		local prefix = vim.env.PREFIX or ""
+		if prefix:find("com%.termux") then
+			is_termux = true
+		end
+
 		-- import cmp-nvim-lsp plugin
 		-- local cmp_nvim_lsp = require("cmp_nvim_lsp")
 		local capabilities
@@ -467,5 +474,12 @@ return {
 				})
 			end,
 		})
+
+		-- On Termux, Mason cannot install lua-language-server. Configure it directly
+		if is_termux then
+			lspconfig["lua_ls"].setup({
+				capabilities = capabilities,
+			})
+		end
 	end,
 }

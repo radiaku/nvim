@@ -30,13 +30,23 @@ return {
 		local has_node = vim.fn.executable("node") == 1
 		local has_python = vim.fn.executable("python") == 1 or vim.fn.executable("python3") == 1
 
-		local servers = {
-			"lua_ls",
-		}
+		-- Detect Termux (Android) to avoid installing unsupported Mason packages
+		local is_termux = false
+		local prefix = vim.env.PREFIX or ""
+		if prefix:find("com%.termux") then
+			is_termux = true
+		end
 
-		local tools = {
-			"stylua", -- lua formatter
-		}
+		local servers = {}
+		if not is_termux then
+			table.insert(servers, "lua_ls")
+		end
+
+		local tools = {}
+		-- stylua via Mason is unsupported on Termux; prefer cargo install there
+		if not is_termux then
+			table.insert(tools, "stylua")
+		end
 
 		if has_go then
 			table.insert(servers, "gopls")
@@ -79,7 +89,7 @@ return {
 			-- list of servers for mason to install
 			ensure_installed = servers,
 			-- auto-install configured servers (with lspconfig)
-			automatic_installation = true, -- not the same as ensure_installed
+			automatic_installation = not is_termux, -- disable on Termux to avoid failed installs
 		})
 
 

@@ -6,7 +6,9 @@ If you're on Android using Termux, see the dedicated guide: [Installer (Termux)]
 
 ## Quick Install (copy-paste)
 - Clone directly to your Neovim config path:
-  - `git clone https://github.com/radiaku/nvim ~/.config/nvim`
+```bash
+git clone https://github.com/radiaku/nvim ~/.config/nvim`
+```
 - Or symlink this repo from your workspace (run from this repo’s root):
   - `ln -s "$(pwd)" ~/.config/nvim`
 - Launch Neovim and install plugins:
