@@ -168,6 +168,28 @@ unalias fzf-cd 2>/dev/null
 fzf-cd() {
   local fd_options fzf_options target
 
+  # Helper to shorten path: keep last 2 dirs, prefix earlier with first letters
+  shorten_path() {
+    local path="$1"
+    local IFS='/'
+    read -ra parts <<< "$path"
+    local out=""
+    local n=${#parts[@]}
+    for i in "${!parts[@]}"; do
+      local seg="${parts[i]}"
+      if [ -z "$seg" ]; then
+        out+="/"
+        continue
+      fi
+      if (( i < n-2 )); then
+        out+="${seg:0:1}/"
+      else
+        out+="$seg/"
+      fi
+    done
+    echo "${out%/}"
+  }
+
   fd_options=(
     --type directory
     --max-depth 2
@@ -176,12 +198,19 @@ fzf-cd() {
   )
 
   fzf_options=(
-    --preview='tree -L 1 {}'
+    --preview='tree -L 1 {2}'
     --bind=ctrl-space:toggle-preview
     --exit-0
+    --delimiter=$'\t'
+    --with-nth=1
+    --nth=1
   )
 
-  target="$(fd . ~/Dev "${fd_options[@]}" | fzf "${fzf_options[@]}")"
+  target="$(
+    fd . ~/Dev "${fd_options[@]}" |
+    while IFS= read -r p; do printf '%s\t%s\n' "$(shorten_path "$p")" "$p"; done |
+    fzf "${fzf_options[@]}" | awk -F '\t' '{print $NF}'
+  )"
 
   # Check if the Escape key was pressed (target will be empty)
   if [[ -z "$target" ]]; then
