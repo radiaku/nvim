@@ -2,6 +2,18 @@
 
 This guide outlines requirements, installation, and post-install steps for this Neovim configuration.
 
+If you're on Android using Termux, see the dedicated guide: [Installer (Termux)](installertermux.md).
+
+## Quick Install (copy-paste)
+- Clone directly to your Neovim config path:
+  - `git clone https://github.com/radiaku/nvim ~/.config/nvim`
+- Or symlink this repo from your workspace (run from this repo’s root):
+  - `ln -s "$(pwd)" ~/.config/nvim`
+- Launch Neovim and install plugins:
+  - `nvim` then inside Neovim run `:Lazy sync` and `:TSUpdate`.
+- Update later:
+  - `git -C ~/.config/nvim pull`
+
 ## Requirements
 - Neovim `>= 0.9` (0.10 recommended).
 - `git` in `PATH`.
