@@ -107,6 +107,8 @@ return {
 					-- capabilities = capabilities,
 					settings = {
 						Lua = {
+
+							runtime = { version = "LuaJIT" },
 							-- make the language server recognize "vim" global
 							diagnostics = {
 								globals = { "vim" },
@@ -115,6 +117,8 @@ return {
 							workspace = {
 								-- Make the server aware of Neovim runtime files
 								library = {
+									vim.api.nvim_get_runtime_file("", true),
+									checkThirdParty = false,
 									vim.env.VIMRUNTIME,
 									vim.api.nvim_get_runtime_file("", true),
 									vim.fn.expand("$VIMRUNTIME/lua"),
