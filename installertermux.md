@@ -45,7 +45,7 @@ pkg install -y git curl wget ca-certificates openssl-tool \
                clang make cmake \
                neovim nodejs python \
                golang \
-               openjdk-17
+               openjdk-21
 ```
 
 Optional extras for better experience:
@@ -128,14 +128,14 @@ echo 'export PATH="$HOME/go/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-### ☕ Java (JDK 17 + jdtls)
+### ☕ Java (JDK 17+/21 + jdtls)
 ```bash
-# Install Java 17 (required by jdtls)
+# Install OpenJDK provided by your Termux repo (17 or 21)
 pkg update -y && pkg upgrade -y
-pkg install -y openjdk-17
+pkg install -y openjdk-21  # if 21 is unavailable, use: pkg install -y openjdk-17
 
-# Set JAVA_HOME so tools and nvim-jdtls can find it
-echo 'export JAVA_HOME=/data/data/com.termux/files/usr/lib/jvm/java-17-openjdk' >> ~/.bashrc
+# Set JAVA_HOME dynamically based on the java binary
+echo 'export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))' >> ~/.bashrc
 echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
 java -version
@@ -233,7 +233,7 @@ You should see ✅ for:
 ## 🔟 Quick Summary
 ```bash
 pkg install -y neovim git nodejs python rust clang make cmake ripgrep fd
-pkg install -y openjdk-17 lua-language-server golang
+pkg install -y openjdk-21 lua-language-server golang
 CGO_ENABLED=0 go install golang.org/x/tools/gopls@latest
 git clone https://github.com/radiaku/nvim ~/.config/nvim
 cargo install stylua --locked
@@ -269,7 +269,7 @@ Some Mason packages don’t ship Android builds. Use system installs or build fr
 The milestone tarball URL often changes. Install manually:
 
 ```bash
-pkg install -y openjdk-17
+pkg install -y openjdk-21  # if unavailable, use: pkg install -y openjdk-17
 mkdir -p "$HOME/.local/share/jdtls" && cd "$HOME/.local/share/jdtls"
 wget -O jdtls.tar.gz \
   https://download.eclipse.org/jdtls/milestones/latest/jdt-language-server-latest.tar.gz
