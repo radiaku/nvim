@@ -50,7 +50,7 @@ pkg install -y git curl wget ca-certificates openssl-tool \
 
 Optional extras for better experience:
 ```bash
-pkg install -y fzf lua-lsp jq bat tree
+pkg install -y fzf lua-language-server jq bat tree
 ```
 </details>
 
