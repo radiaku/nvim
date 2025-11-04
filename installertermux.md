@@ -35,16 +35,29 @@ pkg update -y && pkg upgrade -y
 ```bash
 pkg update -y && pkg upgrade -y
 pkg install -y neovim git curl wget ca-certificates openssl-tool unzip tar nodejs python golang openjdk-21 rust clang make cmake ripgrep fd lua-language-server fzf jq bat tree tmux zoxide
+```
 
+```bash
 # Python formatters/linters
 pip install --user black pylint
+```
 
+```bash
 # Lua formatter
 cargo install stylua --locked
+```
 
+```bash
 # Go LSP (Android-safe)
 CGO_ENABLED=0 go install golang.org/x/tools/gopls@latest
+```
 
+
+```bash
+npm install -g basedpyright
+```
+
+```bash
 # Ensure tools are on PATH
 # echo 'export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/go/bin:$PATH"' >> ~/.bashrc
 # source ~/.bashrc
