@@ -30,15 +30,16 @@ do
   local has_get = vim.fn.executable("termux-clipboard-get") == 1
 
   if is_termux and has_set == true and has_get == true then
+    local bin = prefix ~= "" and (prefix .. "/bin/") or ""
     vim.g.clipboard = {
       name = "termux-clipboard",
       copy = {
-        ["+"] = "termux-clipboard-set",
-        ["*"] = "termux-clipboard-set",
+        ["+"] = bin .. "termux-clipboard-set",
+        ["*"] = bin .. "termux-clipboard-set",
       },
       paste = {
-        ["+"] = "termux-clipboard-get",
-        ["*"] = "termux-clipboard-get",
+        ["+"] = bin .. "termux-clipboard-get",
+        ["*"] = bin .. "termux-clipboard-get",
       },
       cache_enabled = 0,
     }
