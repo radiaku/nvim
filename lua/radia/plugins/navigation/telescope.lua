@@ -28,12 +28,35 @@ return {
 			build = function()
 				local prefix = vim.env.PREFIX or ""
 				local is_termux = prefix:find("com%.termux") ~= nil
-				local cmd = is_termux and "make CC=clang" or "make"
-				vim.fn.system(cmd)
-				if vim.v.shell_error ~= 0 and vim.fn.executable("cmake") == 1 then
-					vim.fn.system("cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release")
-					vim.fn.system("cmake --build build --config Release")
+				local has_make = vim.fn.executable("make") == 1
+				local has_cmake = vim.fn.executable("cmake") == 1
+				local has_clang = vim.fn.executable("clang") == 1
+
+				local function run(cmd)
+					local ok = false
+					if vim.system then
+						local res = vim.system({ "sh", "-lc", cmd }, { text = true }):wait()
+						ok = (res and res.code == 0)
+					else
+						vim.fn.system(cmd)
+						ok = (vim.v.shell_error == 0)
+					end
+					return ok
 				end
+
+				local ok = false
+				if has_make then
+					if is_termux and has_clang then
+						ok = run("make clean") and run("make CC=clang")
+					else
+						ok = run("make clean") and run("make")
+					end
+				end
+
+				if (not ok) and has_cmake then
+					ok = run("cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release") and run("cmake --build build --config Release")
+				end
+				-- Never error out; extension load is guarded below
 			end,
 		},
 		{ "nvim-telescope/telescope-live-grep-args.nvim", commit = "b80ec2" },
@@ -171,7 +194,7 @@ return {
 		})
 
 		telescope.load_extension("neoclip")
-		telescope.load_extension("fzf")
+		pcall(telescope.load_extension, "fzf")
 		telescope.load_extension("live_grep_args")
 		-- telescope.load_extension("refactoring")
 
