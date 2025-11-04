@@ -101,12 +101,9 @@ Lazy.nvim will install all dependencies automatically.
 
 ## 5️⃣ Build Telescope Native
 
-```bash
-cd ~/.local/share/nvim/lazy/telescope-fzf-native.nvim
-make clean && make
-```
+This is now automatic. On Termux, the config builds with `CC=clang` and falls back to CMake if `make` fails.
 
-If `make` fails, ensure `clang`, `make`, and `cmake` are installed (already included in base packages).
+If you still see build errors, ensure `clang`, `make`, and `cmake` are installed (already included in base packages).
 
 ---
 
