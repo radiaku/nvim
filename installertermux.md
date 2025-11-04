@@ -46,8 +46,8 @@ cargo install stylua --locked
 CGO_ENABLED=0 go install golang.org/x/tools/gopls@latest
 
 # Ensure tools are on PATH
-echo 'export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/go/bin:$PATH"' >> ~/.bashrc
-source ~/.bashrc
+# echo 'export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/go/bin:$PATH"' >> ~/.bashrc
+# source ~/.bashrc
 ```
 
 Optional (if your shell doesn’t find `$HOME/go/bin` reliably): install `gopls` to Termux’s bin in one go.
