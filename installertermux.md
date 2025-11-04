@@ -291,6 +291,30 @@ CGO_ENABLED=0 go install golang.org/x/tools/gopls@latest
 which gopls
 ```
 
+### go.nvim tool installs fail with `runtime/cgo` or `aarch64-linux-android-clang`
+Some Go developer tools (e.g., `gonew`, `gotests`, `impl`, `fillstruct`, `iferr`, `callgraph`) can try to use CGO and fail on Android.
+
+Disable CGO and install them to Termux’s bin:
+
+```bash
+pkg install -y golang clang
+export GOPATH="$HOME/.local/share/go"
+export GOBIN="$PREFIX/bin"
+mkdir -p "$GOBIN" "$GOPATH"
+
+# Common Go tools (Termux-safe)
+CGO_ENABLED=0 go install golang.org/x/tools/cmd/gonew@latest
+CGO_ENABLED=0 go install github.com/cweill/gotests/gotests@latest
+CGO_ENABLED=0 go install github.com/koron/iferr@latest
+CGO_ENABLED=0 go install golang.org/x/tools/cmd/callgraph@latest
+CGO_ENABLED=0 go install github.com/josharian/impl@latest
+CGO_ENABLED=0 go install github.com/davidrjenni/reftools/cmd/fillstruct@latest
+
+which gonew gotests iferr callgraph impl fillstruct
+```
+
+Note: This config also auto-disables CGO during go.nvim tool installs when Termux is detected.
+
 ### lua-language-server “current platform is unsupported”
 Use the Termux package instead of Mason:
 
