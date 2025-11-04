@@ -2,6 +2,7 @@ Radia’s Neovim configuration — fast, pragmatic, and organized.
 
 This README is a friendly overview. For full setup details and all key mappings, see:
 - [Installer Guide](installer.md)
+- [Fonts: Nerd Font Install](fonts-nerd.md)
 - [Keymaps](keymaps.md)
 - [Git Profile Setup](.gitconfig.md)
 
