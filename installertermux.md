@@ -52,9 +52,16 @@ cargo install stylua --locked
 CGO_ENABLED=0 go install golang.org/x/tools/gopls@latest
 ```
 
-
 ```bash
 npm install -g basedpyright
+```
+
+```bash
+pkg install lazygit yazi
+```
+
+```bash
+apt install ffmpeg 7zip jq poppler-utils fd-find ripgrep fzf zoxide imagemagick
 ```
 
 ```bash
