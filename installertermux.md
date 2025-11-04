@@ -61,7 +61,7 @@ pkg install lazygit yazi
 ```
 
 ```bash
-apt install ffmpeg 7zip jq poppler-utils fd-find ripgrep fzf zoxide imagemagick
+apt install ffmpeg 7zip jq  ripgrep fzf zoxide imagemagick
 ```
 
 ```bash
