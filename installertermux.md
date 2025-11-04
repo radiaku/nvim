@@ -17,7 +17,6 @@
 - [7. Formatters & Linters](#7-formatters--linters)
 - [8. Configure PATH in Neovim](#8-configure-path-in-neovim)
 - [9. Verify Installation](#9-verify-installation)
-- [10. Quick Summary](#10-quick-summary)
 - [💡 Extra Tips](#-extra-tips)
 
 ---
@@ -31,53 +30,47 @@ pkg update -y && pkg upgrade -y
 
 ---
 
-## 2️⃣ Install Base Packages
-<details>
-<summary>Click to expand</summary>
-
-```bash
-pkg install -y git curl wget unzip tar neovim nodejs python clang make cmake ripgrep fd
-```
+## 2️⃣ Install Everything (one place)
 
 ```bash
 pkg update -y && pkg upgrade -y
-pkg install -y git curl wget ca-certificates openssl-tool \
-               clang make cmake \
-               neovim nodejs python \
-               golang \
-               openjdk-21
+pkg install -y neovim git curl wget ca-certificates openssl-tool unzip tar nodejs python golang openjdk-21 rust clang make cmake ripgrep fd lua-language-server fzf jq bat tree tmux zoxide
+
+# Python formatters/linters
+pip install --user black pylint
+
+# Lua formatter
+cargo install stylua --locked
+
+# Go LSP (Android-safe)
+CGO_ENABLED=0 go install golang.org/x/tools/gopls@latest
+
+# Ensure tools are on PATH
+echo 'export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/go/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
 ```
 
-Optional extras for better experience:
+Optional (if your shell doesn’t find `$HOME/go/bin` reliably): install `gopls` to Termux’s bin in one go.
+
 ```bash
-pkg install -y fzf lua-language-server jq bat tree
+export GOPATH="$HOME/.local/share/go"
+export GOBIN="$PREFIX/bin"
+mkdir -p "$GOBIN" "$GOPATH"
+CGO_ENABLED=0 go install golang.org/x/tools/gopls@latest
 ```
-</details>
+
+This consolidates all installs up front.
 
 ---
 
 ## 3️⃣ Install Rust & Cargo
-<details>
-<summary>Click to expand</summary>
 
-Termux’s `rust` package already includes Cargo.
+Rust and Cargo are installed above. Check versions:
 
-```bash
-pkg install -y rust
-```
-
-Then make sure Cargo binaries are visible:
-```bash
-echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.bashrc
-export PATH="$HOME/.cargo/bin:$PATH"
-```
-
-Check versions:
 ```bash
 rustc --version
 cargo --version
 ```
-</details>
 
 ---
 
@@ -107,48 +100,22 @@ Lazy.nvim will install all dependencies automatically.
 ---
 
 ## 5️⃣ Build Telescope Native
-<details>
-<summary>Click to expand</summary>
 
 ```bash
 cd ~/.local/share/nvim/lazy/telescope-fzf-native.nvim
 make clean && make
 ```
 
-If `make` fails:
-```bash
-pkg install -y clang make cmake
-```
-</details>
+If `make` fails, ensure `clang`, `make`, and `cmake` are installed (already included in base packages).
 
 ---
 
 ## 6️⃣ LSPs on Termux
-<details>
-<summary>Click to expand</summary>
 
-On Termux, prefer system packages for Lua and Go, and use Mason for Node-based servers.
+Lua (`lua-language-server`) and Go (`gopls`) are installed above. Use Mason for Node-based servers.
 
-System installs (copy-paste):
-```bash
-pkg install -y lua-language-server golang
-# gopls: build without CGO so it works on Android
-CGO_ENABLED=0 go install golang.org/x/tools/gopls@latest
-# ensure Go bin is on PATH
-echo 'export PATH="$HOME/go/bin:$PATH"' >> ~/.bashrc
-source ~/.bashrc
-```
-
-### 🟦 Go: gopls alternative install (to `$PREFIX/bin`)
-If your shell does not pick up `$HOME/go/bin` reliably, install `gopls` directly to Termux’s bin:
-```bash
-pkg install -y golang
-export GOPATH="$HOME/.local/share/go"
-export GOBIN="$PREFIX/bin"
-mkdir -p "$GOBIN" "$GOPATH"
-CGO_ENABLED=0 go install golang.org/x/tools/gopls@latest
-which gopls  # should print $PREFIX/bin/gopls
-```
+### 🟦 Go: gopls to `$PREFIX/bin`
+If needed, use the optional block in section 2 to install `gopls` directly to Termux’s bin.
 
 <!-- Java/JDTLS intentionally unsupported on Termux in this config. -->
 
@@ -163,43 +130,22 @@ Verify:
 ```
 :checkhealth
 ```
-</details>
 
 ---
 
 ## 7️⃣ Formatters & Linters
-<details>
-<summary>Click to expand</summary>
 
-Some binaries (like `stylua`, `black`, `pylint`) aren’t built for Android,
-so install them manually:
+Installed above. Check versions:
 
-### 🐍 Python tools
-```bash
-pip install --user black pylint
-echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
-```
-
-### 🌙 Lua (via Cargo)
-```bash
-cargo install stylua --locked
-```
-
-Check:
 ```bash
 stylua --version
 black --version
 pylint --version
 ```
-</details>
 
 ---
 
 ## 8️⃣ Configure PATH in Neovim
-<details>
-<summary>Click to expand</summary>
-
-If Neovim can’t find your binaries, extend PATH in Lua:
 
 ```lua
 vim.env.PATH = table.concat({
@@ -208,13 +154,10 @@ vim.env.PATH = table.concat({
   vim.env.PATH,
 }, ":")
 ```
-</details>
 
 ---
 
 ## 9️⃣ Verify Installation
-<details>
-<summary>Click to expand</summary>
 
 Inside Neovim:
 ```
@@ -227,22 +170,9 @@ You should see ✅ for:
 - `stylua`
 - `black`
 - `pylint`
-</details>
 
 ---
 
-## 🔟 Quick Summary
-```bash
-pkg install -y neovim git nodejs python rust clang make cmake ripgrep fd
-pkg install -y openjdk-21 lua-language-server golang
-CGO_ENABLED=0 go install golang.org/x/tools/gopls@latest
-git clone https://github.com/radiaku/nvim ~/.config/nvim
-cargo install stylua --locked
-pip install --user black pylint
-nvim
-```
-
----
 
 ## 💡 Extra Tips
 
@@ -251,23 +181,15 @@ nvim
   ```lua
   pcall(require("telescope").load_extension, "fzf")
   ```
-- Clipboard sync with tmux (OSC52):
-  ```bash
-  pkg install -y tmux
-  ```
+- Clipboard sync with tmux (OSC52): tmux is already installed above.
 - For persistent environment:
   ```bash
   source ~/.bashrc
   ```
 
-- Fast directory jumping (zoxide):
-  ```bash
-  pkg install -y zoxide fzf
-  # bash
-  echo 'eval "$(zoxide init bash)"' >> ~/.bashrc && source ~/.bashrc
-  # zsh
-  echo 'eval "$(zoxide init zsh)"' >> ~/.zshrc
-  ```
+- Fast directory jumping (zoxide): zoxide and fzf are installed above.
+  - bash: `echo 'eval "$(zoxide init bash)"' >> ~/.bashrc && source ~/.bashrc`
+  - zsh: `echo 'eval "$(zoxide init zsh)"' >> ~/.zshrc`
   - Use `z <keyword>` to jump; `zi` opens an interactive fzf picker.
   - Works inside tmux automatically since it loads your shell configs.
 
@@ -275,61 +197,21 @@ nvim
 
 ## 🚑 Troubleshooting (Termux-specific)
 
-Some Mason packages don’t ship Android builds. Use system installs or build from source.
+Some Mason packages don’t ship Android builds. Prefer system installs or the consolidated commands in section 2.
 
 <!-- jdtls removed from Termux docs to prevent confusion and unwanted installs. -->
 
 ### gopls fails with `runtime/cgo` and `aarch64-linux-android-clang`
-Disable CGO and install to Termux’s bin:
-
-```bash
-pkg install -y golang
-export GOPATH="$HOME/.local/share/go"
-export GOBIN="$PREFIX/bin"
-mkdir -p "$GOBIN" "$GOPATH"
-CGO_ENABLED=0 go install golang.org/x/tools/gopls@latest
-which gopls
-```
+The install block in section 2 already disables CGO. If your shell doesn’t see `gopls`, use the optional `$PREFIX/bin` install block there.
 
 ### go.nvim tool installs fail with `runtime/cgo` or `aarch64-linux-android-clang`
-Some Go developer tools (e.g., `gonew`, `gotests`, `impl`, `fillstruct`, `iferr`, `callgraph`) can try to use CGO and fail on Android.
-
-Disable CGO and install them to Termux’s bin:
-
-```bash
-pkg install -y golang clang
-export GOPATH="$HOME/.local/share/go"
-export GOBIN="$PREFIX/bin"
-mkdir -p "$GOBIN" "$GOPATH"
-
-# Common Go tools (Termux-safe)
-CGO_ENABLED=0 go install golang.org/x/tools/cmd/gonew@latest
-CGO_ENABLED=0 go install github.com/cweill/gotests/gotests@latest
-CGO_ENABLED=0 go install github.com/koron/iferr@latest
-CGO_ENABLED=0 go install golang.org/x/tools/cmd/callgraph@latest
-CGO_ENABLED=0 go install github.com/josharian/impl@latest
-CGO_ENABLED=0 go install github.com/davidrjenni/reftools/cmd/fillstruct@latest
-
-which gonew gotests iferr callgraph impl fillstruct
-```
-
-Note: This config also auto-disables CGO during go.nvim tool installs when Termux is detected.
+Use CGO-free installs as in section 2. This config also auto-disables CGO during go.nvim tool installs when Termux is detected.
 
 ### lua-language-server “current platform is unsupported”
-Use the Termux package instead of Mason:
-
-```bash
-pkg install -y lua-language-server
-```
+Use the Termux package included in the base install (section 2).
 
 ### stylua “current platform is unsupported”
-Build via Cargo:
-
-```bash
-pkg install -y rust
-cargo install stylua --locked
-which stylua
-```
+Install via Cargo as in section 2.
 
 After installing these system binaries, Neovim will prefer tools found on `PATH` even if Mason couldn’t install them.
 
