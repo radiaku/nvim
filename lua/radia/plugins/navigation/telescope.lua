@@ -22,7 +22,20 @@ return {
 	-- branch = "0.1.x",
 	dependencies = {
 		-- 	{ "nvim-telescope/telescope-fzy-native.nvim" },
-		{ "nvim-telescope/telescope-fzf-native.nvim", commit = "1f08ed", build = "make" },
+		{
+			"nvim-telescope/telescope-fzf-native.nvim",
+			commit = "1f08ed",
+			build = function()
+				local prefix = vim.env.PREFIX or ""
+				local is_termux = prefix:find("com%.termux") ~= nil
+				local cmd = is_termux and "make CC=clang" or "make"
+				vim.fn.system(cmd)
+				if vim.v.shell_error ~= 0 and vim.fn.executable("cmake") == 1 then
+					vim.fn.system("cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release")
+					vim.fn.system("cmake --build build --config Release")
+				end
+			end,
+		},
 		{ "nvim-telescope/telescope-live-grep-args.nvim", commit = "b80ec2" },
 	},
 	config = function()
