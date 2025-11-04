@@ -87,6 +87,13 @@ cargo --version
 
 ```bash
 git clone https://github.com/radiaku/nvim ~/.config/nvim
+```
+
+```bash
+cp ~/.config/nvim/.bashrc ~/.bashrc
+```
+
+```bash
 nvim
 ```
 
