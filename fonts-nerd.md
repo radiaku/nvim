@@ -13,11 +13,12 @@ pkg install -y curl unzip
 mkdir -p ~/.termux
 
 # Download the Nerd Font zip (IosevkaTerm variant)
-curl -fLo /tmp/IosevkaTerm.zip \
+TMP="${TMPDIR:-$PREFIX/tmp}"; mkdir -p "$TMP"
+curl -fLo "$TMP/IosevkaTerm.zip" \
   https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/IosevkaTerm.zip
 
 # Install mono regular TTF as Termux font
-unzip -oj /tmp/IosevkaTerm.zip '*Mono-Regular.ttf' -d ~/.termux/
+unzip -oj "$TMP/IosevkaTerm.zip" '*Mono-Regular.ttf' -d ~/.termux/
 mv ~/.termux/IosevkaTermNerdFontMono-Regular.ttf ~/.termux/font.ttf
 
 # Apply
@@ -84,10 +85,11 @@ Then select the font in your terminal settings (Windows Terminal/Alacritty/WezTe
 pkg install -y curl unzip
 mkdir -p ~/.termux
 
-curl -fLo /tmp/JetBrainsMono.zip \
+TMP="${TMPDIR:-$PREFIX/tmp}"; mkdir -p "$TMP"
+curl -fLo "$TMP/JetBrainsMono.zip" \
   https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip
 
-unzip -oj /tmp/JetBrainsMono.zip '*Mono-Regular.ttf' -d ~/.termux/
+unzip -oj "$TMP/JetBrainsMono.zip" '*Mono-Regular.ttf' -d ~/.termux/
 mv ~/.termux/JetBrainsMonoNerdFontMono-Regular.ttf ~/.termux/font.ttf
 
 termux-reload-settings
