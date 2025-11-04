@@ -94,6 +94,10 @@ cp ~/.config/nvim/.bashrc ~/.bashrc
 ```
 
 ```bash
+source ~/.bashrc
+```
+
+```bash
 nvim
 ```
 
