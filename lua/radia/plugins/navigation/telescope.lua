@@ -132,11 +132,6 @@ return {
 					"--glob",
 					"!**/.git/*",
 				},
-				borderchars = {
-					preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-					prompt = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-					results = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-				},
 				file_ignore_patterns = {
 					"node_modules",
 					"%.git/",
@@ -188,13 +183,14 @@ return {
 			},
 			extensions = {
 				live_grep_args = {
-					auto_quoting = true, -- ← this makes special chars literal
+					auto_quoting = true,
 				},
 			},
 		})
 
+		-- telescope.load_extension("fzy_native")
 		telescope.load_extension("neoclip")
-		pcall(telescope.load_extension, "fzf")
+		telescope.load_extension("fzf")
 		telescope.load_extension("live_grep_args")
 		-- telescope.load_extension("refactoring")
 
