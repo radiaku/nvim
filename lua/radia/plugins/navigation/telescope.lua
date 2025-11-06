@@ -185,7 +185,7 @@ return {
 				live_grep_args = {
 					auto_quoting = true,
 				},
-			},
+			}
 		})
 
 		-- telescope.load_extension("fzy_native")
