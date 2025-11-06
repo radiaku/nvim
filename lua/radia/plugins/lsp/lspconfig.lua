@@ -20,6 +20,15 @@ return {
 			return p ~= "" and p or nil
 		end
 
+		local function ensure(bin, hint)
+			local p = exepath(bin)
+			if not p then
+				vim.notify(string.format("[LSP] '%s' not found on PATH. %s", bin, hint or ""), vim.log.levels.WARN)
+				return nil
+			end
+			return p
+		end
+
 		local util = require("lspconfig.util") -- NOT "lspconfig/util"
 
 		-- import mason_lspconfig plugin
@@ -103,6 +112,12 @@ return {
 
 			["lua_ls"] = function()
 				-- configure lua server (with special settings)
+				-- On Termux, Mason's lua_ls is not supported; skip if binary missing
+				local lua_ls_bin = exepath("lua-language-server")
+				if not lua_ls_bin then
+					vim.notify("[LSP] 'lua-language-server' not found. On Termux, install from source or skip.", vim.log.levels.WARN)
+					return
+				end
 				lspconfig["lua_ls"].setup({
 					-- capabilities = capabilities,
 					settings = {
@@ -163,10 +178,7 @@ return {
 				-- Prefer npm-based server on Termux/Linux/macOS
 				local cmd = exepath("basedpyright-langserver") or exepath("pyright-langserver")
 				if not cmd then
-					vim.notify(
-						"[LSP] basedpyright-langserver not found on PATH; install with: npm i -g basedpyright",
-						vim.log.levels.WARN
-					)
+					vim.notify("[LSP] Python LS not found. Install: npm i -g basedpyright", vim.log.levels.WARN)
 					return
 				end
 
@@ -243,6 +255,8 @@ return {
 			end,
 
 			["vtsls"] = function()
+				local vtsls_bin = ensure("vtsls", "Install: npm i -g vtsls typescript")
+				if not vtsls_bin then return end
 				lspconfig["vtsls"].setup({
 					capabilities = capabilities,
 					root_dir = util.root_pattern("package.json") or vim.fn.getcwd(),
@@ -251,6 +265,8 @@ return {
 			end,
 
 			["kotlin_language_server"] = function()
+				local bin = vim.fn.has("win32") == 1 and "kotlin-language-server.cmd" or "kotlin-language-server"
+				if not ensure(bin, "Install: scoop/choco on Windows, or your package manager on Unix") then return end
 				lspconfig["kotlin_language_server"].setup({
 					filetypes = {
 						"kotlin",
@@ -258,11 +274,12 @@ return {
 					},
 					capabilities = capabilities,
 					root_dir = util.root_pattern("package.json", ".git") or vim.fn.getcwd(),
-					cmd = { "kotlin-language-server.cmd" },
+					cmd = { bin },
 				})
 			end,
 
 			["clangd"] = function()
+				if not ensure("clangd", "Install: pkg install clangd") then return end
 				lspconfig["clangd"].setup({
 					filetypes = {
 						"c",
@@ -293,6 +310,7 @@ return {
 			end,
 
 			["tailwindcss"] = function()
+				if not ensure("tailwindcss-language-server", "Install: npm i -g @tailwindcss/language-server") then return end
 				lspconfig["tailwindcss"].setup({
 					filetypes = {
 						"css",
@@ -314,6 +332,7 @@ return {
 			end,
 
 			["gopls"] = function()
+				if not ensure("gopls", "Install: pkg install gopls or 'go install golang.org/x/tools/gopls@latest'") then return end
 				lspconfig["gopls"].setup({
 					filetypes = { "go" },
 					settings = {
@@ -346,6 +365,7 @@ return {
 			-- end,
 
 			["intelephense"] = function()
+				if not ensure("intelephense", "Install: npm i -g intelephense") then return end
 				lspconfig["intelephense"].setup({
 					-- capabilities = capabilities,
 					cmd = { "intelephense", "--stdio" },
@@ -477,6 +497,7 @@ return {
 			-- end,
 
 			["html"] = function()
+				if not ensure("vscode-html-language-server", "Install: npm i -g vscode-langservers-extracted") then return end
 				lspconfig["html"].setup({
 					filetypes = {
 						"html",
