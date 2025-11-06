@@ -246,3 +246,16 @@ After installing these system binaries, Neovim will prefer tools found on `PATH`
 
 ✨ **Enjoy your fully working Neovim setup on Termux!**  
 Maintained by [@radiaku](https://github.com/radiaku)
+### 🧠 Language Servers (Global Installs)
+- Node-based servers (requires `nodejs`):
+  - `npm i -g vtsls typescript`
+  - `npm i -g vscode-langservers-extracted`
+  - `npm i -g @tailwindcss/language-server`
+  - `npm i -g intelephense`
+  - `npm i -g basedpyright`
+- Go:
+  - `pkg install gopls` or `go install golang.org/x/tools/gopls@latest`
+- Optional C/C++:
+  - `pkg install clangd`
+
+Note: On Termux, global `npm` installs place binaries in `$PREFIX/bin`. Ensure `$PREFIX/bin` is on `PATH` (tmux.conf already propagates it).
