@@ -190,7 +190,44 @@ return {
 
 		-- telescope.load_extension("fzy_native")
 		telescope.load_extension("neoclip")
-		telescope.load_extension("fzf")
+
+		local function ensure_fzf_native_built()
+			local dir = vim.fn.stdpath("data") .. "/lazy/telescope-fzf-native.nvim"
+			local lib = dir .. "/build/libfzf.so"
+			if vim.fn.filereadable(lib) == 1 then
+				return true
+			end
+			local has_make = vim.fn.executable("make") == 1
+			if has_make == false then
+				return false
+			end
+			local prefix = vim.env.PREFIX or ""
+			local is_termux = prefix:find("com%.termux") ~= nil
+			local has_clang = vim.fn.executable("clang") == 1
+			local cmd = (is_termux and has_clang) and "make CC=clang" or "make"
+			local ok = false
+			if vim.system then
+				local res = vim.system({ "sh", "-lc", "cd " .. vim.fn.shellescape(dir) .. " && make clean && " .. cmd }, { text = true }):wait()
+				ok = (res and res.code == 0)
+			else
+				vim.fn.system("cd " .. dir .. " && make clean && " .. cmd)
+				ok = (vim.v.shell_error == 0)
+			end
+			return ok and (vim.fn.filereadable(lib) == 1)
+		end
+
+		local ok_fzf = pcall(require("telescope").load_extension, "fzf")
+		if not ok_fzf then
+			if ensure_fzf_native_built() then
+				pcall(require("telescope").load_extension, "fzf")
+			else
+				vim.notify(
+					"telescope-fzf-native is not built. Install build tools and run :Lazy build telescope-fzf-native.nvim",
+					vim.log.levels.WARN
+				)
+			end
+		end
+
 		telescope.load_extension("live_grep_args")
 		-- telescope.load_extension("refactoring")
 
