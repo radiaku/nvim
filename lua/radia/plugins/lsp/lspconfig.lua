@@ -542,5 +542,121 @@ return {
 			end,
 		})
 
+		-- Direct setups on Termux or when installed outside Mason
+		-- This bypasses Mason's handlers and configures servers if binaries are present.
+		do
+			-- gopls
+			local gopls_bin = ensure("gopls", "Install: pkg install gopls or 'go install golang.org/x/tools/gopls@latest'")
+			if gopls_bin then
+				lspconfig["gopls"].setup({
+					filetypes = { "go" },
+					settings = {
+						gopls = {
+							analyses = {
+								modernize = false,
+								unusedparams = false,
+								unusedwrite = false,
+								errcheck = false,
+								unusedfunc = false,
+								unused = false,
+							},
+						},
+					},
+				})
+			end
+
+			-- vtsls (TypeScript/JS)
+			local vtsls_bin = ensure("vtsls", "Install: npm i -g vtsls typescript")
+			if vtsls_bin then
+				lspconfig["vtsls"].setup({
+					capabilities = capabilities,
+					root_dir = util.root_pattern("package.json") or vim.fn.getcwd(),
+				})
+			end
+
+			-- HTML
+			local html_bin = ensure("vscode-html-language-server", "Install: npm i -g vscode-langservers-extracted")
+			if html_bin then
+				lspconfig["html"].setup({
+					filetypes = { "html" },
+					capabilities = capabilities,
+					init_options = {
+						embeddedLanguages = { css = true, javascript = true },
+						provideFormatter = true,
+					},
+					root_dir = util.root_pattern("package.json") or vim.fn.getcwd(),
+					autoformat = false,
+				})
+			end
+
+			-- TailwindCSS
+			local tw_bin = ensure("tailwindcss-language-server", "Install: npm i -g @tailwindcss/language-server")
+			if tw_bin then
+				lspconfig["tailwindcss"].setup({
+					filetypes = { "css", "typescriptreact", "typescript", "javascriptreact", "templ", "sass", "scss", "less", "liquid", "svelte" },
+					capabilities = capabilities,
+					root_dir = util.root_pattern("package.json") or vim.fn.getcwd(),
+					autoformat = false,
+				})
+			end
+
+			-- Intelephense (PHP)
+			local intele_bin = ensure("intelephense", "Install: npm i -g intelephense")
+			if intele_bin then
+				lspconfig["intelephense"].setup({
+					cmd = { "intelephense", "--stdio" },
+					filetypes = { "php" },
+					root_dir = function(pattern)
+						local cwd = vim.fn.getcwd()
+						local root = util.root_pattern("composer.json", ".git")(pattern)
+						return util.path.is_descendant(cwd, root) and cwd or root
+					end,
+					settings = {
+						intelephense = {
+							diagnostics = {
+								unusedSymbols = false,
+								undefinedSymbols = false,
+								undefinedMethods = false,
+								undefinedProperties = false,
+								undefinedTypes = false,
+							},
+							telemetry = { enabled = false },
+							completion = { fullyQualifyGlobalConstantsAndFunctions = false },
+							phpdoc = { returnVoid = false },
+						},
+					},
+				})
+			end
+
+			-- Python (basedpyright)
+			local py_bin = exepath("basedpyright-langserver") or exepath("pyright-langserver")
+			if py_bin then
+				lspconfig[server_namepy].setup({
+					filetypes = { "python", ".py" },
+					capabilities = capabilities,
+					cmd = { py_bin, "--stdio" },
+					root_dir = function(fname)
+						table.unpack = table.unpack or unpack
+						local python_root_files = { "WORKSPACE", "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile" }
+						return util.root_pattern(table.unpack(python_root_files))(fname)
+							or util.find_git_ancestor(fname)
+							or util.path.dirname(fname)
+					end,
+					settings = { [server_namepy] = { analysis = { typeCheckingMode = "basic", autoSearchPaths = true, diagnosticMode = "openFilesOnly", useLibraryCodeForTypes = true } } },
+				})
+			end
+
+			-- clangd (optional)
+			local clangd_bin = exepath("clangd")
+			if clangd_bin then
+				lspconfig["clangd"].setup({
+					filetypes = { "c", "cpp", "objc", "objcpp" },
+					capabilities = capabilities,
+					root_dir = util.root_pattern("package.json", ".clangd", "compile_flags.txt", "compile_commands.json", ".vim/", ".git", ".hg") or vim.fn.getcwd(),
+					settings = { clangd = { diagnostics = { severityOverrides = { ["*"] = "ignore" } } } },
+				})
+			end
+		end
+
 	end,
 }
