@@ -34,7 +34,7 @@ pkg update -y && pkg upgrade -y
 
 ```bash
 pkg update -y && pkg upgrade -y
-pkg install -y neovim git curl wget ca-certificates openssl-tool unzip tar nodejs python golang openjdk-21 rust clang make cmake ripgrep fd lua-language-server fzf jq bat tree tmux zoxide
+pkg install -y neovim git curl wget ca-certificates openssl-tool unzip tar nodejs python golang openjdk-21 rust clang make cmake ripgrep fd lua-language-server fzf jq bat tree tmux zoxide termux-api
 ```
 
 ```bash
@@ -199,6 +199,16 @@ You should see ✅ for:
   pcall(require("telescope").load_extension, "fzf")
   ```
 - Clipboard sync with tmux (OSC52): tmux is already installed above.
+
+### 📋 Clipboard with Termux:API
+- Install the companion app from F-Droid: `Termux:API`.
+- Install the CLI package (already in section 2): `pkg install termux-api`.
+- Test it works:
+  ```bash
+  termux-clipboard-set "hello"
+  termux-clipboard-get
+  ```
+- Neovim uses these automatically in this config. If you prefer faster copies inside tmux, use the provided OSC52 mapping: visually select and press `<leader>y`.
 - For persistent environment:
   ```bash
   source ~/.bashrc

@@ -23,6 +23,32 @@ _G.themesname = "sonokai"
 vim.opt.clipboard = "unnamedplus"
 
 -- Termux clipboard provider: use Termux:API tools when available
+do
+  local prefix = vim.env.PREFIX
+  if prefix and prefix:find("/com.termux/") then
+    local set_bin = prefix .. "/bin/termux-clipboard-set"
+    local get_bin = prefix .. "/bin/termux-clipboard-get"
+    if vim.fn.executable(set_bin) == 1 and vim.fn.executable(get_bin) == 1 then
+      vim.g.clipboard = {
+        name = "termux-api",
+        copy = {
+          ["+"] = set_bin,
+          ["*"] = set_bin,
+        },
+        paste = {
+          ["+"] = get_bin,
+          ["*"] = get_bin,
+        },
+        cache_enabled = 0,
+      }
+    else
+      vim.notify(
+        "Termux clipboard tools not found. Install the Termux:API app and run 'pkg install termux-api'",
+        vim.log.levels.WARN
+      )
+    end
+  end
+end
 
 -- if vim.fn.has("win32") == 1 then
 -- 	-- Use win32yank for clipboard support
