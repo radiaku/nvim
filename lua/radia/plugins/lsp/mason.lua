@@ -84,15 +84,65 @@ return {
 		-- 	table.insert(ensure_installed, "basedpyright")
 		-- end
 
+
+		-- Only ensure-install servers/tools that are missing globally
+		local function exepath(bin)
+			local p = vim.fn.exepath(bin)
+			return p ~= "" and p or nil
+		end
+
+		local server_bins = {
+			gopls = { "gopls" },
+			vtsls = { "vtsls" },
+			cssls = { "vscode-css-language-server" },
+			html = { "vscode-html-language-server" },
+			emmet_ls = { "emmet-language-server" },
+			tailwindcss = { "tailwindcss-language-server" },
+			intelephense = { "intelephense" },
+			jsonls = { "vscode-json-language-server" },
+			basedpyright = { "basedpyright-langserver", "pyright-langserver" },
+			lua_ls = { "lua-language-server" },
+		}
+
+		local filtered_servers = {}
+		local seen = {}
+		for _, name in ipairs(servers) do
+			if not seen[name] then
+				seen[name] = true
+				-- On Termux, avoid Mason for lua_ls
+				if not (is_termux and name == "lua_ls") then
+					local bins = server_bins[name]
+					local found = false
+					for _, b in ipairs(bins or {}) do
+						if exepath(b) then
+							found = true
+							break
+						end
+					end
+					if not found then
+						table.insert(filtered_servers, name)
+					end
+				end
+			end
+		end
+
+		local filtered_tools = {}
+		for _, t in ipairs(tools) do
+			-- stylua via Mason unsupported on Termux
+			if not (is_termux and t == "stylua") then
+				if not exepath(t) then
+					table.insert(filtered_tools, t)
+				end
+			end
+		end
+
 		mason_lspconfig.setup({
-			-- list of servers for mason to install
-			ensure_installed = servers,
-			-- auto-install configured servers (with lspconfig)
-			automatic_installation = not is_termux, -- disable on Termux to avoid failed installs
+			ensure_installed = filtered_servers,
+			automatic_installation = not is_termux,
 		})
 
 		mason_tool_installer.setup({
-			ensure_installed = tools,
+			ensure_installed = filtered_tools,
 		})
 	end,
 }
