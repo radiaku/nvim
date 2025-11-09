@@ -86,9 +86,9 @@ return {
 			-- ensure the sign names exist without redefining them repeatedly.
 			local names = {
 				{ name = "Error", icon = sign_text[sev.ERROR] },
-				{ name = "Warn", icon = sign_text[sev.WARN] },
-				{ name = "Info", icon = sign_text[sev.INFO] },
-				{ name = "Hint", icon = sign_text[sev.HINT] },
+				{ name = "Warn",  icon = sign_text[sev.WARN] },
+				{ name = "Info",  icon = sign_text[sev.INFO] },
+				{ name = "Hint",  icon = sign_text[sev.HINT] },
 			}
 			for _, s in ipairs(names) do
 				local hl = "DiagnosticSign" .. s.name
@@ -142,7 +142,8 @@ return {
 				-- On Termux, Mason's lua_ls is not supported; skip if binary missing
 				local lua_ls_bin = exepath("lua-language-server")
 				if not lua_ls_bin then
-					vim.notify("[LSP] 'lua-language-server' not found. On Termux, install from source or skip.", vim.log.levels.WARN)
+					vim.notify("[LSP] 'lua-language-server' not found. On Termux, install from source or skip.",
+						vim.log.levels.WARN)
 					return
 				end
 				lspconfig["lua_ls"].setup({
@@ -216,8 +217,8 @@ return {
 					root_dir = function(fname)
 						table.unpack = table.unpack or unpack -- 5.1 compatibility
 						return util.root_pattern(table.unpack(python_root_files))(fname)
-							or util.find_git_ancestor(fname)
-							or util.path.dirname(fname)
+								or util.find_git_ancestor(fname)
+								or util.path.dirname(fname)
 					end,
 					settings = {
 						[server_namepy] = {
@@ -426,53 +427,6 @@ return {
 				})
 			end,
 
-			-- ["roslyn"] = function()
-			-- 	-- require("roslyn").setup({
-			-- 	lspconfig["intelephense"].setup({
-			-- 		config = {
-			-- 			settings = {
-			-- 				["csharp|background_analysis"] = {
-			-- 					dotnet_compiler_diagnostics_scope = "fullSolution",
-			-- 				},
-			-- 				["csharp|inlay_hints"] = {
-			-- 					csharp_enable_inlay_hints_for_implicit_object_creation = true,
-			-- 					csharp_enable_inlay_hints_for_implicit_variable_types = true,
-			-- 					csharp_enable_inlay_hints_for_lambda_parameter_types = true,
-			-- 					csharp_enable_inlay_hints_for_types = true,
-			-- 					dotnet_enable_inlay_hints_for_indexer_parameters = true,
-			-- 					dotnet_enable_inlay_hints_for_literal_parameters = true,
-			-- 					dotnet_enable_inlay_hints_for_object_creation_parameters = true,
-			-- 					dotnet_enable_inlay_hints_for_other_parameters = true,
-			-- 					dotnet_enable_inlay_hints_for_parameters = true,
-			-- 					dotnet_suppress_inlay_hints_for_parameters_that_differ_only_by_suffix = true,
-			-- 					dotnet_suppress_inlay_hints_for_parameters_that_match_argument_name = true,
-			-- 					dotnet_suppress_inlay_hints_for_parameters_that_match_method_intent = true,
-			-- 				},
-			-- 				["csharp|code_lens"] = {
-			-- 					dotnet_enable_references_code_lens = true,
-			-- 				},
-			-- 			},
-			-- 		},
-			-- 		-- exe = {
-			-- 		-- 	"dotnet",
-			-- 		-- 	vim.fs.joinpath(vim.fn.stdpath("data"), "roslyn", "Microsoft.CodeAnalysis.LanguageServer.dll"),
-			-- 		-- },
-			-- 		args = {
-			-- 			"--logLevel=Debug",
-			-- 			-- "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.get_log_path()),
-			-- 			"--extensionLogDirectory=C:/Users/DELL/.log",
-			-- 		},
-			-- 		-- filewatching = true,
-			-- 	})
-			-- end,
-
-			-- ["csharp"] = function()
-			-- 	lspconfig["csharp"].setup({
-			-- 		filetypes = { "cs" },
-			-- 		capabilities = capabilities,
-			-- 	})
-			-- end,
-
 			["omnisharp"] = function()
 				local lsp_server_omnisharp = vim.fn.expand("$HOME/.config/omnisharp/omnisharp.exe")
 				local pid = vim.fn.getpid()
@@ -484,10 +438,10 @@ return {
 					},
 					capabilities = capabilities,
 					root_dir = util.root_pattern("package.json")
-						or ".git"
-						or util.root_pattern("csproj")
-						or util.root_pattern("sln")
-						or vim.fn.getcwd(),
+							or ".git"
+							or util.root_pattern("csproj")
+							or util.root_pattern("sln")
+							or vim.fn.getcwd(),
 					autoformat = false,
 					cmd = { lsp_server_omnisharp, "--languageserver", "--hostPID", tostring(pid) },
 					-- cmd = {
@@ -658,90 +612,94 @@ return {
 			-- Python (basedpyright)
 			local py_bin = exepath("basedpyright-langserver") or exepath("pyright-langserver")
 			if py_bin then
-			-- Detect Python venv and Termux site-packages to help import resolution
-			local function detect_python_venv()
-				local cwd = vim.fn.getcwd()
-				for _, name in ipairs({ ".venv", "venv", "env" }) do
-					local dir = cwd .. "/" .. name
-					if vim.fn.isdirectory(dir) == 1 then
-						return cwd, name
-					end
-				end
-				return nil, nil
-			end
-
-			local function termux_sitepackages()
-				local prefix_env = vim.env.PREFIX or ""
-				if prefix_env == "" then
-					return nil
-				end
-				local matches = vim.fn.glob(prefix_env .. "/lib/python*/site-packages", false, true)
-				if type(matches) == "table" then
-					for _, p in ipairs(matches) do
-						if vim.fn.isdirectory(p) == 1 then
-							return p
+				-- Detect Python venv and Termux site-packages to help import resolution
+				local function detect_python_venv()
+					local cwd = vim.fn.getcwd()
+					for _, name in ipairs({ ".venv", "venv", "env" }) do
+						local dir = cwd .. "/" .. name
+						if vim.fn.isdirectory(dir) == 1 then
+							return cwd, name
 						end
 					end
+					return nil, nil
 				end
-				return nil
-			end
 
-			local venv_path, venv_name = detect_python_venv()
-			local extra_paths = {}
-			local sp = termux_sitepackages()
-			if sp then table.insert(extra_paths, sp) end
-			-- Also use the project venv site-packages discovery helper
-			local project_sp = nil
-			pcall(function()
-				if type(find_site_packages) == "function" then
-					project_sp = find_site_packages(vim.fn.getcwd())
-				end
-			end)
-			if project_sp then table.insert(extra_paths, project_sp) end
-
-			-- Deduplicate paths to avoid redundant entries
-			local function dedupe_paths(paths)
-				local seen, out = {}, {}
-				for _, p in ipairs(paths) do
-					if p and p ~= "" and seen[p] ~= true then
-						seen[p] = true
-						table.insert(out, p)
+				local function termux_sitepackages()
+					local prefix_env = vim.env.PREFIX or ""
+					if prefix_env == "" then
+						return nil
 					end
+					local matches = vim.fn.glob(prefix_env .. "/lib/python*/site-packages", false, true)
+					if type(matches) == "table" then
+						for _, p in ipairs(matches) do
+							if vim.fn.isdirectory(p) == 1 then
+								return p
+							end
+						end
+					end
+					return nil
 				end
-				return out
-			end
-			extra_paths = dedupe_paths(extra_paths)
 
-			local py_settings = {
-				[server_namepy] = {
-					analysis = {
-						typeCheckingMode = "basic",
-						autoSearchPaths = true,
-						diagnosticMode = "openFilesOnly",
-						useLibraryCodeForTypes = true,
+				local venv_path, venv_name = detect_python_venv()
+				local extra_paths = {}
+				local sp = termux_sitepackages()
+				if sp then table.insert(extra_paths, sp) end
+				-- Also use the project venv site-packages discovery helper
+				local project_sp = nil
+				pcall(function()
+					if type(find_site_packages) == "function" then
+						project_sp = find_site_packages(vim.fn.getcwd())
+					end
+				end)
+				if project_sp then table.insert(extra_paths, project_sp) end
+
+				-- Deduplicate paths to avoid redundant entries
+				local function dedupe_paths(paths)
+					local seen, out = {}, {}
+					for _, p in ipairs(paths) do
+						if p and p ~= "" and seen[p] ~= true then
+							seen[p] = true
+							table.insert(out, p)
+						end
+					end
+					return out
+				end
+				extra_paths = dedupe_paths(extra_paths)
+
+				local py_settings = {
+					[server_namepy] = {
+						analysis = {
+							typeCheckingMode = "basic",
+							autoSearchPaths = true,
+							diagnosticMode = "openFilesOnly",
+							useLibraryCodeForTypes = true,
+							diagnosticSeverityOverrides = {
+								reportUnusedImport = "none",
+							},
+						},
 					},
-				},
-			}
-			if #extra_paths > 0 then
-				py_settings[server_namepy].analysis.extraPaths = extra_paths
-			end
-			if venv_path and venv_name then
-				py_settings.python = { venvPath = venv_path, venv = venv_name }
-			end
+				}
+				if #extra_paths > 0 then
+					py_settings[server_namepy].analysis.extraPaths = extra_paths
+				end
+				if venv_path and venv_name then
+					py_settings.python = { venvPath = venv_path, venv = venv_name }
+				end
 
-			lspconfig[server_namepy].setup({
-				filetypes = { "python", ".py" },
-				capabilities = capabilities,
-				cmd = { py_bin, "--stdio" },
-				root_dir = function(fname)
-					table.unpack = table.unpack or unpack
-					local python_root_files = { "WORKSPACE", "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile" }
-					return util.root_pattern(table.unpack(python_root_files))(fname)
-						or util.find_git_ancestor(fname)
-						or util.path.dirname(fname)
-				end,
-				settings = py_settings,
-			})
+				lspconfig[server_namepy].setup({
+					filetypes = { "python", ".py" },
+					capabilities = capabilities,
+					cmd = { py_bin, "--stdio" },
+					root_dir = function(fname)
+						table.unpack = table.unpack or unpack
+						local python_root_files = { "WORKSPACE", "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt",
+							"Pipfile" }
+						return util.root_pattern(table.unpack(python_root_files))(fname)
+								or util.find_git_ancestor(fname)
+								or util.path.dirname(fname)
+					end,
+					settings = py_settings,
+				})
 			end
 
 			-- clangd (optional)
@@ -750,11 +708,11 @@ return {
 				lspconfig["clangd"].setup({
 					filetypes = { "c", "cpp", "objc", "objcpp" },
 					capabilities = capabilities,
-					root_dir = util.root_pattern("package.json", ".clangd", "compile_flags.txt", "compile_commands.json", ".vim/", ".git", ".hg") or vim.fn.getcwd(),
+					root_dir = util.root_pattern("package.json", ".clangd", "compile_flags.txt", "compile_commands.json", ".vim/",
+						".git", ".hg") or vim.fn.getcwd(),
 					settings = { clangd = { diagnostics = { severityOverrides = { ["*"] = "ignore" } } } },
 				})
 			end
 		end
-
 	end,
 }
