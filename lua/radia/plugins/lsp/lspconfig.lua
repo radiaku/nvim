@@ -658,19 +658,90 @@ return {
 			-- Python (basedpyright)
 			local py_bin = exepath("basedpyright-langserver") or exepath("pyright-langserver")
 			if py_bin then
-				lspconfig[server_namepy].setup({
-					filetypes = { "python", ".py" },
-					capabilities = capabilities,
-					cmd = { py_bin, "--stdio" },
-					root_dir = function(fname)
-						table.unpack = table.unpack or unpack
-						local python_root_files = { "WORKSPACE", "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile" }
-						return util.root_pattern(table.unpack(python_root_files))(fname)
-							or util.find_git_ancestor(fname)
-							or util.path.dirname(fname)
-					end,
-					settings = { [server_namepy] = { analysis = { typeCheckingMode = "basic", autoSearchPaths = true, diagnosticMode = "openFilesOnly", useLibraryCodeForTypes = true } } },
-				})
+			-- Detect Python venv and Termux site-packages to help import resolution
+			local function detect_python_venv()
+				local cwd = vim.fn.getcwd()
+				for _, name in ipairs({ ".venv", "venv", "env" }) do
+					local dir = cwd .. "/" .. name
+					if vim.fn.isdirectory(dir) == 1 then
+						return cwd, name
+					end
+				end
+				return nil, nil
+			end
+
+			local function termux_sitepackages()
+				local prefix_env = vim.env.PREFIX or ""
+				if prefix_env == "" then
+					return nil
+				end
+				local matches = vim.fn.glob(prefix_env .. "/lib/python*/site-packages", false, true)
+				if type(matches) == "table" then
+					for _, p in ipairs(matches) do
+						if vim.fn.isdirectory(p) == 1 then
+							return p
+						end
+					end
+				end
+				return nil
+			end
+
+			local venv_path, venv_name = detect_python_venv()
+			local extra_paths = {}
+			local sp = termux_sitepackages()
+			if sp then table.insert(extra_paths, sp) end
+			-- Also use the project venv site-packages discovery helper
+			local project_sp = nil
+			pcall(function()
+				if type(find_site_packages) == "function" then
+					project_sp = find_site_packages(vim.fn.getcwd())
+				end
+			end)
+			if project_sp then table.insert(extra_paths, project_sp) end
+
+			-- Deduplicate paths to avoid redundant entries
+			local function dedupe_paths(paths)
+				local seen, out = {}, {}
+				for _, p in ipairs(paths) do
+					if p and p ~= "" and seen[p] ~= true then
+						seen[p] = true
+						table.insert(out, p)
+					end
+				end
+				return out
+			end
+			extra_paths = dedupe_paths(extra_paths)
+
+			local py_settings = {
+				[server_namepy] = {
+					analysis = {
+						typeCheckingMode = "basic",
+						autoSearchPaths = true,
+						diagnosticMode = "openFilesOnly",
+						useLibraryCodeForTypes = true,
+					},
+				},
+			}
+			if #extra_paths > 0 then
+				py_settings[server_namepy].analysis.extraPaths = extra_paths
+			end
+			if venv_path and venv_name then
+				py_settings.python = { venvPath = venv_path, venv = venv_name }
+			end
+
+			lspconfig[server_namepy].setup({
+				filetypes = { "python", ".py" },
+				capabilities = capabilities,
+				cmd = { py_bin, "--stdio" },
+				root_dir = function(fname)
+					table.unpack = table.unpack or unpack
+					local python_root_files = { "WORKSPACE", "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile" }
+					return util.root_pattern(table.unpack(python_root_files))(fname)
+						or util.find_git_ancestor(fname)
+						or util.path.dirname(fname)
+				end,
+				settings = py_settings,
+			})
 			end
 
 			-- clangd (optional)
