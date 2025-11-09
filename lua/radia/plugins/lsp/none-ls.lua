@@ -81,7 +81,7 @@ return {
 						null_ls.builtins.diagnostics.pylint.with({
 							command = pylint_cmd,
 							extra_args = {
-								"--disable=missing-module-docstring,missing-function-docstring,missing-class-docstring,unused-import,unused-variable,unused-argument",
+								"--disable=missing-module-docstring,missing-function-docstring,missing-class-docstring,unused-import,unused-variable,unused-argument,trailing-newlines",
 							},
 							-- Use builtin args (JSON output, proper stdin handling)
 							method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
