@@ -82,18 +82,7 @@ return {
 				})
 			end)
 
-			-- For backward compatibility or themes relying on highlight groups,
-			-- ensure the sign names exist without redefining them repeatedly.
-			local names = {
-				{ name = "Error", icon = sign_text[sev.ERROR] },
-				{ name = "Warn",  icon = sign_text[sev.WARN] },
-				{ name = "Info",  icon = sign_text[sev.INFO] },
-				{ name = "Hint",  icon = sign_text[sev.HINT] },
-			}
-			for _, s in ipairs(names) do
-				local hl = "DiagnosticSign" .. s.name
-				pcall(vim.fn.sign_define, hl, { text = s.icon, texthl = hl })
-			end
+			-- Avoid manual :sign-define to prevent noisy messages; rely on vim.diagnostic.config
 			vim.g.__radia_signs_defined = true
 		end
 		setup_diagnostic_signs()
