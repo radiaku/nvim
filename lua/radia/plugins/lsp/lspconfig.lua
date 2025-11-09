@@ -63,13 +63,40 @@ return {
 			require("neodev").setup({})
 		end)
 
-		-- Change the Diagnostic symbols in the sign column (gutter)
-		-- (not in youtube nvim video)
-		local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
-		for type, icon in pairs(signs) do
-			local hl = "DiagnosticSign" .. type
-			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+		-- Diagnostic signs: modern setup and guard to avoid duplicate defines
+		local function setup_diagnostic_signs()
+			if vim.g.__radia_signs_defined then
+				return
+			end
+			local sev = vim.diagnostic.severity
+			local sign_text = {
+				[sev.ERROR] = " ",
+				[sev.WARN] = " ",
+				[sev.INFO] = " ",
+				[sev.HINT] = "󰠠 ",
+			}
+			-- Prefer Neovim 0.9+/0.10 API to configure signs
+			pcall(function()
+				vim.diagnostic.config({
+					signs = { text = sign_text },
+				})
+			end)
+
+			-- For backward compatibility or themes relying on highlight groups,
+			-- ensure the sign names exist without redefining them repeatedly.
+			local names = {
+				{ name = "Error", icon = sign_text[sev.ERROR] },
+				{ name = "Warn", icon = sign_text[sev.WARN] },
+				{ name = "Info", icon = sign_text[sev.INFO] },
+				{ name = "Hint", icon = sign_text[sev.HINT] },
+			}
+			for _, s in ipairs(names) do
+				local hl = "DiagnosticSign" .. s.name
+				pcall(vim.fn.sign_define, hl, { text = s.icon, texthl = hl })
+			end
+			vim.g.__radia_signs_defined = true
 		end
+		setup_diagnostic_signs()
 
 		-- Ensure project node bin is on PATH so nvim can see global/local binaries
 		do
