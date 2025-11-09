@@ -80,11 +80,9 @@ return {
 						sources,
 						null_ls.builtins.diagnostics.pylint.with({
 							command = pylint_cmd,
-							-- Speed up a bit and avoid colored output
-							args = { "-f", "text", "--score", "n", "--output-format", "text", "-" },
-							method = null_ls.methods.DIAGNOSTICS_ON_SAVE, -- or ON_OPEN / ON_CHANGE
+							-- Use builtin args (JSON output, proper stdin handling)
+							method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
 							diagnostics_postprocess = function(d)
-								-- Make pylint codes visible, e.g. [E1101]
 								if d.code then
 									d.message = string.format("[%s] %s", d.code, d.message)
 								end
