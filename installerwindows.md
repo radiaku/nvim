@@ -81,6 +81,7 @@ Install-Module -Name PSFzfHistory
 
 ```
 winget install JanDeDobbeleer.OhMyPosh --source winget
+winget install --exact --id junegunn.fzf
 ```
 
 
