@@ -221,10 +221,15 @@ return {
 			if ensure_fzf_native_built() then
 				pcall(require("telescope").load_extension, "fzf")
 			else
-				vim.notify(
-					"telescope-fzf-native is not built. Install build tools and run :Lazy build telescope-fzf-native.nvim",
-					vim.log.levels.WARN
-				)
+				-- Only notify in Termux; stay quiet elsewhere
+				local prefix = vim.env.PREFIX or ""
+				local in_termux = prefix:find("com%.termux") ~= nil
+				if in_termux then
+					vim.notify(
+						"telescope-fzf-native is not built. Install build tools and run :Lazy build telescope-fzf-native.nvim",
+						vim.log.levels.WARN
+					)
+				end
 			end
 		end
 
