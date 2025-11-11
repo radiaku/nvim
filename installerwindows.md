@@ -46,6 +46,11 @@ irm get.scoop.sh -outfile 'install.ps1'
 iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
 ```
 
+install git first:
+```
+scoop install git
+```
+
 Add useful buckets (if not already):
 
 ```
