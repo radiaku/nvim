@@ -65,6 +65,26 @@ Install core tools (per-user):
 scoop install git nodejs-lts go123 python312 llvm stylua 7zip cacert curl ffmpeg fzf fd gawk gzip innounp lazygit less llvm  luarocks ninja perl pipx sed sudo unzip vim wget 
 ```
 
+Place this repo in the Windows Neovim config directory (`%LOCALAPPDATA%\nvim`):
+
+- PowerShell:
+
+```powershell
+git clone https://github.com/radiaku/nvim $env:LOCALAPPDATA\nvim
+```
+
+- CMD:
+
+```cmd
+git clone https://github.com/radiaku/nvim %LOCALAPPDATA%\nvim
+```
+
+- WSL/Linux (if using Neovim inside WSL):
+
+```sh
+git clone https://github.com/radiaku/nvim ~/.config/nvim
+```
+
 Global installs with Scoop:
 
 - Global installs require admin. Two approaches:
