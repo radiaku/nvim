@@ -23,7 +23,12 @@ return {
 		local function ensure(bin, hint)
 			local p = exepath(bin)
 			if not p then
-				vim.notify(string.format("[LSP] '%s' not found on PATH. %s", bin, hint or ""), vim.log.levels.WARN)
+				-- Only notify in Termux to avoid noisy prompts on desktop
+				local prefix = vim.env.PREFIX or ""
+				local in_termux = prefix:find("com%.termux") ~= nil
+				if in_termux then
+					vim.notify(string.format("[LSP] '%s' not found on PATH. %s", bin, hint or ""), vim.log.levels.WARN)
+				end
 				return nil
 			end
 			return p
@@ -195,7 +200,10 @@ return {
 				-- Prefer npm-based server on Termux/Linux/macOS
 				local cmd = exepath("basedpyright-langserver") or exepath("pyright-langserver")
 				if not cmd then
-					vim.notify("[LSP] Python LS not found. Install: npm i -g basedpyright", vim.log.levels.WARN)
+					-- Only warn in Termux; stay quiet elsewhere
+					if is_termux then
+						vim.notify("[LSP] Python LS not found. Install: npm i -g basedpyright", vim.log.levels.WARN)
+					end
 					return
 				end
 
