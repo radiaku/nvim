@@ -40,10 +40,8 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 iwr -useb get.scoop.sh | iex
 ```
 
-Scoop as admin and global:
 ```
 irm get.scoop.sh -outfile 'install.ps1'
-.\install.ps1 -RunAsAdmin [-OtherParameters ...]
 # I don't care about other parameters and want a one-line command
 iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
 ```
