@@ -62,7 +62,7 @@ scoop bucket add versions
 Install core tools (per-user):
 
 ```
-scoop install neovim git nodejs-lts go python llvm stylua
+scoop install git nodejs-lts go123 python312 llvm stylua 7zip cacert curl ffmpeg fzf fd gawk gzip innounp lazygit less llvm  luarocks ninja perl pipx sed sudo unzip vim wget 
 ```
 
 Global installs with Scoop:
