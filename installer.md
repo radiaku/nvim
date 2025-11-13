@@ -12,6 +12,15 @@ If you're on Android using Termux, see the dedicated guide: [Installer (Termux)]
 ```bash
 git clone https://github.com/radiaku/nvim ~/.config/nvim
 ```
+
+```bash
+cp ~/.config/nvim/.bashrc ~/.bashrc
+```
+
+```bash
+source ~/.bashrc
+```
+
 - Or symlink this repo from your workspace (run from this repo’s root):
   - `ln -s "$(pwd)" ~/.config/nvim`
 - Launch Neovim and install plugins:
@@ -46,7 +55,7 @@ git clone https://github.com/radiaku/nvim ~/.config/nvim
   - `sudo apt update && sudo apt install -y neovim git ripgrep fd-find build-essential nodejs npm python3 python3-pip fzf `
   - Symlink `fd`: `sudo ln -s $(command -v fdfind) /usr/local/bin/fd` (if it installs as `fdfind`).
 - Arch:
-  - `sudo pacman -S neovim git ripgrep fd nodejs npm python go base-devel fzf lua`
+  - `sudo pacman -S neovim git ripgrep fd nodejs npm python go base-devel fzf lua zoxide`
 
 ## Installation
 1. Place the config in your Neovim config dir:

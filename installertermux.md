@@ -95,8 +95,6 @@ cargo --version
 ---
 
 ## 4️⃣ Clone Config
-<details>
-<summary>Click to expand</summary>
 
 ```bash
 git clone https://github.com/radiaku/nvim ~/.config/nvim
@@ -115,7 +113,6 @@ nvim
 ```
 
 Lazy.nvim will install all dependencies automatically.
-</details>
 
 ---
 
