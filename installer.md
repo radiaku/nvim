@@ -43,10 +43,10 @@ git clone https://github.com/radiaku/nvim ~/.config/nvim
 
 ### Linux Quick Setup
 - Debian/Ubuntu:
-  - `sudo apt update && sudo apt install -y neovim git ripgrep fd-find build-essential nodejs npm python3 python3-pip`
+  - `sudo apt update && sudo apt install -y neovim git ripgrep fd-find build-essential nodejs npm python3 python3-pip fzf `
   - Symlink `fd`: `sudo ln -s $(command -v fdfind) /usr/local/bin/fd` (if it installs as `fdfind`).
 - Arch:
-  - `sudo pacman -S neovim git ripgrep fd nodejs npm python go base-devel`
+  - `sudo pacman -S neovim git ripgrep fd nodejs npm python go base-devel fzf lua`
 
 ## Installation
 1. Place the config in your Neovim config dir:
