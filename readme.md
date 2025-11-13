@@ -6,6 +6,11 @@ This README is a friendly overview. For full setup details and all key mappings,
 - [Keymaps](keymaps.md)
 - [Git Profile Setup](.gitconfig.md)
 
+If you want builder for neovim 0.10.4, check [build_neovim_linux.md](build_neovim_linux.md)
+or [build_neovim_windows.md](build_neovim_windows.md)
+or [build_neovim_termux.md](build_neovim_termux.md)
+
+
 **What you get**
 - Plugins cleanly grouped by function: `ui`, `files`, `navigation`, `git`, `editing`, `diagnostics`, `language`, `terminal`, `session`, `tools`, `notes`, `lsp` (plus `disabled` for parked specs).
 - Smart defaults and helpful keymaps for everyday workflows.
