@@ -52,7 +52,7 @@ source ~/.bashrc
 
 ### Linux Quick Setup
 - Debian/Ubuntu:
-  - `sudo apt update && sudo apt install -y neovim git ripgrep fd-find build-essential nodejs npm python3 python3-pip fzf `
+  - `sudo apt update && sudo apt install -y neovim git ripgrep fd-find build-essential nodejs npm python3 python3-pip fzf zoxide `
   - Symlink `fd`: `sudo ln -s $(command -v fdfind) /usr/local/bin/fd` (if it installs as `fdfind`).
 - Arch:
   - `sudo pacman -S neovim git ripgrep fd nodejs npm python go base-devel fzf lua zoxide`
