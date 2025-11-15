@@ -3,7 +3,7 @@ Copy this to a file like build-neovim-0.10.4.sh, make it executable, and run it.
 #!/usr/bin/env bash
 # Build & install Neovim v0.10.4 on Linux
 # Usage:
-#   ./build-neovim-0.10.4.sh [--prefix /usr/local] [--jobs 8] [--type Release] [--without-deps]
+#   ./build-neovim-0.10.4.sh [--prefix /usr/local] [--jobs 8] [--type Release] [--without-deps] [--without-bundled]
 #   ./build-neovim-0.10.4.sh --help
 
 set -euo pipefail
@@ -13,6 +13,7 @@ PREFIX_DEFAULT="/usr/local"
 JOBS="$(nproc || echo 4)"
 BUILD_TYPE="Release"
 INSTALL_DEPS=1
+USE_BUNDLED=1
 SRC_DIR="$HOME/src/neovim-$VERSION"
 BUILD_DIR="$SRC_DIR/build"
 
@@ -29,6 +30,7 @@ Options:
   --jobs <N>          Parallel jobs for build (default: $JOBS)
   --type <BuildType>  CMAKE_BUILD_TYPE (Release/RelWithDebInfo/Debug) default: $BUILD_TYPE
   --without-deps      Skip dependency installation
+  --without-bundled   Do not use bundled third-party deps (requires system libluv >= 1.43)
   --src <dir>         Source checkout directory (default: $SRC_DIR)
   --help              Show this help
 
@@ -47,6 +49,7 @@ while [[ $# -gt 0 ]]; do
     --jobs) JOBS="${2:?}"; shift 2 ;;
     --type) BUILD_TYPE="${2:?}"; shift 2 ;;
     --without-deps) INSTALL_DEPS=0; shift ;;
+    --without-bundled) USE_BUNDLED=0; shift ;;
     --src) SRC_DIR="${2:?}"; BUILD_DIR="$SRC_DIR/build"; shift 2 ;;
     --help) usage; exit 0 ;;
     *) die "Unknown option: $1 (use --help)";;
@@ -71,13 +74,15 @@ install_deps_debian() {
   sudo apt-get update
   sudo apt-get install -y \
     git cmake ninja-build gettext libtool libtool-bin autoconf automake \
-    g++ pkg-config unzip curl doxygen
+    g++ pkg-config unzip curl doxygen \
+    libluv-dev libluv1
 }
 install_deps_fedora() {
   log "Installing deps via dnf..."
   sudo dnf install -y \
     git cmake ninja-build gettext libtool autoconf automake gcc-c++ \
-    pkgconfig unzip curl doxygen
+    pkgconfig unzip curl doxygen \
+    luv-devel
 }
 install_deps_rhel() {
   log "Installing deps via dnf/yum..."
@@ -98,7 +103,8 @@ install_deps_arch() {
   sudo pacman -Syu --noconfirm
   sudo pacman -S --noconfirm \
     git cmake ninja gettext libtool autoconf automake base-devel \
-    pkgconf unzip curl doxygen
+    pkgconf unzip curl doxygen \
+    luv
 }
 
 install_build_deps() {
@@ -131,10 +137,13 @@ clone_source() {
 build_neovim() {
   log "Configuring build: type=$BUILD_TYPE, prefix=$PREFIX"
   mkdir -p "$BUILD_DIR"
+  local use_bundled_flag="ON"
+  [[ "$USE_BUNDLED" -eq 1 ]] || use_bundled_flag="OFF"
   cmake -S "$SRC_DIR" -B "$BUILD_DIR" \
     -G Ninja \
     -DCMAKE_BUILD_TYPE="$BUILD_TYPE" \
-    -DCMAKE_INSTALL_PREFIX="$PREFIX"
+    -DCMAKE_INSTALL_PREFIX="$PREFIX" \
+    -DUSE_BUNDLED="$use_bundled_flag"
   log "Building with $JOBS job(s)…"
   cmake --build "$BUILD_DIR" -- -j"$JOBS"
 }
@@ -154,6 +163,10 @@ post_checks() {
   if ! need_cmd nvim; then
     err "nvim not found in PATH. Add $PREFIX/bin to PATH."
     echo "  export PATH=\"$PREFIX/bin:\$PATH\""
+    echo "If you saw an error about missing Luv, either re-run with bundled deps (default) or install system packages:"
+    echo "  Debian/Ubuntu: sudo apt-get install libluv-dev libluv1"
+    echo "  Fedora: sudo dnf install luv-devel"
+    echo "  Arch: sudo pacman -S luv"
   else
     nvim --version | head -n 5
   fi
