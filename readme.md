@@ -4,7 +4,7 @@ This README is a friendly overview. For full setup details and all key mappings,
 - [Fonts: Nerd Font Install](fonts-nerd.md)
 - [Installer Guide](installer.md)
 - [Keymaps](keymaps.md)
-- [Git Profile Setup](.gitconfig.md)
+- [Git Profile Setup](gitconfig.md)
 
 If you want builder for neovim 0.10.4, check [build_neovim_linux.md](build_neovim_linux.md)
 or [build_neovim_windows.md](build_neovim_windows.md)
