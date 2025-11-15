@@ -70,6 +70,7 @@ return {
 		end
 
 		if has_python then
+			-- Prefer basedpyright and never install pyright alongside it
 			table.insert(servers, "basedpyright")
 			table.insert(tools, "black")
 			table.insert(tools, "pylint")
@@ -104,9 +105,17 @@ return {
 			lua_ls = { "lua-language-server" },
 		}
 
+		-- Strong guard: ensure 'pyright' is never scheduled for installation
+		local sanitized_servers = {}
+		for _, name in ipairs(servers) do
+			if name ~= "pyright" then
+				table.insert(sanitized_servers, name)
+			end
+		end
+
 		local filtered_servers = {}
 		local seen = {}
-		for _, name in ipairs(servers) do
+		for _, name in ipairs(sanitized_servers) do
 			if not seen[name] then
 				seen[name] = true
 				-- On Termux, avoid Mason for lua_ls
