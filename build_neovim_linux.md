@@ -200,3 +200,28 @@ sudo ./build-neovim-0.10.4.sh
 ```
 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
 ```
+
+4) Troubleshooting: Luv packages not found on Debian/Ubuntu
+
+- If `apt` can’t find `libluv-dev`/`libluv1`:
+  - Enable Universe (Ubuntu):
+    - `sudo add-apt-repository universe`
+    - `sudo apt-get update`
+    - `sudo apt-get install libluv-dev libluv1`
+  - On Debian or minimal environments, `libluv` may be unavailable; prefer bundled deps or build from source.
+
+5) Quick path: build with bundled deps
+
+- Bundled deps avoid system `luv` entirely and are enabled in the script.
+- Manual CMake:
+  - `cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local -DUSE_BUNDLED=ON`
+  - `cmake --build build -j$(nproc)`
+  - `sudo cmake --install build`
+- or using Make helpers:
+  - `make CMAKE_BUILD_TYPE=Release CMAKE_INSTALL_PREFIX=/usr/local deps`
+  - `make CMAKE_BUILD_TYPE=Release`
+  - `sudo make install`
+
+Notes
+- The error “Could NOT find Luv (Required >= 1.43.0)” means system `luv` is missing or too old.
+- Using bundled deps is the simplest way to satisfy Neovim’s dependency versions across distros.
