@@ -362,6 +362,7 @@ if ! ssh-add -l >/dev/null 2>&1; then
   echo "export SSH_AGENT_PID=$SSH_AGENT_PID" >> "$HOME/.ssh/agent.env"
   # try to add your default key (skip if it doesn't exist)
   [ -f "$HOME/.ssh/id_ed25519" ] && ssh-add "$HOME/.ssh/id_ed25519"
+  clear
 fi
 # ==== end SSH agent bootstrap ====
 
