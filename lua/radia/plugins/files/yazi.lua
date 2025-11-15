@@ -1,6 +1,10 @@
 return {
 	"mikavilpas/yazi.nvim",
 	version = "v10.3.0",
+	-- Only enable if the yazi binary is available to avoid errors
+	enabled = function()
+		return vim.fn.executable("yazi") == 1
+	end,
 	event = "VeryLazy",
 	dependencies = {
 		{ "nvim-lua/plenary.nvim", lazy = true },
