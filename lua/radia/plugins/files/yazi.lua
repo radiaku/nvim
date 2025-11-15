@@ -3,7 +3,10 @@ return {
 	version = "v10.3.0",
 	-- Only enable if the yazi binary is available to avoid errors
 	enabled = function()
-		return vim.fn.executable("yazi") == 1
+		local has_yazi = vim.fn.executable("yazi") == 1
+		-- yazi.nvim uses vim.ringbuf, which is available in Neovim 0.10+
+		local has_ringbuf = (vim.fn.has("nvim-0.10") == 1) or (type(vim.ringbuf) == "function")
+		return has_yazi and has_ringbuf
 	end,
 	event = "VeryLazy",
 	dependencies = {
