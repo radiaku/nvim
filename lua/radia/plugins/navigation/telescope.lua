@@ -54,7 +54,8 @@ return {
 				end
 
 				if (not ok) and has_cmake then
-					ok = run("cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release") and run("cmake --build build --config Release")
+					ok = run("cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release")
+						and run("cmake --build build --config Release")
 				end
 				-- Never error out; extension load is guarded below
 			end,
@@ -66,6 +67,8 @@ return {
 		local actions = require("telescope.actions")
 
 		local previewers = require("telescope.previewers")
+
+    local utils = require("telescope.previewers.utils")
 
 		local function count_lines(filepath)
 			local file = io.open(filepath, "r")
@@ -83,38 +86,50 @@ return {
 			return count
 		end
 
+		-- count_lines(filepath) must be defined somewhere else in your file:
+		--   it should return a number (or nil on error)
+
 		local no_preview_minified = function(filepath, bufnr, opts)
-			local max_char_count = 10000
-			local min_line_count = 50
-			local max_bytes = 10000
-
-			local ok, stats = pcall(vim.loop.fs_stat, filepath)
-			local linecount = count_lines(filepath)
-
-			-- print("size:", ok and stats and stats.size, "line count:", linecount, "filepath", filepath)
-
 			opts = opts or {}
 
-			if ok and stats then
-				local char_count = stats.size
-				local line_count = linecount
+			local max_char_count = 10000 -- if file bigger than this, we start being careful
+			local min_line_count = 50 -- "few lines" threshold (likely minified)
+			local max_preview_len = 10000 -- bytes to show with head -c
+			local insane_line_cnt = 500000 -- absurdly many lines: also clip preview
 
-				if char_count > max_char_count and line_count < min_line_count then
-					-- local cmd = { "echo", "char_larger" }
-					local cmd = { "head", "-c", max_bytes, filepath }
-					require("telescope.previewers.utils").job_maker(cmd, bufnr, opts)
-					return
-				end
+			-- get file stats first
+			local ok, stats = pcall(vim.loop.fs_stat, filepath)
+			if not (ok and stats and stats.size) then
+				-- if we can’t stat, just fall back to normal preview
+				return previewers.buffer_previewer_maker(filepath, bufnr, opts)
 			end
 
-			if linecount > 500000 then
-				local cmd = { "head", "-c", max_bytes, filepath }
-				-- local cmd = { "echo", "limit_line" }
-				require("telescope.previewers.utils").job_maker(cmd, bufnr, opts)
+			local size = stats.size
+
+			-- For small files, just use normal previewer
+			if size <= max_char_count then
+				return previewers.buffer_previewer_maker(filepath, bufnr, opts)
+			end
+
+			-- Only now pay the cost of counting lines (since we know file is big)
+			local linecount = count_lines(filepath) or 0
+
+			-- Case 1: big file but very few lines → probably minified
+			if size > max_char_count and linecount > 0 and linecount < min_line_count then
+				local cmd = { "head", "-c", tostring(max_preview_len), filepath }
+				utils.job_maker(cmd, bufnr, opts)
 				return
 			end
 
-			previewers.buffer_previewer_maker(filepath, bufnr, opts)
+			-- Case 2: ridiculous line count → clip preview as well
+			if linecount > insane_line_cnt then
+				local cmd = { "head", "-c", tostring(max_preview_len), filepath }
+				utils.job_maker(cmd, bufnr, opts)
+				return
+			end
+
+			-- Default: normal preview
+			return previewers.buffer_previewer_maker(filepath, bufnr, opts)
 		end
 
 		telescope.setup({
@@ -185,7 +200,7 @@ return {
 				live_grep_args = {
 					auto_quoting = true,
 				},
-			}
+			},
 		})
 
 		-- telescope.load_extension("fzy_native")
@@ -207,7 +222,10 @@ return {
 			local cmd = (is_termux and has_clang) and "make CC=clang" or "make"
 			local ok = false
 			if vim.system then
-				local res = vim.system({ "sh", "-lc", "cd " .. vim.fn.shellescape(dir) .. " && make clean && " .. cmd }, { text = true }):wait()
+				local res = vim.system(
+					{ "sh", "-lc", "cd " .. vim.fn.shellescape(dir) .. " && make clean && " .. cmd },
+					{ text = true }
+				):wait()
 				ok = (res and res.code == 0)
 			else
 				vim.fn.system("cd " .. dir .. " && make clean && " .. cmd)
