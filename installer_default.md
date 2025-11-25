@@ -2,10 +2,10 @@
 
 This guide outlines requirements, installation, and post-install steps for this Neovim configuration.
 
-If you're on  Windows , see the dedicated guide: [Installer (Windows)](installerwindows.md).
+If you're on  Windows , see the dedicated guide: [Installer (Windows)](installer_windows.md).
 
 
-If you're on Android using Termux, see the dedicated guide: [Installer (Termux)](installertermux.md).
+If you're on Android using Termux, see the dedicated guide: [Installer (Termux)](installer_termux.md).
 
 ## Quick Install (copy-paste)
 - Clone directly to your Neovim config path:
