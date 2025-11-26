@@ -100,6 +100,7 @@ manage_tmux_session() {
       tmux new-session -ds "$1"  # Create a detached session
       tmux send-keys -t "$1" "cd $2" C-m > /dev/null 2>&1
       tmux attach -t "$1"  # Attach the session
+      clear
     fi
   else
     if tmux ls | grep -q "^$1:"; then
@@ -108,6 +109,7 @@ manage_tmux_session() {
       tmux new-session -ds "$1"
       tmux send-keys -t "$1" "cd $2" C-m > /dev/null 2>&1
       tmux switch-client -t "$1"
+      clear
     fi
   fi
 }
