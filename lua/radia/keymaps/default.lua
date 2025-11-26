@@ -39,10 +39,10 @@ opts = { desc = "Exit insert mode with jk" }
 keymap.set("i", "jk", "<ESC>", opts)
 
 -- Move around commandline cmdline or wildmenu auto complete using jk
--- opts = { desc = "Move down on wildmenu" }
--- keymap.set("c", "<C-j>", "<C-n>", opts)
--- opts = { desc = "Move up on wildmenu" }
--- keymap.set("c", "<C-k>", "<C-p>", opts)
+opts = { desc = "Move down on wildmenu" }
+keymap.set("c", "<C-j>", "<C-n>", opts)
+opts = { desc = "Move up on wildmenu" }
+keymap.set("c", "<C-k>", "<C-p>", opts)
 
 -- Move around when insertmode using ctrl j + k
 -- opts = { desc = "Move down on wildmenu" }
