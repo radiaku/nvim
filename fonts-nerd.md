@@ -15,11 +15,11 @@ mkdir -p ~/.termux
 # Download the Nerd Font zip (IosevkaTerm variant)
 TMP="${TMPDIR:-$PREFIX/tmp}"; mkdir -p "$TMP"
 curl -fLo "$TMP/IosevkaTerm.zip" \
-  https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/IosevkaTerm.zip
+  https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Iosevka.zip
 
 # Install mono regular TTF as Termux font
-unzip -oj "$TMP/IosevkaTerm.zip" '*Mono-Regular.ttf' -d ~/.termux/
-mv ~/.termux/IosevkaTermNerdFontMono-Regular.ttf ~/.termux/font.ttf
+unzip -oj "$TMP/Iosevka.zip" '*Mono-Regular.ttf' -d ~/.termux/
+mv ~/.termux/IosevkaNerdFontMono-Regular.ttf ~/.termux/font.ttf
 
 # Apply
 termux-reload-settings
@@ -35,17 +35,17 @@ Notes:
 sudo apt update && sudo apt install -y curl unzip fontconfig || true
 
 # Download and install to user fonts
-mkdir -p ~/.local/share/fonts/IosevkaTermNerdFont
-curl -fLo /tmp/IosevkaTerm.zip \
-  https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/IosevkaTerm.zip
-unzip -o /tmp/IosevkaTerm.zip -d ~/.local/share/fonts/IosevkaTermNerdFont
+mkdir -p ~/.local/share/fonts/IosevkaNerdFont
+curl -fLo /tmp/Iosevka.zip \
+  https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Iosevka.zip
+unzip -o /tmp/Iosevka.zip -d ~/.local/share/fonts/IosevkaNerdFont
 
 # Refresh font cache
 fc-cache -fv
 ```
 
 Set the font in your terminal config (e.g., Alacritty, WezTerm, Kitty):
-- Use family name `IosevkaTerm Nerd Font` or `IosevkaTerm Nerd Font Mono`.
+- Use family name `Iosevka Nerd Font` or `Iosevka Nerd Font Mono`.
 
 ## Windows
 
@@ -64,17 +64,17 @@ choco install nerd-fonts-iosevka -y
 If package managers aren’t available:
 ```powershell
 # Manual install via download
-$url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/IosevkaTerm.zip"
-$zip = "$env:TEMP\IosevkaTerm.zip"
+$url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Iosevka.zip"
+$zip = "$env:TEMP\Iosevka.zip"
 Invoke-WebRequest -Uri $url -OutFile $zip
-Expand-Archive -Force -Path $zip -DestinationPath "$env:TEMP\IosevkaTermNF"
+Expand-Archive -Force -Path $zip -DestinationPath "$env:TEMP\IosevkaNF"
 
 # Open the folder and install selected TTFs (Ctrl+A → right‑click → Install for all users)
-ii "$env:TEMP\IosevkaTermNF"
+ii "$env:TEMP\IosevkaNF"
 ```
 
 Then select the font in your terminal settings (Windows Terminal/Alacritty/WezTerm):
-- `IosevkaTerm Nerd Font` or `IosevkaTerm Nerd Font Mono`.
+- `Iosevka Nerd Font` or `Iosevka Nerd Font Mono`.
 
 ---
 
