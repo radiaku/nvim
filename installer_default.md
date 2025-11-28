@@ -40,7 +40,7 @@ source ~/.bashrc
   - Node.js (`node`, `npm`/`pnpm`/`yarn`) for JS/TS tooling.
   - Python 3 (`python3`, `pip`), for Python LSP tooling.
   - Go toolchain (`go`).
-  - JDK (17+) and `maven`/`gradle` for Java.
+  - JDK (17+) and `maven`/`gradle` for Java. Note: Kotlin Language Server requires JDK 17; newer JDKs (e.g., 25) can crash.
   - .NET SDK for C#.
   - `lazygit` (for `:LazyGit`).
   - `yazi` file manager (if using the Yazi integration).
@@ -49,6 +49,11 @@ source ~/.bashrc
 - Install packages with Homebrew:
   - `brew install neovim git ripgrep fd node go python lazygit yazi tmux tree fzf lua`
   - Ensure a compiler is present: `xcode-select --install` (or `brew install llvm`).
+  - Install JDK 17 for Kotlin LS:
+    - `brew install openjdk@17`
+    - Set environment:
+      - `export JAVA_HOME=$( /usr/libexec/java_home -v 17 )`
+      - `export PATH="$JAVA_HOME/bin:$PATH"`
 
 ### Linux Quick Setup
 - Debian/Ubuntu:
@@ -123,3 +128,7 @@ source ~/.bashrc
   - On macOS: `~/Library/Application Support/nvim`.
   - On Linux: `~/.local/share/nvim`.
   - Delete if you want a clean reinstall.
+- Kotlin LS crashes with `IllegalArgumentException: 25.0.1`:
+  - You are running a Java 25 JDK that KLS doesn’t parse correctly.
+  - Install JDK 17 and set `JAVA_HOME` as above; restart Neovim.
+  - This config auto-uses JDK 17 for KLS when incompatible Java is detected on macOS.
