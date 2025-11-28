@@ -699,6 +699,67 @@ return {
 				})
 			end
 
+			-- Kotlin (kotlin-language-server) — ensure compatible Java (prefer JDK 17)
+			local kotlin_bin = exepath("kotlin-language-server")
+			if kotlin_bin then
+				local function get_java_major_version()
+					if vim.fn.executable("java") ~= 1 then return nil end
+					local out = vim.fn.system({ "java", "-version" })
+					local s = tostring(out)
+					-- Try to parse versions like "17.0.10", "25.0.1", and legacy "1.8.0_XXX"
+					local major = s:match('(%d+)%.%d+%.%d+')
+					if not major then
+						local legacy = s:match('version%s+"1%.(%d+)')
+						if legacy then
+							local n = tonumber(legacy)
+							return n and (n) or nil
+						end
+					end
+					return major and tonumber(major) or nil
+				end
+
+				local function find_jdk17_home()
+					-- macOS: prefer /usr/libexec/java_home to discover JDK 17
+					if vim.fn.has("mac") == 1 and vim.fn.executable("/usr/libexec/java_home") == 1 then
+						local out = vim.fn.system({ "/usr/libexec/java_home", "-v", "17" })
+						if vim.v.shell_error == 0 then
+							local home = vim.fn.trim(out)
+							if home ~= "" and vim.fn.isdirectory(home) == 1 then
+								return home
+							end
+						end
+					end
+					-- Common Homebrew paths
+					local candidates = {
+						"/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home",
+						"/usr/local/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home",
+						"/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home",
+						"/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home",
+					}
+					for _, p in ipairs(candidates) do
+						if vim.fn.isdirectory(p) == 1 then return p end
+					end
+					return nil
+				end
+
+				local java_major = get_java_major_version()
+				local cmd_env
+				-- Use JDK 17 when Java is missing, too old (<11), or too new (>=23) causing KLS to crash
+				if (not java_major) or (java_major < 11) or (java_major >= 23) then
+					local jdk17 = find_jdk17_home()
+					if jdk17 then
+						cmd_env = { JAVA_HOME = jdk17, PATH = jdk17 .. "/bin:" .. (vim.env.PATH or "") }
+					end
+				end
+
+				lspconfig["kotlin_language_server"].setup({
+					cmd = { kotlin_bin },
+					cmd_env = cmd_env,
+					capabilities = capabilities,
+					root_dir = util.root_pattern("settings.gradle", "build.gradle", "pom.xml", ".git") or vim.fn.getcwd(),
+				})
+			end
+
 			-- clangd (optional)
 			local clangd_bin = exepath("clangd")
 			if clangd_bin then
