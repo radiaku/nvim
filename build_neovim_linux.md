@@ -72,6 +72,7 @@ detect_distro() {
 install_deps_debian() {
   log "Installing deps via apt..."
   sudo apt-get update
+  sudo apt install build-essential cmake git
   sudo apt-get install -y \
     git cmake ninja-build gettext libtool libtool-bin autoconf automake \
     g++ pkg-config unzip curl doxygen \
