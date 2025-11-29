@@ -9,7 +9,7 @@ keybind = cmd+j=text:\x17\x6A
 keybind = cmd+k=text:\x17\x6B
 # window-decoration = false
 
-theme = catppuccin-frappe
+# theme = catppuccin-frappe
 font-family = Iosevka Nerd Font
 # font-family = JetBrainsMono Nerd Font
 # adjust-cell-width = 1

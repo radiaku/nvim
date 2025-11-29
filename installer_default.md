@@ -47,7 +47,7 @@ source ~/.bashrc
 
 ### macOS Quick Setup
 - Install packages with Homebrew:
-  - `brew install neovim git ripgrep fd node go python lazygit yazi tmux tree fzf lua`
+  - ```brew install neovim git ripgrep fd node go python lazygit yazi tmux tree fzf lua```
   - Ensure a compiler is present: `xcode-select --install` (or `brew install llvm`).
   - Install JDK 17 for Kotlin LS:
     - `brew install openjdk@17`
@@ -57,8 +57,8 @@ source ~/.bashrc
 
 ### Linux Quick Setup
 - Debian/Ubuntu:
-  - `sudo apt update && sudo apt install -y neovim git ripgrep fd-find build-essential nodejs npm python3 python3-pip fzf zoxide lazygit tmux tree`
-  - Symlink `fd`: `sudo ln -s $(command -v fdfind) /usr/local/bin/fd` (if it installs as `fdfind`).
+  - ```sudo apt update && sudo apt install -y neovim git ripgrep fd-find build-essential nodejs npm python3 python3-pip fzf zoxide lazygit tmux tree```
+  - Symlink ```fd`: `sudo ln -s $(command -v fdfind) /usr/local/bin/fd``` (if it installs as `fdfind`)
 - Arch:
   - `sudo pacman -S neovim git ripgrep fd nodejs npm python go base-devel fzf lua zoxide lazygit tmux tree`
 
