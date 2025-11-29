@@ -18,7 +18,7 @@ esac
 # export LC_TIME="en_US.UTF-8"
 # export DATE_FORMAT="%Y %m %d %H:%M:%S"
 
-HISTSIZE=10000
+HISTSIZE=100000
 HISTFILESIZE=200000
 HISTCONTROL=ignoreboth
 shopt -s histappend
