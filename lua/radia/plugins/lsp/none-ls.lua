@@ -27,18 +27,55 @@ return {
 			end
 
 			-- Python venv detection: prefer project-local venvs
+			local function find_venv_dir(start_dir)
+				-- Walk up from start_dir looking for common venv folders
+				local names = { ".venv", "venv", "env", ".env" }
+				local dir = start_dir
+				while dir and dir ~= "" do
+					for _, name in ipairs(names) do
+						local candidate = dir .. "/" .. name
+						if vim.fn.isdirectory(candidate .. "/bin") == 1 then
+							return candidate
+						end
+					end
+					local parent = vim.fn.fnamemodify(dir, ":h")
+					if parent == dir then
+						break
+					end
+					dir = parent
+				end
+				return nil
+			end
+
 			local function python_venv_bin(bin)
-				local cwd = vim.fn.getcwd()
-				local candidates = {
-					cwd .. "/.venv/bin/" .. bin,
-					cwd .. "/venv/bin/" .. bin,
-					cwd .. "/env/bin/" .. bin,
-				}
-				for _, p in ipairs(candidates) do
+				-- 1) Respect an already-activated venv
+				local venv = vim.env.VIRTUAL_ENV
+				if venv and venv ~= "" then
+					local p = venv .. "/bin/" .. bin
 					if vim.fn.executable(p) == 1 then
 						return p
 					end
 				end
+
+				-- 2) Look for venvs relative to buffer dir and cwd
+				local search_roots = {}
+				local buf_dir = vim.api.nvim_buf_get_name(0)
+				if buf_dir ~= "" then
+					table.insert(search_roots, vim.fn.fnamemodify(buf_dir, ":p:h"))
+				end
+				table.insert(search_roots, vim.fn.getcwd())
+
+				for _, root in ipairs(search_roots) do
+					local venv_dir = find_venv_dir(root)
+					if venv_dir then
+						local p = venv_dir .. "/bin/" .. bin
+						if vim.fn.executable(p) == 1 then
+							return p
+						end
+					end
+				end
+
+				-- 3) Fallback to PATH
 				return exepath(bin)
 			end
 
@@ -81,7 +118,7 @@ return {
 						null_ls.builtins.diagnostics.pylint.with({
 							command = pylint_cmd,
 							extra_args = {
-								"--disable=missing-module-docstring,missing-function-docstring,missing-class-docstring,unused-import,unused-variable,unused-argument,trailing-newlines",
+								"--disable=missing-module-docstring,missing-function-docstring,missing-class-docstring,unused-import,unused-variable,unused-argument,trailing-newlines,invalid-name",
 							},
 							-- Use builtin args (JSON output, proper stdin handling)
 							method = null_ls.methods.DIAGNOSTICS_ON_SAVE,

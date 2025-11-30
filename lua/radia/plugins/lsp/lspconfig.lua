@@ -104,13 +104,41 @@ return {
 		end
 
 		-- Optional: best-effort venv site-packages discovery for extraPaths
+		local function resolve_venv(start_dir)
+			-- 1) Respect an already-activated venv
+			local venv = vim.env.VIRTUAL_ENV
+			if venv and venv ~= "" and vim.fn.isdirectory(venv .. "/bin") == 1 then
+				return venv
+			end
+			-- 2) Walk upward from start_dir looking for common venv folders
+			local names = { ".venv", "venv", "env", ".env" }
+			local dir = start_dir
+			while dir and dir ~= "" do
+				for _, name in ipairs(names) do
+					local candidate = dir .. "/" .. name
+					if vim.fn.isdirectory(candidate .. "/bin") == 1 then
+						return candidate
+					end
+				end
+				local parent = vim.fn.fnamemodify(dir, ":h")
+				if parent == dir then
+					break
+				end
+				dir = parent
+			end
+			return nil
+		end
+
 		local function find_site_packages(start_dir)
 			local root = util.find_git_ancestor(start_dir) or start_dir
-			local candidates = {
-				root .. "/.venv/lib/python*/site-packages",
-				root .. "/venv/lib/python*/site-packages",
-				root .. "/env/lib/python*/site-packages",
-			}
+			local candidates = {}
+			local venv_dir = resolve_venv(root)
+			if venv_dir then
+				table.insert(candidates, venv_dir .. "/lib/python*/site-packages")
+			end
+			for _, name in ipairs({ ".venv", "venv", "env" }) do
+				table.insert(candidates, root .. "/" .. name .. "/lib/python*/site-packages")
+			end
 			-- expand the glob with vim.fn.glob; return first existing
 			for _, pat in ipairs(candidates) do
 				local match = vim.fn.glob(pat, true, true) -- list
@@ -188,14 +216,14 @@ return {
 				}
 				-- print(vim.fn.exepath("python"))
 				local site_packages_path = ""
-				-- local python_install_path = ""
-				-- if vim.fn.has("win32") == 1 then
-				-- 	python_install_path = vim.fn.exepath("python")
-				-- 	local python_directory = python_install_path:match("(.*)\\[^\\]*$")
-				-- 	site_packages_path = python_directory .. "\\lib\\site-packages"
-				-- else
-				-- 	python_install_path = vim.fn.exepath("python3")
-				-- end
+				local python_install_path = ""
+				if vim.fn.has("win32") == 1 then
+					python_install_path = vim.fn.exepath("python")
+					local python_directory = python_install_path:match("(.*)\\[^\\]*$")
+					site_packages_path = python_directory .. "\\lib\\site-packages"
+				else
+					python_install_path = vim.fn.exepath("python3")
+				end
 
 				-- Prefer npm-based server on Termux/Linux/macOS
 				local cmd = exepath("basedpyright-langserver") or exepath("pyright-langserver")
@@ -611,14 +639,15 @@ return {
 			if py_bin then
 				-- Detect Python venv and Termux site-packages to help import resolution
 				local function detect_python_venv()
-					local cwd = vim.fn.getcwd()
-					for _, name in ipairs({ ".venv", "venv", "env" }) do
-						local dir = cwd .. "/" .. name
-						if vim.fn.isdirectory(dir) == 1 then
-							return cwd, name
-						end
+					local buf_dir = vim.api.nvim_buf_get_name(0)
+					local start_dir = (buf_dir ~= "" and vim.fn.fnamemodify(buf_dir, ":p:h")) or vim.fn.getcwd()
+					local venv_dir = resolve_venv(start_dir)
+					if not venv_dir then
+						return nil, nil
 					end
-					return nil, nil
+					local parent = vim.fn.fnamemodify(venv_dir, ":h")
+					local name = vim.fn.fnamemodify(venv_dir, ":t")
+					return parent, name
 				end
 
 				local function termux_sitepackages()
