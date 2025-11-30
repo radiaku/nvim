@@ -62,7 +62,7 @@ detect_distro() {
   . /etc/os-release 2>/dev/null || true
   case "${ID:-}" in
     ubuntu|debian) echo "debian" ;;
-    arch|manjaro|endeavouros) echo "arch" ;;
+    arch|manjaro|endeavouros|cachyos) echo "arch" ;;
     fedora) echo "fedora" ;;
     rhel|rocky|almalinux|centos) echo "rhel" ;;
     *) echo "unknown" ;;
