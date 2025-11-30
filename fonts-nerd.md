@@ -12,7 +12,7 @@ Related installers:
 pkg install -y curl unzip
 mkdir -p ~/.termux
 
-# Download the Nerd Font zip (IosevkaTerm variant)
+# Download the Nerd Font zip (Iosevka variant)
 TMP="${TMPDIR:-$PREFIX/tmp}"; mkdir -p "$TMP"
 curl -fLo "$TMP/IosevkaTerm.zip" \
   https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Iosevka.zip
