@@ -72,8 +72,8 @@ return {
 		if has_python then
 			-- Prefer basedpyright and never install pyright alongside it
 			table.insert(servers, "basedpyright")
-			table.insert(tools, "black")
-			table.insert(tools, "pylint")
+			-- table.insert(tools, "black")
+			-- table.insert(tools, "pylint")
 		else
 			-- vim.notify("Python not found in PATH: skipping basedpyright", vim.log.levels.WARN)
 		end
