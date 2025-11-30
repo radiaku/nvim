@@ -97,40 +97,40 @@ return {
 			end
 
 			-- Black (Python formatter)
-			do
-				local black_cmd = python_venv_bin("black")
-				if black_cmd then
-					table.insert(
-						sources,
-						null_ls.builtins.formatting.black.with({
-							command = black_cmd,
-						})
-					)
-				end
-			end
+			-- do
+			-- 	local black_cmd = python_venv_bin("black")
+			-- 	if black_cmd then
+			-- 		table.insert(
+			-- 			sources,
+			-- 			null_ls.builtins.formatting.black.with({
+			-- 				command = black_cmd,
+			-- 			})
+			-- 		)
+			-- 	end
+			-- end
 
 			-- Pylint (Python diagnostics)
-			do
-				local pylint_cmd = python_venv_bin("pylint")
-				if pylint_cmd then
-					table.insert(
-						sources,
-						null_ls.builtins.diagnostics.pylint.with({
-							command = pylint_cmd,
-							extra_args = {
-								"--disable=missing-module-docstring,missing-function-docstring,missing-class-docstring,unused-import,unused-variable,unused-argument,trailing-newlines,invalid-name",
-							},
-							-- Use builtin args (JSON output, proper stdin handling)
-							method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
-							diagnostics_postprocess = function(d)
-								if d.code then
-									d.message = string.format("[%s] %s", d.code, d.message)
-								end
-							end,
-						})
-					)
-				end
-			end
+			-- do
+			-- 	local pylint_cmd = python_venv_bin("pylint")
+			-- 	if pylint_cmd then
+			-- 		table.insert(
+			-- 			sources,
+			-- 			null_ls.builtins.diagnostics.pylint.with({
+			-- 				command = pylint_cmd,
+			-- 				extra_args = {
+			-- 					"--disable=missing-module-docstring,missing-function-docstring,missing-class-docstring,unused-import,unused-variable,unused-argument,trailing-newlines,invalid-name",
+			-- 				},
+			-- 				-- Use builtin args (JSON output, proper stdin handling)
+			-- 				method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
+			-- 				diagnostics_postprocess = function(d)
+			-- 					if d.code then
+			-- 						d.message = string.format("[%s] %s", d.code, d.message)
+			-- 					end
+			-- 				end,
+			-- 			})
+			-- 		)
+			-- 	end
+			-- end
 
 			-- Initialize none-ls
 			null_ls.setup({
@@ -155,12 +155,12 @@ return {
 			if not exepath("stylua") then
 				table.insert(missing, "stylua")
 			end
-			if not python_venv_bin("black") then
-				table.insert(missing, "black")
-			end
-			if not python_venv_bin("pylint") then
-				table.insert(missing, "pylint")
-			end
+			-- if not python_venv_bin("black") then
+			-- 	table.insert(missing, "black")
+			-- end
+			-- if not python_venv_bin("pylint") then
+			-- 	table.insert(missing, "pylint")
+			-- end
 			if #missing > 0 then
 				vim.schedule(function()
 					vim.notify(
