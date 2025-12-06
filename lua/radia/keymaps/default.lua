@@ -202,7 +202,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts_lsp) -- smart rename
 
 		opts_lsp.desc = "Show signature or HINT"
-    keymap.set("i", "<C-k>", function() vim.lsp.buf.signature_help() end, opts_lsp)
+    keymap.set("i", "<M-k>", function() vim.lsp.buf.signature_help() end, opts_lsp)
 
 		-- opts_lsp.desc = "Show buffer diagnostics"
 		-- keymap.set("n", "gf", "<cmd>Telescope diagnostics bufnr=0<CR>", opts_lsp) -- show  diagnostics for file
