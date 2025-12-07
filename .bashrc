@@ -242,7 +242,7 @@ function jump_to_tmux_session() {
     local selected_session
     selected_session=$(tmux list-sessions -F '#{session_name}' | \
       sort -r | \
-      fzf --reverse --header "Jump to session" \
+      fzf --reverse --cycle --header "Jump to session" \
           --preview 'tmux capture-pane -t {} -p | head -20' \
           --bind 'ctrl-d:execute-silent(tmux kill-session -t {})+reload(tmux list-sessions -F "#{session_name}" | sort -r)')
 
@@ -257,10 +257,9 @@ function jump_to_tmux_session() {
   else
     tmux list-sessions -F '#{session_name}' | \
       sort -r | \
-      fzf --reverse --header "Jump to session" \
+      fzf --reverse --cycle --header "Jump to session" \
           --preview 'tmux capture-pane -pt {} | head -20' \
           --bind 'ctrl-d:execute-silent(tmux kill-session -t {})+reload(tmux list-sessions -F "#{session_name}" | sort -r)' | \
-      # xargs -r0 tmux switch-client -t
       xargs -r -I {} tmux switch-client -t "{}"
   fi
 }
