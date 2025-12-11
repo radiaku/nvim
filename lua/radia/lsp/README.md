@@ -5,15 +5,20 @@ This directory contains the LSP configuration split into modular files for bette
 ## File Structure
 
 ```
-lsp/
-├── lspconfig.lua    # Main entry point (plugin definition)
-├── utils.lua        # Helper functions (exepath, ensure, is_termux, etc.)
-├── settings.lua     # Shared settings (diagnostics, capabilities, venv detection)
-├── handlers.lua     # Mason LSP handlers for each language server
-├── direct.lua       # Direct setups for Termux/system-wide installations
-├── mason.lua        # Mason plugin configuration
-└── none-ls.lua      # None-ls (null-ls) configuration
+lua/radia/
+├── plugins/
+│   └── lsp.lua          # Loader file that imports all LSP configs
+└── lsp/                 # All LSP configuration (outside plugins directory)
+    ├── lspconfig.lua    # Main LSP config (plugin definition)
+    ├── mason.lua        # Mason plugin configuration
+    ├── none-ls.lua      # None-ls (null-ls) configuration
+    ├── utils.lua        # Helper functions (exepath, ensure, is_termux, etc.)
+    ├── settings.lua     # Shared settings (diagnostics, capabilities, venv detection)
+    ├── handlers.lua     # Mason LSP handlers for each language server
+    └── direct.lua       # Direct setups for Termux/system-wide installations
 ```
+
+**Note:** All LSP files are in `lua/radia/lsp/` (outside plugins) to keep them organized and prevent Lazy.nvim from auto-loading helper modules.
 
 ## Module Responsibilities
 
@@ -55,7 +60,7 @@ lsp/
 ## Adding a New Language Server
 
 ### For Mason-managed servers:
-Add a handler in `handlers.lua`:
+Add a handler in `lua/radia/lsp/handlers.lua`:
 ```lua
 ["your_server"] = function()
     lspconfig["your_server"].setup({
@@ -66,7 +71,7 @@ end,
 ```
 
 ### For Termux/direct installations:
-Add setup in `direct.lua`:
+Add setup in `lua/radia/lsp/direct.lua`:
 ```lua
 local your_bin = utils.ensure("your-server-binary", "Install: npm i -g your-server")
 if your_bin then
