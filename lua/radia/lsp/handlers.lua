@@ -1,6 +1,6 @@
 -- Mason LSP handlers for each language server
-local settings = require("radia.plugins.lsp.settings")
-local utils = require("radia.plugins.lsp.utils")
+local settings = require("radia.lsp.settings")
+local utils = require("radia.lsp.utils")
 
 local M = {}
 
