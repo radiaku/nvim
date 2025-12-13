@@ -1,277 +1,121 @@
-local keymap = vim.keymap -- for conciseness
+local map = require("radia.keymaps.helper").map
 
--- Plugin map
-local opts = { noremap = true, silent = true }
+-- BufferLine navigation
+map("n", "<C-l>", ":BufferLineCycleNext<cr>", "Navigate to left tab from current buffer")
+map("n", "<C-h>", ":BufferLineCyclePrev<cr>", "Navigate to to right tab from current buffer")
+map("n", "<C-n>", ":BufferLineMoveNext<CR>", "Move buffer to next left")
+map("n", "<C-p>", ":BufferLineMovePrev<CR>", "Move buffer to right")
 
-local cmd = ""
-
--- Move Between tab buffer
-opts = { desc = "Navigate to left tab from current buffer" }
-keymap.set("n", "<C-l>", ":BufferLineCycleNext<cr>", opts)
-
-opts = { desc = "Navigate to to right tab from current buffer" }
-keymap.set("n", "<C-h>", ":BufferLineCyclePrev<cr>", opts)
-
--- Move Between tab buffer
--- opts = { desc = "Navigate to left tab from current buffer" }
--- keymap.set("n", "<S-l>", ":bn<cr>", opts)
---
--- opts = { desc = "Navigate to to right tab from current buffer" }
--- keymap.set("n", "<S-h>", ":bp<cr>", opts)
-
-
-opts = { desc = "Move buffer to next left" }
-keymap.set("n", "<C-n>", ":BufferLineMoveNext<CR>", opts)
-
-opts = { desc = "Move buffer to right" }
-keymap.set("n", "<C-p>", ":BufferLineMovePrev<CR>", opts)
-
+-- QuickFix clear command
 function ClearQuickfixList()
   vim.fn.setqflist({})
 end
 vim.api.nvim_create_user_command("ClearQuickfixList", ClearQuickfixList, {})
-opts = { desc = "clear QuickFix" }
-keymap.set("n", "<leader>cf", ":ClearQuickfixList<CR>", opts)
+map("n", "<leader>cf", ":ClearQuickfixList<CR>", "clear QuickFix")
 
--- conform
+-- Conform formatting
 local conform = require("conform")
-opts = { desc = "Format file" }
-keymap.set({ "n", "v" }, "<leader>rf", function() conform.format({
+map({ "n", "v" }, "<leader>rf", function()
+  conform.format({
     lsp_fallback = true,
     async = false,
     timeout_ms = 5000,
   })
-end, opts)
+end, "Format file")
 
 -- Folding
-opts = { desc = "Open AllFolds" }
-keymap.set("n", "zR", require("ufo").openAllFolds, opts)
-opts = { desc = "Close AllFolds" }
-keymap.set("n", "zM", require("ufo").closeAllFolds, opts)
+map("n", "zR", require("ufo").openAllFolds, "Open AllFolds")
+map("n", "zM", require("ufo").closeAllFolds, "Close AllFolds")
 
--- Todo Telescope
-opts = { desc = "Todo Telescope" }
-keymap.set("n", "<leader>td", ":TodoTelescope<CR>", opts)
-opts = { desc = "Todo QuickFix" }
-keymap.set("n", "<leader>tq", ":TodoQuickFix<CR>", opts)
+-- Todo
+map("n", "<leader>td", ":TodoTelescope<CR>", "Todo Telescope")
+map("n", "<leader>tq", ":TodoQuickFix<CR>", "Todo QuickFix")
 
--- Toggle Term aka terminal
-opts = { desc = "ToggleTerm" }
-keymap.set("n", "<C-t>", ":ToggleTerm<CR>", opts)
+-- Terminal
+map("n", "<C-t>", ":ToggleTerm<CR>", "ToggleTerm")
 
--- Telescope map
--- opts = {desc = "Find Clipboard on Insert"}
--- keymap.set("i", "<C-o>", "<cmd>:Telescope neoclip <CR>", opts)
-opts = { desc = "Find Clipboard Normal" }
-keymap.set("n", "<leader>fc", "<cmd>:Telescope neoclip <CR>", opts)
+-- Telescope
+map("n", "<leader>fc", "<cmd>:Telescope neoclip <CR>", "Find Clipboard Normal")
+map("n", "<leader>fd", "<cmd>:Telescope lsp_document_symbols <CR>", "Find lsp_document_symbols")
+map("v", "<leader>fc", "<cmd>:lua require('telescope.builtin').registers({ layout_strategy='vertical', layout_config={ height=100 } })<CR>", "Find Clipboard Visual")
+map("n", "<leader>fr", "<cmd>:lua require('telescope.builtin').registers({layout_strategy='vertical',layout_config={height=100}})<cr>", "Find Registers")
+map("n", "<leader>fm", "<cmd>:lua require('telescope.builtin').keymaps({layout_strategy='vertical',layout_config={height=100}})<cr>", "Find Keymaps")
+map("n", "<leader>ff", "<cmd>Telescope find_files theme=ivy previewer=false<cr>", "Fuzzy find files in cwd")
+map("n", "<leader>fh", "<cmd>Telescope find_files theme=ivy previewer=false hidden=true no_ignore=true<cr>", "Fuzzy find files in cwd with hidden")
 
-opts = { desc = "Find lsp_document_symbols" }
-keymap.set("n", "<leader>fd", "<cmd>:Telescope lsp_document_symbols <CR>", opts)
-
-opts = { desc = "Find Clipboard Visual" }
-cmd =
-  "<cmd>:lua require('telescope.builtin').registers({ layout_strategy='vertical', layout_config={ height=100 } })<CR>"
-keymap.set("v", "<leader>fc", cmd, opts)
-
-opts = { desc = "Find Registers" }
-cmd = "<cmd>:lua require('telescope.builtin').registers({layout_strategy='vertical',layout_config={height=100}})<cr>"
-keymap.set("n", "<leader>fr", cmd, opts)
-
-opts = { desc = "Find Keymaps" }
-cmd = "<cmd>:lua require('telescope.builtin').keymaps({layout_strategy='vertical',layout_config={height=100}})<cr>"
-keymap.set("n", "<leader>fm", cmd, opts)
-
-opts = { desc = "Fuzzy find files in cwd" }
-keymap.set("n", "<leader>ff", "<cmd>Telescope find_files theme=ivy previewer=false<cr>", opts)
-
-opts = { desc = "Fuzzy find files in cwd with hidden" }
-keymap.set("n", "<leader>fh", "<cmd>Telescope find_files theme=ivy previewer=false hidden=true no_ignore=true<cr>", opts)
-
-opts = { desc = "Find string in cwd" }
-keymap.set("n", "<leader>fs", function ()
+map("n", "<leader>fs", function()
   require('telescope').extensions.live_grep_args.live_grep_args({
     default_text = '-F ',
   })
-end, opts)
+end, "Find string in cwd")
 
-opts = { desc = "Find string in config (hidden, fixed)" }
-keymap.set("n", "<leader>fx", function()
+map("n", "<leader>fx", function()
   require("telescope").extensions.live_grep_args.live_grep_args({
     cwd = vim.fn.stdpath("config"),
     default_text = "-F ",
   })
-end, opts)
+end, "Find string in config (hidden, fixed)")
 
-opts = { desc = "Find buffer on buffers" }
-cmd = "<cmd>Telescope buffers show_all_buffers=true sort_lastused=true theme=dropdown<cr>"
-keymap.set("n", "<leader>fa", cmd, opts)
+map("n", "<leader>fa", "<cmd>Telescope buffers show_all_buffers=true sort_lastused=true theme=dropdown<cr>", "Find buffer on buffers")
+map("n", "<leader>fc", '<cmd>Telescope live_grep search_dirs={"%:p"} vimgrep_arguments=rg,--color=never,--no-heading,--with-filename,--line-number,--column,--smart-case,--fixed-strings --theme=ivy<cr>', "Find string in current buffer")
+map("n", "<leader>fb", '<cmd>lua require("telescope.builtin").live_grep({grep_open_files=true,layout_strategy=vertical,layout_config={height=100}})<CR>', "Find string in all open buffers")
 
+-- Neotree
+map("n", "<leader>ee", ":Neotree toggle float<CR>", "Float File Explore")
+map("n", "<leader>ef", ":Neotree toggle left<CR>", "Left File Explorer")
 
--- opts = { desc = "Find string under cursor in cwd"}
--- keymap.set("n", "<leader>fic", "<cmd>Telescope grep_string<cr>",opts)
-local live_grep_cmdc_buffer =
-  '<cmd>Telescope live_grep search_dirs={"%:p"} vimgrep_arguments=rg,--color=never,--no-heading,--with-filename,--line-number,--column,--smart-case,--fixed-strings --theme=ivy<cr>'
-opts = { desc = "Find string in current buffer" }
-keymap.set("n", "<leader>fc", live_grep_cmdc_buffer, opts)
-
-local live_grep_cmd =
-  '<cmd>lua require("telescope.builtin").live_grep({grep_open_files=true,layout_strategy=vertical,layout_config={height=100}})<CR>'
-opts = { desc = "Find string in all open buffers" }
-keymap.set("n", "<leader>fb", live_grep_cmd, opts)
-
--- File Neotree
-opts = { desc = "Float File Explore" }
-keymap.set("n", "<leader>ee", ":Neotree toggle float<CR>", opts)
-opts = { desc = "Left File Explorer" }
-keymap.set("n", "<leader>ef", ":Neotree toggle left<CR>", opts)
-
--- Spectre
--- opts = { desc = "Toggle Spectre"}
--- keymap.set("n", "<leader>sr", '<cmd>lua require("spectre").toggle()<CR>',opts)
--- opts = { desc = "Search current word"}
--- keymap.set("n", "<leader>sw", '<cmd>lua require("spectre").open_visual({select_word=true})<CR>', opts)
--- opts = { desc = "Search current word"}
--- keymap.set("v", "<leader>sw", '<esc><cmd>lua require("spectre").open_visual()<CR>', opts)
--- opts = { desc = "Search on current file"}
--- keymap.set("n", "<leader>sp", '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>',opts)
-
--- Line Operation, Moving block or line
-opts = { desc = "Move BlockLine Down" }
-keymap.set("v", "<S-j>", ":MoveBlock(1)<CR>", opts)
-opts = { desc = "Move BlockLine Up" }
-keymap.set("v", "<S-k>", ":MoveBlock(-1)<CR>", opts)
-
--- opts = { desc = "Move BlockLine Down"}
--- keymap.set("v", "<A-h>", ":MoveHBlock(-1)<CR>", opts)
--- opts = { desc = "Move BlockLine Up"}
--- keymap.set("v", "<A-l>", ":MoveHBlock(1)<CR>", opts)
+-- Line movement
+map("v", "<S-j>", ":MoveBlock(1)<CR>", "Move BlockLine Down")
+map("v", "<S-k>", ":MoveBlock(-1)<CR>", "Move BlockLine Up")
 
 -- LazyGit
-opts = { desc = "Toggle Lazygit" }
-keymap.set("n", "<leader>lg", "<cmd>LazyGit<cr>", opts)
+map("n", "<leader>lg", "<cmd>LazyGit<cr>", "Toggle Lazygit")
 
 -- Harpoon
 local harpoon = require("harpoon")
 local conf = require("telescope.config").values
+
 local function toggle_telescope(harpoon_files)
   local finder = function()
     local paths = {}
     for _, item in ipairs(harpoon_files.items) do
       table.insert(paths, item.value)
     end
-
-    return require("telescope.finders").new_table({
-      results = paths,
-    })
+    return require("telescope.finders").new_table({ results = paths })
   end
 
-  require("telescope.pickers")
-    .new({}, {
-      prompt_title = "Harpoon",
-      finder = finder(),
-      -- previewer = conf.file_previewer({}),
-      previewer = false,
-      sorter = conf.generic_sorter({}),
-      attach_mappings = function(prompt_bufnr, map)
-        map("n", "dd", function()
-          local state = require("telescope.actions.state")
-          local selected_entry = state.get_selected_entry()
-          local current_picker = state.get_current_picker(prompt_bufnr)
-
-          table.remove(harpoon_files.items, selected_entry.index)
-          current_picker:refresh(finder())
-        end)
-        return true
-      end,
-    })
-    :find()
+  require("telescope.pickers").new({}, {
+    prompt_title = "Harpoon",
+    finder = finder(),
+    previewer = false,
+    sorter = conf.generic_sorter({}),
+    attach_mappings = function(prompt_bufnr, map_key)
+      map_key("n", "dd", function()
+        local state = require("telescope.actions.state")
+        local selected_entry = state.get_selected_entry()
+        local current_picker = state.get_current_picker(prompt_bufnr)
+        table.remove(harpoon_files.items, selected_entry.index)
+        current_picker:refresh(finder())
+      end)
+      return true
+    end,
+  }):find()
 end
 
-opts = { desc = "Open harpoon window" }
-keymap.set("n", "<leader>hm", function()
-  toggle_telescope(harpoon:list())
-end, opts)
-
-opts = { desc = "+Add to harpoon" }
-keymap.set("n", "<leader>ha", function()
-  harpoon:list():add()
-end, opts)
-
-opts = { desc = "Next Harpoon" }
-keymap.set("n", "<leader>hn", function()
-  harpoon:list():next()
-end, opts)
-
-opts = { desc = "Previous Harpoon" }
-keymap.set("n", "<leader>hp", function()
-  harpoon:list():prev()
-end, opts)
+map("n", "<leader>hm", function() toggle_telescope(harpoon:list()) end, "Open harpoon window")
+map("n", "<leader>ha", function() harpoon:list():add() end, "+Add to harpoon")
+map("n", "<leader>hn", function() harpoon:list():next() end, "Next Harpoon")
+map("n", "<leader>hp", function() harpoon:list():prev() end, "Previous Harpoon")
 
 -- Trouble
-opts = { desc = "Diagnostics (Trouble)" }
-keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", opts)
--- Obsidian Search
-opts = { desc = "Search Obsidian Note" }
-keymap.set("n", "<leader>so", "<cmd>ObsidianSearch<cr>", opts)
-opts = { desc = "New Obsidian Note" }
-keymap.set("n", "<leader>sn", "<cmd>ObsidianNew<cr>", opts)
+map("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", "Diagnostics (Trouble)")
+
+-- Obsidian
+map("n", "<leader>so", "<cmd>ObsidianSearch<cr>", "Search Obsidian Note")
+map("n", "<leader>sn", "<cmd>ObsidianNew<cr>", "New Obsidian Note")
+
 -- Mark
-opts = { desc = "List Mark On Buffer" }
-keymap.set("n", "<leader>ml", "<cmd>:MarksQFListBuf<cr>", opts)
+map("n", "<leader>ml", "<cmd>:MarksQFListBuf<cr>", "List Mark On Buffer")
 
 -- Neogit
-opts = { desc = "Neogit" }
-keymap.set("n", "<leader>ng", ":Neogit kind=floating<CR>", opts)
-
--- opts = { desc = "Trigger linting for current file"}
--- keymap.set("n", "<leader>lt", function() require("lint").try_lint() end, opts)
--- opts = { desc = "Trigger linting for current file"}
--- keymap.set("n", "<leader>st", function()
--- 	local linters = require("lint").get_running()
--- 	if #linters == 0 then
--- 		print("󰦕 no linter")
--- 	end
--- 	print(table.concat(linters, ", "))
--- 	end,
--- 	opts
--- )
-
--- Recall
--- local recall = require("recall")
--- opts = { desc = "RecallMark"}
--- keymap.set("n", "<leader>ma", "<cmd>RecallMark<CR>", opts)
--- opts = { desc = "RecallUnMark"}
--- keymap.set("n", "<leader>md", "<cmd>RecallUnmark<CR>", opts)
--- opts = { desc = "Toggle Recall"}
--- keymap.set("n", "<leader>mm", recall.toggle, opts)
--- opts = { desc = "Next Recall Mark"}
--- keymap.set("n", "<leader>mn", recall.goto_next, opts)
--- opts = { desc = "Previous Recall Mark"}
--- keymap.set("n", "<leader>mp", recall.goto_prev, opts)
--- opts = { desc = "Clear Recall Mark"}
--- keymap.set("n", "<leader>mc", recall.clear, opts)
--- opts = { desc = "Recall Telescope"}
--- keymap.set( "n", "<leader>mt", ":Telescope recall theme=dropdown<CR>",opts )
---
-
--- Debug
--- opts = { desc = "Open DapUi"}
--- keymap.set("n", "<leader>dt", ":DapUiToggle<CR>", opts)
--- opts = { desc = "Toggle Breakpoint"}
--- keymap.set("n", "<leader>db", ":DapToggleBreakpoint<CR>", opts)
--- opts = { desc = "Run Dap Under Cursor"}
--- keymap.set("n", "<leader>ds", ":lua require('dap').run_to_cursor()<CR>", opts)
--- opts = { desc = "Run Continue"}
--- keymap.set("n", "<leader>drc", ":lua require('dap').continue()<CR>", opts)
--- opts = { desc = "Restart Dap"}
--- keymap.set("n", "<leader>drs", ":lua require('dap').restart()<CR>", opts)
--- opts = { desc = "Step Out"}
--- keymap.set("n", "<leader>dO", ":lua require('dap').step_out()<CR>", opts)
--- opts = { desc = "Step Over"}
--- keymap.set("n", "<leader>do", ":lua require('dap').step_over()<CR>", opts)
--- opts = { desc = "Step Into"}
--- keymap.set("n", "<leader>di", ":lua require('dap').step_into()<CR>", opts)
--- opts = { desc = "Step Back"}
--- keymap.set("n", "<leader>da", ":lua require('dap').step_back()<CR>", opts)
--- opts = { desc = "Reset Dapui"}
--- keymap.set("n", "<leader>dc", ":lua require('dapui').open({ reset = true })<CR>", opts)
+map("n", "<leader>ng", ":Neogit kind=floating<CR>", "Neogit")
