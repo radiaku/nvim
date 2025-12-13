@@ -1,7 +1,7 @@
 -- Direct LSP setups for Termux or system-wide installations
 -- These bypass Mason and configure servers if binaries are found on PATH
-local settings = require("radia.lsp.settings")
-local utils = require("radia.lsp.utils")
+local settings = require("radia.lsp.lib.settings")
+local utils = require("radia.lsp.lib.utils")
 
 local M = {}
 

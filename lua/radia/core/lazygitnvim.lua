@@ -28,6 +28,8 @@ require("lazy").setup({
     { import = "radia.plugins.session" },
     { import = "radia.plugins.tools" },
     { import = "radia.plugins.notes" },
+    -- LSP configs loaded directly (not via import to avoid loading helper modules)
+    require("radia.lsp"),
 }, {
     install = {
         colorscheme = { themesname },

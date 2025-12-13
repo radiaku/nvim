@@ -9,7 +9,6 @@ vim.g.maplocalleader = " "
 require("radia.core")
 -- Load Keymaps for plugin etc
 require("radia.keymaps")
-require("radia.lsp")
 -- setting themes
 require("radia.themes")
 -- settings neovide
