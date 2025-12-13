@@ -9,10 +9,10 @@ return {
 	},
 	config = function()
 		-- Load modules
-		local utils = require("radia.lsp.utils")
-		local settings = require("radia.lsp.settings")
-		local handlers = require("radia.lsp.handlers")
-		local direct = require("radia.lsp.direct")
+		local utils = require("radia.lsp.lib.utils")
+		local settings = require("radia.lsp.lib.settings")
+		local handlers = require("radia.lsp.lib.handlers")
+		local direct = require("radia.lsp.lib.direct")
 
 		local lspconfig = require("lspconfig")
 		local util = require("lspconfig.util")
