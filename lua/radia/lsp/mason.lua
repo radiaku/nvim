@@ -6,13 +6,10 @@ return {
 		{ "WhoIsSethDaniel/mason-tool-installer.nvim", commit = "125551" },
 	},
 	config = function()
-		-- import mason
 		local mason = require("mason")
-
-		-- import mason-lspconfig local mason_lspconfig = require("mason-lspconfig")
-
-		local mason_tool_installer = require("mason-tool-installer")
 		local mason_lspconfig = require("mason-lspconfig")
+		local mason_tool_installer = require("mason-tool-installer")
+		local utils = require("radia.utils")
 
 		-- enable mason and configure icons
 		mason.setup({
@@ -31,11 +28,7 @@ return {
 		local has_python = vim.fn.executable("python") == 1 or vim.fn.executable("python3") == 1
 
 		-- Detect Termux (Android) to avoid installing unsupported Mason packages
-		local is_termux = false
-		local prefix = vim.env.PREFIX or ""
-		if prefix:find("com%.termux") then
-			is_termux = true
-		end
+		local is_termux = utils.is_termux()
 
 		local servers = {}
 		if not is_termux then
@@ -78,20 +71,7 @@ return {
 			-- vim.notify("Python not found in PATH: skipping basedpyright", vim.log.levels.WARN)
 		end
 
-		-- Check the operating system and append the appropriate Python language server
-		-- if vim.fn.has("win32") == 1 then
-		-- 	table.insert(ensure_installed, "pyright")
-		-- else
-		-- 	table.insert(ensure_installed, "basedpyright")
-		-- end
-
-
 		-- Only ensure-install servers/tools that are missing globally
-		local function exepath(bin)
-			local p = vim.fn.exepath(bin)
-			return p ~= "" and p or nil
-		end
-
 		local server_bins = {
 			gopls = { "gopls" },
 			vtsls = { "vtsls" },
@@ -105,25 +85,19 @@ return {
 			lua_ls = { "lua-language-server" },
 		}
 
-		-- Strong guard: ensure 'pyright' is never scheduled for installation
-		local sanitized_servers = {}
-		for _, name in ipairs(servers) do
-			if name ~= "pyright" then
-				table.insert(sanitized_servers, name)
-			end
-		end
-
+		-- Consolidate server filtering logic
 		local filtered_servers = {}
 		local seen = {}
-		for _, name in ipairs(sanitized_servers) do
-			if not seen[name] then
+		for _, name in ipairs(servers) do
+			-- Skip pyright (never install alongside basedpyright)
+			if name ~= "pyright" and not seen[name] then
 				seen[name] = true
 				-- On Termux, avoid Mason for lua_ls
 				if not (is_termux and name == "lua_ls") then
 					local bins = server_bins[name]
 					local found = false
 					for _, b in ipairs(bins or {}) do
-						if exepath(b) then
+						if utils.exepath(b) then
 							found = true
 							break
 						end
@@ -139,7 +113,7 @@ return {
 		for _, t in ipairs(tools) do
 			-- stylua via Mason unsupported on Termux
 			if not (is_termux and t == "stylua") then
-				if not exepath(t) then
+				if not utils.exepath(t) then
 					table.insert(filtered_tools, t)
 				end
 			end
