@@ -52,15 +52,18 @@ return {
 				},
 			},
 
-			-- format_on_save = function(bufnr)
-			-- 	-- Disable with a global or buffer-local variable
-			-- 	-- if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
-			-- 	-- 	return
-			-- 	-- elseif BufIsBig then
-			-- 	-- 	return
-			-- 	-- end
-			-- 	return { async = false, timeout_ms = 500, lsp_fallback = true }
-			-- end,
+		format_on_save = function(bufnr)
+			-- Disable with a global or buffer-local variable
+			if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+				return
+			end
+			-- Skip formatting on large files (>5 MiB)
+			local file_size = vim.fn.getfsize(vim.api.nvim_buf_get_name(bufnr))
+			if file_size > 5 * 1024 * 1024 then
+				return
+			end
+			return { async = false, timeout_ms = 500, lsp_fallback = true }
+		end,
 
 			-- lsp_fallback = true,
 			-- async = false,
