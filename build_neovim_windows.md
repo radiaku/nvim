@@ -1,4 +1,4 @@
-Absolutely—here are two reliable “builder” options for **Windows** to compile **Neovim 0.10.4**.
+Absolutely—here are two reliable “builder” options for **Windows** to compile **Neovim 0.12.2**.
 
 ---
 
@@ -15,12 +15,12 @@ Absolutely—here are two reliable “builder” options for **Windows** to comp
 > Tip: You can also `winget install Kitware.CMake Ninja-build Git.Git GnuWin32.GetText`
 > (gettext provides `msgfmt.exe` for translations—optional but recommended).
 
-Save as **`build-neovim-0.10.4.ps1`**, then run PowerShell **as Administrator**:
+Save as **`build-neovim-0.12.2.ps1`**, then run PowerShell **as Administrator**:
 
 ```powershell
-<# Build & install Neovim v0.10.4 on Windows (MSVC) #>
+<# Build & install Neovim v0.12.2 on Windows (MSVC) #>
 param(
-  [string]$Version = "v0.10.4",
+  [string]$Version = "v0.12.2",
   [string]$Prefix  = "C:\Program Files\Neovim",
   [string]$SrcDir  = "$HOME\src\neovim-$Version",
   [ValidateSet("Release","RelWithDebInfo","Debug")]
@@ -105,10 +105,10 @@ Log "Installed. nvim version:"
 
 ```powershell
 # System-wide (Administrator):
-.\build-neovim-0.10.4.ps1
+.\build-neovim-0.12.2.ps1
 
 # User-local (no admin):
-.\build-neovim-0.10.4.ps1 -Prefix "$HOME\AppData\Local\Programs\Neovim"
+.\build-neovim-0.12.2.ps1 -Prefix "$HOME\AppData\Local\Programs\Neovim"
 $env:Path = "$HOME\AppData\Local\Programs\Neovim\bin;$env:Path"
 ```
 
@@ -133,7 +133,7 @@ pacman -S --noconfirm \
 2. Build & install:
 
 ```bash
-export VERSION=v0.10.4
+export VERSION=v0.12.2
 mkdir -p ~/src && cd ~/src
 git clone --branch "$VERSION" --depth=1 https://github.com/neovim/neovim.git
 cd neovim

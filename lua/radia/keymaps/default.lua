@@ -69,7 +69,7 @@ map("n", "<leader>cc", ":cclose<CR>", "Close QuickFix")
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 	callback = function(ev)
-		local opts_lsp = { buffer = ev.buf, silent = true }
+		local opts_lsp = { buf = ev.buf, silent = true }
 
 		opts_lsp.desc = "Show LSP type all References"
 		vim.keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts_lsp)

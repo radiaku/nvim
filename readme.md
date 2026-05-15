@@ -6,7 +6,7 @@ This README is a friendly overview. For full setup details and all key mappings,
 - [Keymaps](keymaps.md)
 - [Git Profile Setup](gitconfig.md)
 
-If you want builder for neovim 0.10.4, check [build_neovim_linux.md](build_neovim_linux.md)
+If you want a local builder script for Neovim, check [build_neovim_linux.md](build_neovim_linux.md)
 or [build_neovim_windows.md](build_neovim_windows.md)
 or [build_neovim_termux.md](build_neovim_termux.md)
 
@@ -26,13 +26,13 @@ or [build_neovim_termux.md](build_neovim_termux.md)
 - Install Treesitter parsers: `:TSUpdate`
 
 **Requirements (short list)**
-- Neovim 0.10.x
+- Neovim 0.12.x
 - `git`, compiler toolchain (`gcc`/`clang`, `make`)
 - `ripgrep` and `fd`
 - Nerd Font (set in your terminal)
 - Optional: Node, Python, Go, JDK, .NET, `lazygit`, `yazi`
 
-See the [Installer Guide](installer.md) for macOS/Linux commands and details.
+See the [Installer Guide](installer_default.md) for macOS/Linux commands and details.
 
 **Themes**
 - Set `_G.themesname` before plugin setup (e.g., `tokyonight`, `cyberdream`, `gruvbox`, `sonokai`).
@@ -57,5 +57,4 @@ See the [Installer Guide](installer.md) for macOS/Linux commands and details.
 - If using Scoop/MSYS2, ensure paths are set and tools installed.
 - For FZF, verify search utilities exist and are detected (`fd`, `rg`).
 
-Enjoy, and tweak freely. If anything feels rough, check `installer.md` first — it covers most gotchas.
-
+Enjoy, and tweak freely. If anything feels rough, check `installer_default.md` first. It covers most gotchas.

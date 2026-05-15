@@ -1,14 +1,14 @@
-Copy this to a file like build-neovim-0.10.4.sh, make it executable, and run it.
+Copy this to a file like build-neovim-0.12.2.sh, make it executable, and run it.
 ```
 #!/usr/bin/env bash
-# Build & install Neovim v0.10.4 on Linux
+# Build & install Neovim v0.12.2 on Linux
 # Usage:
-#   ./build-neovim-0.10.4.sh [--prefix /usr/local] [--jobs 8] [--type Release] [--without-deps] [--without-bundled]
-#   ./build-neovim-0.10.4.sh --help
+#   ./build-neovim-0.12.2.sh [--prefix /usr/local] [--jobs 8] [--type Release] [--without-deps] [--without-bundled]
+#   ./build-neovim-0.12.2.sh --help
 
 set -euo pipefail
 
-VERSION="v0.10.4"
+VERSION="v0.12.2"
 PREFIX_DEFAULT="/usr/local"
 JOBS="$(nproc || echo 4)"
 BUILD_TYPE="Release"
@@ -35,8 +35,8 @@ Options:
   --help              Show this help
 
 Examples:
-  sudo ./build-neovim-0.10.4.sh
-  ./build-neovim-0.10.4.sh --prefix "\$HOME/.local" --jobs 4   # user-local install
+  sudo ./build-neovim-0.12.2.sh
+  ./build-neovim-0.12.2.sh --prefix "\$HOME/.local" --jobs 4   # user-local install
 EOF
 }
 
@@ -190,11 +190,11 @@ main "$@"
 2) QuickStart
  aj
 ```
-chmod +x build-neovim-0.10.4.sh
+chmod +x build-neovim-0.12.2.sh
 # System-wide (needs sudo):
-sudo ./build-neovim-0.10.4.sh
+sudo ./build-neovim-0.12.2.sh
 # User-local (no sudo):
-./build-neovim-0.10.4.sh --prefix "$HOME/.local"
+./build-neovim-0.12.2.sh --prefix "$HOME/.local"
 
 ```
 3) export path

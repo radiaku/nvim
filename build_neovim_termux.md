@@ -8,11 +8,11 @@ pip install --user --upgrade pynvim
 
 ```
 
-2) Get the 0.10.4 source
+2) Get the 0.12.2 source
 
 ```
 cd ~
-git clone --branch v0.10.4 --depth=1 https://github.com/neovim/neovim.git
+git clone --branch v0.12.2 --depth=1 https://github.com/neovim/neovim.git
 cd neovim
 ```
 3) Build for Termux prefix
