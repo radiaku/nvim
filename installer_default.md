@@ -29,7 +29,7 @@ source ~/.bashrc
   - `git -C ~/.config/nvim pull`
 
 ## Requirements
-- Neovim `>= 0.9` (0.10 recommended).
+- Neovim `>= 0.10` (`0.12` recommended).
 - `git` in `PATH`.
 - Build tools for native plugins and Treesitter: `gcc`/`clang`, `make`.
 - Search tools:

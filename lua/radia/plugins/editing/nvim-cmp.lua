@@ -81,7 +81,7 @@ return {
 
 		-- BufIsBig = function()
 		-- 	-- local max_filesize = 100 * 1024 -- 100 KB
-		-- 	-- local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(bufnr))
+		-- 	-- local ok, stats = pcall((vim.uv or vim.loop).fs_stat, vim.api.nvim_buf_get_name(bufnr))
 		-- 	-- if ok and stats and stats.size > max_filesize then
 		--
 		-- 	if string.len(table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "")) > 100000 then

@@ -63,6 +63,7 @@ return {
 		{ "nvim-telescope/telescope-live-grep-args.nvim", commit = "b80ec2" },
 	},
 	config = function()
+		local uv = vim.uv or vim.loop
 		local telescope = require("telescope")
 		local actions = require("telescope.actions")
 
@@ -98,7 +99,7 @@ return {
 			local insane_line_cnt = 500000 -- absurdly many lines: also clip preview
 
 			-- get file stats first
-			local ok, stats = pcall(vim.loop.fs_stat, filepath)
+			local ok, stats = pcall(uv.fs_stat, filepath)
 			if not (ok and stats and stats.size) then
 				-- if we can’t stat, just fall back to normal preview
 				return previewers.buffer_previewer_maker(filepath, bufnr, opts)

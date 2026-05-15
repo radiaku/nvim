@@ -12,7 +12,8 @@ vim.g.loaded_perl_provider = 0
 -- ============================================================================
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+local uv = vim.uv or vim.loop
+if not uv.fs_stat(lazypath) then
 	print("Installing lazy.nvim....")
 	vim.fn.system({
 		"git",
