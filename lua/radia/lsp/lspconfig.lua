@@ -16,8 +16,8 @@ return {
 
 		local lspconfig = require("lspconfig")
 		local util = require("lspconfig.util")
-		local mason = require("mason")
-		local mason_lspconfig = require("mason-lspconfig")
+		local ok_mason, mason = pcall(require, "mason")
+		local ok_mason_lspconfig, mason_lspconfig = pcall(require, "mason-lspconfig")
 
 		-- Setup neodev if available
 		pcall(function()
@@ -34,10 +34,28 @@ return {
 		utils.setup_node_path()
 
 		-- Mason handlers (for desktop/managed installations)
-		mason_lspconfig.setup_handlers(handlers.setup(lspconfig, capabilities, util))
+		if ok_mason and ok_mason_lspconfig then
+			mason_lspconfig.setup_handlers(handlers.setup(lspconfig, capabilities, util))
+		else
+			vim.schedule(function()
+				local details = {}
+				if not ok_mason then
+					table.insert(details, ("mason.nvim: %s"):format(mason))
+				end
+				if not ok_mason_lspconfig then
+					table.insert(details, ("mason-lspconfig.nvim: %s"):format(mason_lspconfig))
+				end
+				vim.notify(
+					("[LSP] Mason unavailable, falling back to direct server setup.\n%s"):format(
+						table.concat(details, "\n")
+					),
+					vim.log.levels.WARN
+				)
+			end)
+		end
 
-		-- Direct setups (for Termux or system-wide installations)
-		if utils.is_termux() then
+		-- Direct setups (for Termux, system-wide installations, or Mason fallback)
+		if utils.is_termux() or not (ok_mason and ok_mason_lspconfig) then
 			direct.setup(lspconfig, capabilities, util)
 		end
 	end,
