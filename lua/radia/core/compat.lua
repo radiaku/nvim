@@ -49,6 +49,37 @@ local function patch_validate()
   vim.g.radia_compat_validate_patched = true
 end
 
+local function flatten_legacy_list(value, result)
+  if type(value) ~= "table" then
+    result[#result + 1] = value
+    return result
+  end
+
+  for _, item in ipairs(value) do
+    flatten_legacy_list(item, result)
+  end
+
+  return result
+end
+
+local function patch_tbl_flatten()
+  if vim.g.radia_compat_tbl_flatten_patched then
+    return
+  end
+
+  if type(vim.iter) == "function" then
+    vim.tbl_flatten = function(t)
+      return vim.iter(t):flatten(math.huge):totable()
+    end
+  else
+    vim.tbl_flatten = function(t)
+      return flatten_legacy_list(t, {})
+    end
+  end
+
+  vim.g.radia_compat_tbl_flatten_patched = true
+end
+
 local function patch_lsp_client(client)
   if not client or client._radia_compat_methods_patched then
     return
@@ -268,6 +299,7 @@ local function patch_treesitter()
 end
 
 function M.setup()
+  patch_tbl_flatten()
   patch_validate()
   patch_lsp()
   patch_treesitter()
