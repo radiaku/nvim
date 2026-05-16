@@ -1,5 +1,30 @@
 local M = {}
 
+local legacy_validator_aliases = {
+  b = "boolean",
+  c = "callable",
+  f = "function",
+  n = "number",
+  s = "string",
+  t = "table",
+}
+
+local function normalize_validator(validator)
+  if type(validator) == "string" then
+    return legacy_validator_aliases[validator] or validator
+  end
+
+  if type(validator) == "table" then
+    local normalized = {}
+    for i, item in ipairs(validator) do
+      normalized[i] = normalize_validator(item)
+    end
+    return normalized
+  end
+
+  return validator
+end
+
 local function patch_validate()
   if vim.g.radia_compat_validate_patched then
     return
@@ -17,7 +42,7 @@ local function patch_validate()
 
     for _, key in ipairs(keys) do
       local spec = name[key]
-      original_validate(key, spec[1], spec[2], spec[3], spec[4])
+      original_validate(key, spec[1], normalize_validator(spec[2]), spec[3], spec[4])
     end
   end
 
