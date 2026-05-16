@@ -6,10 +6,33 @@ return {
 		{ "WhoIsSethDaniel/mason-tool-installer.nvim", commit = "125551" },
 	},
 	config = function()
-		local mason = require("mason")
-		local mason_lspconfig = require("mason-lspconfig")
-		local mason_tool_installer = require("mason-tool-installer")
 		local utils = require("radia.utils")
+		local ok_mason, mason = pcall(require, "mason")
+		local ok_mason_lspconfig, mason_lspconfig = pcall(require, "mason-lspconfig")
+		local ok_mason_tool_installer, mason_tool_installer = pcall(require, "mason-tool-installer")
+
+		if not ok_mason or not ok_mason_lspconfig or not ok_mason_tool_installer then
+			local errors = {}
+			if not ok_mason then
+				table.insert(errors, ("mason.nvim: %s"):format(mason))
+			end
+			if not ok_mason_lspconfig then
+				table.insert(errors, ("mason-lspconfig.nvim: %s"):format(mason_lspconfig))
+			end
+			if not ok_mason_tool_installer then
+				table.insert(errors, ("mason-tool-installer.nvim: %s"):format(mason_tool_installer))
+			end
+
+			vim.schedule(function()
+				vim.notify(
+					("[Mason] Disabled because the plugin install is incomplete or incompatible.\n%s"):format(
+						table.concat(errors, "\n")
+					),
+					vim.log.levels.WARN
+				)
+			end)
+			return
+		end
 
 		-- enable mason and configure icons
 		mason.setup({
