@@ -3,3 +3,4 @@ lazy-lock.json
 .kiro/
 .nvimlog
 *.log
+*.txt

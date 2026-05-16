@@ -24,7 +24,7 @@ return {
 		-- 	{ "nvim-telescope/telescope-fzy-native.nvim" },
 		{
 			"nvim-telescope/telescope-fzf-native.nvim",
-			commit = "1f08ed",
+			-- commit = "1f08ed",
 			build = function()
 				local prefix = vim.env.PREFIX or ""
 				local is_termux = prefix:find("com%.termux") ~= nil
@@ -69,7 +69,7 @@ return {
 
 		local previewers = require("telescope.previewers")
 
-    local utils = require("telescope.previewers.utils")
+		local utils = require("telescope.previewers.utils")
 
 		local function count_lines(filepath)
 			local file = io.open(filepath, "r")
@@ -150,7 +150,7 @@ return {
 				},
 				file_ignore_patterns = {
 					"node_modules",
-					"%.git/",
+					"%.git[\\/]",
 					"venv",
 				},
 				buffer_previewer_maker = no_preview_minified,
