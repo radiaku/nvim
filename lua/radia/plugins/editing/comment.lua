@@ -1,9 +1,8 @@
 return {
 	"numToStr/Comment.nvim",
-	commit = "e30b7f",
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
-		{ "JoosepAlviste/nvim-ts-context-commentstring", commit = "1b212c" },
+		{ "JoosepAlviste/nvim-ts-context-commentstring" },
 	},
 	config = function()
 		-- import comment plugin safely

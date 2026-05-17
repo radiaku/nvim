@@ -2,7 +2,7 @@ return {
 	"saghen/blink.cmp",
 	version = "v0.7.6",
 	dependencies = {
-		{ "rafamadriz/friendly-snippets", commit = "31f2a2" },
+		{ "rafamadriz/friendly-snippets" },
 	},
 	opts = {
 		keymap = {

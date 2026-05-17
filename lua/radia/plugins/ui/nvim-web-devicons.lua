@@ -1,6 +1,5 @@
 return {
 	"nvim-tree/nvim-web-devicons",
-	commit = "c90dee",
 	config = function()
 		require("nvim-web-devicons").set_icon({
 			gql = {

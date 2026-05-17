@@ -1,11 +1,10 @@
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",
-		commit = "7bbed4",
 		event = { "BufReadPre", "BufNewFile" },
 		-- build = ":TSUpdate",
 		dependencies = {
-			{ "windwp/nvim-ts-autotag", commit = "a1d526" },
+			{ "windwp/nvim-ts-autotag" },
 			{ "nvim-treesitter/nvim-treesitter-textobjects" },
 		},
 		config = function()

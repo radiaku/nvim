@@ -1,6 +1,5 @@
 return {
 	"kdheepak/lazygit.nvim",
-	commit = "b9eae3",
 	dependencies = {
 		"nvim-telescope/telescope.nvim",
 		"nvim-lua/plenary.nvim",

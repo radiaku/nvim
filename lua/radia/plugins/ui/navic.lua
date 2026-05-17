@@ -1,6 +1,5 @@
 return {
 	"SmiteshP/nvim-navic",
-  commit = "8649f69",
 	config = function()
 		require("nvim-navic").setup({
 

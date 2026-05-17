@@ -1,10 +1,9 @@
 return {
 	"nvim-neo-tree/neo-tree.nvim",
-	commit = "522446",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"nvim-tree/nvim-web-devicons",
-		{ "MunifTanjim/nui.nvim", commit = "8d3bce" },
+		{ "MunifTanjim/nui.nvim" },
 	},
 	event = "VeryLazy",
 	config = function()
