@@ -143,7 +143,7 @@ return {
 
 		mason_lspconfig.setup({
 			ensure_installed = filtered_servers,
-			automatic_installation = not is_termux,
+			automatic_enable = false,
 		})
 
 		mason_tool_installer.setup({
