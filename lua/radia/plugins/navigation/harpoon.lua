@@ -9,7 +9,7 @@ return {
 		local harpoon = require("harpoon")
 
 		-- REQUIRED
-		harpoon:setup({})
+		harpoon.setup({})
 		-- REQUIRED
 		--
 		-- basic telescope configuration
