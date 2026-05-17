@@ -5,7 +5,6 @@ if vim.fn.isdirectory(obsidian_vault_path) == 1 then
 	return {
 		{
 			"epwalsh/obsidian.nvim",
-			commit = "14e042",
 			event = "VeryLazy",
 			ft = "markdown",
 			dependencies = {
@@ -25,7 +24,6 @@ if vim.fn.isdirectory(obsidian_vault_path) == 1 then
 		},
 		{
 			"MeanderingProgrammer/render-markdown.nvim",
-			commit = "8bb0d4",
 			opts = {
 				latex = {
 					enabled = false,

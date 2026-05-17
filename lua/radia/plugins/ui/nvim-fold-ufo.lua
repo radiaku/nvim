@@ -1,8 +1,7 @@
 return {
 	"kevinhwang91/nvim-ufo",
-	commit = "a02636",
 	dependencies = {
-		{ "kevinhwang91/promise-async", commit = "119e89" },
+		{ "kevinhwang91/promise-async" },
 	},
 
 	config = function()

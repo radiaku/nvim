@@ -1,10 +1,9 @@
 return {
 	"willothy/nvim-cokeline",
-	commit = "9fbed1",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"nvim-tree/nvim-web-devicons",
-		{ "stevearc/resession.nvim", commit = "fd08e4" },
+		{ "stevearc/resession.nvim" },
 	},
 
 	config = function()

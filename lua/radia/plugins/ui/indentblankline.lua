@@ -1,6 +1,5 @@
 return {
 	"lukas-reineke/indent-blankline.nvim",
-	commit = "005b56",
 	main = "ibl",
 	config = function()
 		-- require("ibl").setup()

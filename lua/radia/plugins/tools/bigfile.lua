@@ -1,6 +1,5 @@
 return {
 	"LunarVim/bigfile.nvim",
-	commit = "33eb06",
 	event = "BufReadPre",
 	config = function()
 		require("bigfile").setup({

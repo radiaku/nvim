@@ -18,13 +18,11 @@ return {
 	-- taken from this for fixing on windows https://github.com/LunarVim/LunarVim/issues/1804	}
 	--
 	"nvim-telescope/telescope.nvim",
-	commit = "a4ed82",
 	-- branch = "0.1.x",
 	dependencies = {
 		-- 	{ "nvim-telescope/telescope-fzy-native.nvim" },
 		{
 			"nvim-telescope/telescope-fzf-native.nvim",
-			-- commit = "1f08ed",
 			build = function()
 				local prefix = vim.env.PREFIX or ""
 				local is_termux = prefix:find("com%.termux") ~= nil
@@ -60,7 +58,7 @@ return {
 				-- Never error out; extension load is guarded below
 			end,
 		},
-		{ "nvim-telescope/telescope-live-grep-args.nvim", commit = "b80ec2" },
+		{ "nvim-telescope/telescope-live-grep-args.nvim" },
 	},
 	config = function()
 		local uv = vim.uv or vim.loop
