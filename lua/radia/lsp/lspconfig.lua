@@ -33,8 +33,35 @@ return {
 		utils.setup_node_path()
 
 		-- Mason handlers (for desktop/managed installations)
+		local server_handlers = handlers.setup(lspconfig, capabilities, util)
+		local function apply_server_handler(server_name)
+			local handler = server_handlers[server_name] or server_handlers[1]
+			if type(handler) == "function" and lspconfig[server_name] then
+				handler(server_name)
+			end
+		end
+
 		if ok_mason and ok_mason_lspconfig then
-			mason_lspconfig.setup_handlers(handlers.setup(lspconfig, capabilities, util))
+			-- mason-lspconfig v1 exposed setup_handlers(); v2 removed it.
+			if type(mason_lspconfig.setup_handlers) == "function" then
+				mason_lspconfig.setup_handlers(server_handlers)
+			else
+				local configured = {}
+				local ok_installed, installed_servers = pcall(mason_lspconfig.get_installed_servers)
+				if ok_installed and type(installed_servers) == "table" then
+					for _, server_name in ipairs(installed_servers) do
+						apply_server_handler(server_name)
+						configured[server_name] = true
+					end
+				end
+
+				-- Keep custom/non-Mason server handlers active as before.
+				for server_name, handler in pairs(server_handlers) do
+					if type(server_name) == "string" and type(handler) == "function" and not configured[server_name] then
+						apply_server_handler(server_name)
+					end
+				end
+			end
 		else
 			vim.schedule(function()
 				local details = {}
