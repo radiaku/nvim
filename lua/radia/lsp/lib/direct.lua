@@ -5,14 +5,13 @@ local utils = require("radia.lsp.lib.utils")
 
 local M = {}
 
-function M.setup(lspconfig, capabilities, util)
+function M.setup(capabilities, util)
 	local server_namepy = "basedpyright"
 
 	-- Go
 	local gopls_bin = utils.ensure("gopls", "Install: pkg install gopls or 'go install golang.org/x/tools/gopls@latest'")
 	if gopls_bin then
-		lspconfig["gopls"].setup({
-			filetypes = { "go" },
+		vim.lsp.config("gopls", {
 			settings = {
 				gopls = {
 					analyses = {
@@ -26,21 +25,23 @@ function M.setup(lspconfig, capabilities, util)
 				},
 			},
 		})
+		vim.lsp.enable("gopls")
 	end
 
 	-- TypeScript/JavaScript
 	local vtsls_bin = utils.ensure("vtsls", "Install: npm i -g vtsls typescript")
 	if vtsls_bin then
-		lspconfig["vtsls"].setup({
+		vim.lsp.config("vtsls", {
 			capabilities = capabilities,
 			root_dir = util.root_pattern("package.json") or vim.fn.getcwd(),
 		})
+		vim.lsp.enable("vtsls")
 	end
 
 	-- HTML
 	local html_bin = utils.ensure("vscode-html-language-server", "Install: npm i -g vscode-langservers-extracted")
 	if html_bin then
-		lspconfig["html"].setup({
+		vim.lsp.config("html", {
 			filetypes = { "html" },
 			capabilities = capabilities,
 			init_options = {
@@ -48,28 +49,28 @@ function M.setup(lspconfig, capabilities, util)
 				provideFormatter = true,
 			},
 			root_dir = util.root_pattern("package.json") or vim.fn.getcwd(),
-			autoformat = false,
 		})
+		vim.lsp.enable("html")
 	end
 
 	-- TailwindCSS
 	local tw_bin = utils.ensure("tailwindcss-language-server", "Install: npm i -g @tailwindcss/language-server")
 	if tw_bin then
-		lspconfig["tailwindcss"].setup({
+		vim.lsp.config("tailwindcss", {
 			filetypes = {
 				"css", "typescriptreact", "typescript", "javascriptreact",
 				"templ", "sass", "scss", "less", "liquid", "svelte",
 			},
 			capabilities = capabilities,
 			root_dir = util.root_pattern("package.json") or vim.fn.getcwd(),
-			autoformat = false,
 		})
+		vim.lsp.enable("tailwindcss")
 	end
 
 	-- PHP
 	local intele_bin = utils.ensure("intelephense", "Install: npm i -g intelephense")
 	if intele_bin then
-		lspconfig["intelephense"].setup({
+		vim.lsp.config("intelephense", {
 			cmd = { "intelephense", "--stdio" },
 			filetypes = { "php" },
 			root_dir = function(pattern)
@@ -92,6 +93,7 @@ function M.setup(lspconfig, capabilities, util)
 				},
 			},
 		})
+		vim.lsp.enable("intelephense")
 	end
 
 	-- Python (basedpyright)
@@ -167,7 +169,7 @@ function M.setup(lspconfig, capabilities, util)
 			py_settings.python = { venvPath = venv_path, venv = venv_name }
 		end
 
-		lspconfig[server_namepy].setup({
+		vim.lsp.config(server_namepy, {
 			filetypes = { "python", ".py" },
 			capabilities = capabilities,
 			cmd = { py_bin, "--stdio" },
@@ -183,6 +185,7 @@ function M.setup(lspconfig, capabilities, util)
 			end,
 			settings = py_settings,
 		})
+		vim.lsp.enable(server_namepy)
 	end
 
 	-- Kotlin
@@ -237,32 +240,27 @@ function M.setup(lspconfig, capabilities, util)
 			end
 		end
 
-		lspconfig["kotlin_language_server"].setup({
+		vim.lsp.config("kotlin_language_server", {
 			cmd = { kotlin_bin },
 			cmd_env = cmd_env,
 			capabilities = capabilities,
 			root_dir = util.root_pattern("settings.gradle", "build.gradle", "pom.xml", ".git") or vim.fn.getcwd(),
 		})
+		vim.lsp.enable("kotlin_language_server")
 	end
 
 	-- C/C++
 	local clangd_bin = utils.exepath("clangd")
 	if clangd_bin then
-		lspconfig["clangd"].setup({
+		vim.lsp.config("clangd", {
 			filetypes = { "c", "cpp", "objc", "objcpp" },
 			capabilities = capabilities,
 			root_dir = util.root_pattern(
 				"package.json", ".clangd", "compile_flags.txt",
 				"compile_commands.json", ".vim/", ".git", ".hg"
 			) or vim.fn.getcwd(),
-			settings = {
-				clangd = {
-					diagnostics = {
-						severityOverrides = { ["*"] = "ignore" },
-					},
-				},
-			},
 		})
+		vim.lsp.enable("clangd")
 	end
 end
 
