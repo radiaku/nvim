@@ -22,6 +22,8 @@ winget search nodejs
 winget search python
 winget search golang
 winget search llvm
+winget search cmake
+winget search ninja
 winget search git
 ```
 
@@ -33,7 +35,18 @@ winget install --id Git.Git -e
 winget install --id OpenJS.NodeJS.LTS -e
 winget install --id Python.Python.3.12 -e
 winget install --id GoLang.Go -e
+winget install --id Kitware.CMake -e
+winget install --id Ninja-build.Ninja -e
 winget install --id LLVM.LLVM -e   # provides clang/clangd
+winget install --id BurntSushi.ripgrep.MSVC -e
+winget install --id sharkdp.fd -e
+```
+
+Optional shell extras with `winget`:
+
+```
+winget install JanDeDobbeleer.OhMyPosh --source winget
+winget install --exact --id junegunn.fzf
 ```
 
 ## Option B: Scoop (flexible package manager)
@@ -67,26 +80,44 @@ scoop bucket add versions
 Install core tools (per-user):
 
 ```
-scoop install git nodejs-lts go123 python312 llvm stylua 7zip cacert curl ffmpeg fzf fd gawk gzip innounp lazygit less llvm  luarocks ninja perl pipx sed sudo unzip vim wget bat ripgrep sudo terminal-icons
+scoop install git nodejs-lts go123 python312 llvm cmake ninja stylua 7zip cacert curl ffmpeg fzf fd gawk gzip innounp lazygit less luarocks perl pipx sed sudo unzip vim wget bat ripgrep terminal-icons
+```
+
+## Native Plugin Notes
+
+This config uses `telescope-fzf-native.nvim`, which needs build tools on Windows.
+
+- `telescope.nvim` itself is installed by `lazy.nvim`
+- the optional native `fzf` extension needs `cmake`, `ninja`, and a compiler
+- `rg` and `fd` should also be installed so Telescope file and grep pickers work well
+
+If Telescope installs but the `fzf` extension is still missing, build it manually:
+
+```powershell
+cd $env:LOCALAPPDATA\nvim-data\lazy\telescope-fzf-native.nvim
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build --config Release
+cmake --install build --prefix build
+```
+
+After that, restart Neovim and run:
+
+```vim
+:checkhealth
+:Lazy sync
 ```
 
 
-Edit for PowerShell profile:
-```
+PowerShell extras (works with either package manager):
+
+```powershell
+Install-Module -Name PSFzfHistory
 nvim $PROFILE
 ```
 
+Profile examples:
 ```
 https://github.com/radiaku/vscodepublicconfig
-```
-
-```
-Install-Module -Name PSFzfHistory
-```
-
-```
-winget install JanDeDobbeleer.OhMyPosh --source winget
-winget install --exact --id junegunn.fzf
 ```
 
 
@@ -112,17 +143,19 @@ git clone https://github.com/radiaku/nvim ~/.config/nvim
 
 Global installs with Scoop:
 
+Only use this section if you chose Scoop as your primary package manager.
+
 - Global installs require admin. Two approaches:
   - Open an elevated PowerShell (Run as Administrator) and run:
     
     ```
-    scoop install -g neovim git nodejs-lts go python llvm stylua
+scoop install -g neovim git nodejs-lts go python llvm cmake ninja stylua
     ```
   - Or install `sudo` and use it to elevate:
     
     ```
     scoop install sudo
-    sudo scoop install -g neovim git nodejs-lts go python llvm stylua
+    sudo scoop install -g neovim git nodejs-lts go python llvm cmake ninja stylua
     ```
 
 Scoop PATH notes:
@@ -203,6 +236,12 @@ Add these locations to PATH (depending on what you use):
 - Scoop shims (user): `C:\Users\<you>\scoop\shims`
 - Scoop shims (global): `C:\ProgramData\scoop\shims`
 - LLVM bin: path that includes `clangd.exe` (winget/scoop typically add this)
+
+Quick PowerShell verification:
+
+```powershell
+Get-Command nvim, git, rg, fd, cmake, ninja, clang
+```
 
 ## Verify in Neovim
 
