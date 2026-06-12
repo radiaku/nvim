@@ -7,6 +7,9 @@
 # [terminal.shell]
 # program = "/usr/local/bin/zsh"
 # args = ["--nologo"]
+[shell]
+program = "pwsh.exe"
+args = ["-NoLogo"]
 
 
 
