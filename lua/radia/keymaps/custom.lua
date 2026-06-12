@@ -104,15 +104,7 @@ map("v", "<S-j>", ":MoveBlock(1)<CR>", "Move BlockLine Down")
 map("v", "<S-k>", ":MoveBlock(-1)<CR>", "Move BlockLine Up")
 
 -- LazyGit
--- map("n", "<leader>lg", Snacks.lazygit.open(), "Toggle Lazygit")
--- Snacks Lazygit
-map("n", "<leader>lg", function()
-	Snacks.lazygit()
-end, "Lazygit")
-
-map("n", "<leader>ll", function()
-	Snacks.lazygit.log()
-end, "Lazygit Log")
+map("n", "<leader>lg", "<cmd>LazyGit<cr>", "Toggle Lazygit")
 
 -- Harpoon
 local harpoon = require("harpoon")

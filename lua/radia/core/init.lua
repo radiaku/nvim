@@ -122,7 +122,7 @@ require("lazy").setup({
 	{ import = "radia.plugins.session" },
 	{ import = "radia.plugins.tools" },
 	{ import = "radia.plugins.notes" },
-	{ import = "radia.plugins.utility" },
+	-- { import = "radia.plugins.utility" },
 	-- LSP configs loaded directly
 	require("radia.lsp.lspconfig"),
 	require("radia.lsp.mason"),

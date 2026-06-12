@@ -6,6 +6,9 @@
 -- NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+vim.g.kitty_keyboard_protocol = false
+vim.o.ttimeout = true
+vim.o.ttimeoutlen = 10
 
 -- ============================================================================
 -- Load Configuration Modules (Order Matters!)
@@ -25,6 +28,3 @@ require("radia.neovide")
 
 -- 5. Last: Final setup and autocmds
 require("radia.last")
-
-
-
