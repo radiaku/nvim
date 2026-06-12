@@ -1,11 +1,16 @@
 # Windows Installer Guide (winget + Scoop)
 
-This guide sets up Neovim and language servers on Windows using either `winget` or `Scoop`. It also covers global installs for Node-based LSPs, Go `gopls`, and optional `clangd` for C/C++.
+This guide sets up Neovim and language servers on Windows using either `winget` or `Scoop`. It also covers the native build tools this config needs on Windows, plus global installs for Node-based LSPs, Go `gopls`, and optional `clangd` for C/C++.
+
+Pick one primary package manager and stay consistent when possible. The examples below are grouped so the `winget` flow and the `Scoop` flow do not get mixed together.
 
 ## Prerequisites
 
 - PowerShell (recommended)
 - Git (needed for many tools and plugin managers)
+- Neovim `0.11+` is recommended for the current plugin set
+- For native plugins on Windows: `cmake`, `ninja`, and a C compiler such as `clang` (via LLVM) or Visual Studio Build Tools
+- For Telescope pickers: `ripgrep` (`rg`) and `fd`
 
 ## Option A: winget (recommended on Windows 10/11)
 
