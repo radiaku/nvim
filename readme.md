@@ -5,6 +5,7 @@ This README is a friendly overview. For full setup details and all key mappings,
 - [Installer Guide](installer/setup.md)
 - [Keymaps](installer/keymaps.md)
 - [Git Profile Setup](installer/git.md)
+- [Rust & Cargo](installer/cargo.md)
 
 If you want builder for neovim 0.10.4, check [build-linux](installer/build-linux.md)
 or [build-windows](installer/build-windows.md)
