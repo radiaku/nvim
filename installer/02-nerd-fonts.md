@@ -5,8 +5,8 @@
 Simple, copy‑pasteable commands to install Iosevka Nerd Font (IosevkaTerm) on Termux (Android), Linux, and Windows. JetBrainsMono instructions are included below as an alternative.
 
 Related installers:
-- Termux setup: [installertermux.md](installertermux.md)
-- Full setup: [installer.md](installer.md)
+- Termux setup: [01-neovim-setup-termux.md](01-neovim-setup-termux.md)
+- Full setup index: [README.md](README.md)
 
 ## Termux (Android)
 
@@ -16,7 +16,7 @@ mkdir -p ~/.termux
 
 # Download the Nerd Font zip (Iosevka variant)
 TMP="${TMPDIR:-$PREFIX/tmp}"; mkdir -p "$TMP"
-curl -fLo "$TMP/IosevkaTerm.zip" \
+curl -fLo "$TMP/Iosevka.zip" \
   https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Iosevka.zip
 
 # Install mono regular TTF as Termux font

@@ -1,3 +1,4 @@
 *.json
 lazy-lock.json
 .kiro/
+.claude/

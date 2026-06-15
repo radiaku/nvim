@@ -4,7 +4,7 @@
 
 > ⚡ A full-featured Neovim + LSP + Telescope setup that works directly inside Termux.
 
-[![Neovim](https://img.shields.io/badge/Neovim-0.9+-green?logo=neovim)](https://neovim.io)
+[![Neovim](https://img.shields.io/badge/Neovim-0.10.4-green?logo=neovim)](https://neovim.io)
 [![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20Termux-blue?logo=android)](https://termux.dev)
 [![radiaku/nvim](https://img.shields.io/badge/GitHub-radiaku%2Fnvim-lightgrey?logo=github)](https://github.com/radiaku/nvim)
 
@@ -37,7 +37,7 @@ pkg update -y && pkg upgrade -y
 
 ```bash
 pkg update -y && pkg upgrade -y
-pkg install -y neovim git curl wget ca-certificates openssl-tool unzip tar nodejs python golang openjdk-21 rust clang make cmake ripgrep fd lua-language-server fzf jq bat tree tmux zoxide termux-api
+pkg install -y neovim git curl wget ca-certificates openssl-tool unzip tar nodejs python golang openjdk-21 rust clang make cmake ripgrep fd lua-language-server fzf jq bat tree tmux zoxide termux-api lazygit yazi ffmpeg p7zip imagemagick
 ```
 
 ```bash
@@ -51,7 +51,10 @@ cargo install stylua --locked
 ```
 
 ```bash
-# Go LSP (Android-safe)
+# Go LSP (Android-safe, installed directly to Termux's bin)
+export GOPATH="$HOME/.local/share/go"
+export GOBIN="$PREFIX/bin"
+mkdir -p "$GOBIN" "$GOPATH"
 CGO_ENABLED=0 go install golang.org/x/tools/gopls@latest
 ```
 
@@ -60,29 +63,12 @@ npm install -g basedpyright
 ```
 
 ```bash
-pkg install lazygit yazi
-```
-
-```bash
-apt install ffmpeg 7zip jq  ripgrep fzf zoxide imagemagick
-```
-
-```bash
-# Ensure tools are on PATH
+# Ensure user-installed tools are on PATH if your shell cannot find them
 # echo 'export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/go/bin:$PATH"' >> ~/.bashrc
 # source ~/.bashrc
 ```
 
-Optional (if your shell doesn’t find `$HOME/go/bin` reliably): install `gopls` to Termux’s bin in one go.
-
-```bash
-export GOPATH="$HOME/.local/share/go"
-export GOBIN="$PREFIX/bin"
-mkdir -p "$GOBIN" "$GOPATH"
-CGO_ENABLED=0 go install golang.org/x/tools/gopls@latest
-```
-
-This consolidates all installs up front.
+This consolidates all installs up front and avoids mixing `pkg` with `apt` unless you have a specific Termux repo reason.
 
 ---
 
@@ -99,21 +85,30 @@ cargo --version
 
 ## 4️⃣ Clone Config
 
+> [!IMPORTANT]
+> Back up or merge existing files first. Do not overwrite an existing Neovim config or shell profile unless you are sure.
+
 ```bash
-git clone https://github.com/radiaku/nvim ~/.config/nvim
+if [ -e ~/.config/nvim ]; then
+  echo "~/.config/nvim already exists. Back it up or update it with: git -C ~/.config/nvim pull"
+else
+  git clone https://github.com/radiaku/nvim ~/.config/nvim
+fi
 ```
 
 ```bash
+if [ -e ~/.bashrc ]; then
+  cp ~/.bashrc ~/.bashrc.backup.$(date +%Y%m%d-%H%M%S)
+fi
 cp ~/.config/nvim/.bashrc ~/.bashrc
-```
-
-```bash
 source ~/.bashrc
 ```
 
 ```bash
 nvim
 ```
+
+Inside Neovim, run `:Lazy sync`, `:TSUpdate`, and `:checkhealth`.
 
 Lazy.nvim will install all dependencies automatically.
 
@@ -131,8 +126,8 @@ If you still see build errors, ensure `clang`, `make`, and `cmake` are installed
 
 Lua (`lua-language-server`) and Go (`gopls`) are installed above. Use Mason for Node-based servers.
 
-### 🟦 Go: gopls to `$PREFIX/bin`
-If needed, use the optional block in section 2 to install `gopls` directly to Termux’s bin.
+### 🟦 Go: gopls
+`gopls` is installed in section 2 with `CGO_ENABLED=0` and `GOBIN="$PREFIX/bin"` so it works reliably on Android/Termux.
 
 <!-- Java/JDTLS intentionally unsupported on Termux in this config. -->
 
@@ -227,9 +222,6 @@ You should see ✅ for:
 Some Mason packages don’t ship Android builds. Prefer system installs or the consolidated commands in section 2.
 
 <!-- jdtls removed from Termux docs to prevent confusion and unwanted installs. -->
-
-### gopls fails with `runtime/cgo` and `aarch64-linux-android-clang`
-The install block in section 2 already disables CGO. If your shell doesn’t see `gopls`, use the optional `$PREFIX/bin` install block there.
 
 ### go.nvim tool installs fail with `runtime/cgo` or `aarch64-linux-android-clang`
 Use CGO-free installs as in section 2. This config also auto-disables CGO during go.nvim tool installs when Termux is detected.

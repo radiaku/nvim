@@ -9,29 +9,12 @@ If you're on  Windows , see the dedicated guide: [Installer (Windows)](01-neovim
 
 If you're on Android using Termux, see the dedicated guide: [Installer (Termux)](01-neovim-setup-termux.md).
 
-## Quick Install (copy-paste)
-- Clone directly to your Neovim config path:
-```bash
-git clone https://github.com/radiaku/nvim ~/.config/nvim
-```
+## Setup Order
 
-```bash
-cp ~/.config/nvim/.bashrc ~/.bashrc
-```
-
-```bash
-source ~/.bashrc
-```
-
-- Or symlink this repo from your workspace (run from this repo’s root):
-  - `ln -s "$(pwd)" ~/.config/nvim`
-- Launch Neovim and install plugins:
-  - `nvim` then inside Neovim run `:Lazy sync` and `:TSUpdate`.
-- Update later:
-  - `git -C ~/.config/nvim pull`
+Install the base environment first. Clone the Neovim config only after `git`, Neovim, compilers, and search tools are installed.
 
 ## Requirements
-- Neovim `>= 0.9` (0.10 recommended).
+- Neovim `0.10.4` is the target version for this branch/config.
 - `git` in `PATH`.
 - Build tools for native plugins and Treesitter: `gcc`/`clang`, `make`.
 - Search tools:
@@ -60,20 +43,60 @@ source ~/.bashrc
 ### Linux Quick Setup
 - Debian/Ubuntu:
   - ```sudo apt update && sudo apt install -y neovim git ripgrep fd-find build-essential nodejs npm python3 python3-pip fzf zoxide lazygit tmux tree```
-  - Symlink ```fd`: `sudo ln -s $(command -v fdfind) /usr/local/bin/fd``` (if it installs as `fdfind`)
+  - Symlink `fd` only if needed:
+    ```bash
+    if ! command -v fd >/dev/null 2>&1 && command -v fdfind >/dev/null 2>&1 && [ ! -e /usr/local/bin/fd ]; then
+      sudo ln -s "$(command -v fdfind)" /usr/local/bin/fd
+    fi
+    ```
 - Arch:
   - `sudo pacman -S neovim git ripgrep fd nodejs npm python go base-devel fzf lua zoxide lazygit tmux tree`
 
-## Installation
-1. Place the config in your Neovim config dir:
-   - Clone or symlink to `~/.config/nvim`.
-   - Example symlink from your workspace:
-     - `ln -s /Users/mac/Dev/personal/nvim ~/.config/nvim`
-2. Launch Neovim:
-   - `nvim`
-   - The config bootstraps `lazy.nvim` automatically (cloned to `stdpath('data')/lazy/lazy.nvim`).
-3. Install plugins:
-   - Run `:Lazy sync` (or `:Lazy install`), then restart Neovim.
+## Clone Config
+
+> [!IMPORTANT]
+> Back up or merge existing files first. Do not overwrite an existing Neovim config or shell profile unless you are sure.
+
+Check for an existing config and clone only when the target directory is free:
+
+```bash
+if [ -e ~/.config/nvim ]; then
+  echo "~/.config/nvim already exists. Back it up or update it with: git -C ~/.config/nvim pull"
+else
+  git clone https://github.com/radiaku/nvim ~/.config/nvim
+fi
+```
+
+If you want this repo's Bash settings, back up your current shell config before copying:
+
+```bash
+if [ -e ~/.bashrc ]; then
+  cp ~/.bashrc ~/.bashrc.backup.$(date +%Y%m%d-%H%M%S)
+fi
+cp ~/.config/nvim/.bashrc ~/.bashrc
+source ~/.bashrc
+```
+
+Or symlink this repo from your workspace after installing the base tools:
+
+```bash
+ln -s "$(pwd)" ~/.config/nvim
+```
+
+## First Launch
+
+```bash
+nvim
+```
+
+Inside Neovim, run `:Lazy sync`, `:TSUpdate`, and `:checkhealth`.
+
+Update later:
+
+```bash
+git -C ~/.config/nvim pull
+```
+
 
 ## Theme Selection
 - This config uses `_G.themesname` to select the colorscheme.
@@ -105,7 +128,7 @@ source ~/.bashrc
 - `:Lazy` — plugin manager UI.
 - `:Mason` — LSP/DAP/formatters installer.
 - `:TSUpdate` — install/update Treesitter parsers.
-- `:CheckHealth` — verify environment.
+- `:checkhealth` — verify environment.
 
 ## Optional Integrations
 - Lazygit: `brew install lazygit` or install via your package manager; open with `:LazyGit`.
@@ -124,7 +147,11 @@ source ~/.bashrc
   - Check logs: `:Lazy log`.
 
 ## Uninstall / Reset
-- Remove config dir: `rm -rf ~/.config/nvim`.
+- Back up before removing the config directory:
+  ```bash
+  mv ~/.config/nvim ~/.config/nvim.backup.$(date +%Y%m%d-%H%M%S)
+  ```
+  Delete the backup later only after confirming you no longer need local customizations.
 - Remove Neovim data (plugins, cache):
   - Show path: `:echo stdpath('data')`.
   - On macOS: `~/Library/Application Support/nvim`.

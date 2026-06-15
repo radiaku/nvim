@@ -16,7 +16,11 @@ pip install --user --upgrade pynvim
 
 ```
 cd ~
-git clone --branch v0.10.4 --depth=1 https://github.com/neovim/neovim.git
+if [ -e neovim ]; then
+  echo "~/neovim already exists. Move it aside or update it manually before cloning."
+else
+  git clone --branch v0.10.4 --depth=1 https://github.com/neovim/neovim.git
+fi
 cd neovim
 ```
 3) Build for Termux prefix

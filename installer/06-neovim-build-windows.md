@@ -2,7 +2,7 @@
 
 > **Step 6** · Tags: #windows #build | [Index](README.md)
 
-Absolutely—here are two reliable “builder” options for **Windows** to compile **Neovim 0.10.4**.
+Use one of these builder options on Windows to compile **Neovim 0.10.4**.
 
 ---
 
@@ -67,8 +67,12 @@ $Msgfmt = Get-Command msgfmt -ErrorAction SilentlyContinue
 # Fetch source
 if (Test-Path "$SrcDir\.git") {
   Log "Updating existing repo at $SrcDir"
+  git -C $SrcDir diff --quiet
+  if ($LASTEXITCODE -ne 0) { Die "Refusing to update $SrcDir because it has local changes. Commit, stash, or use a fresh source directory." }
+  git -C $SrcDir diff --cached --quiet
+  if ($LASTEXITCODE -ne 0) { Die "Refusing to update $SrcDir because it has staged changes. Commit, stash, or use a fresh source directory." }
   git -C $SrcDir fetch --depth=1 origin "refs/tags/$Version:refs/tags/$Version"
-  git -C $SrcDir checkout -f $Version
+  git -C $SrcDir checkout $Version
 } else {
   Log "Cloning Neovim $Version"
   New-Item -Force -ItemType Directory -Path (Split-Path $SrcDir) | Out-Null
@@ -163,4 +167,4 @@ cmake --install build
 
   and reorder PATH accordingly.
 
-If you tell me which route you prefer (MSVC vs MSYS2), I can tailor it (e.g., artifacts `.zip`, custom install prefix, or CI-friendly non-interactive install).
+Use the MSVC route for standard Windows builds and the MSYS2 route when you already prefer the MSYS2 toolchain.

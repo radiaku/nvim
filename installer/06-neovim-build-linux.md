@@ -76,7 +76,7 @@ detect_distro() {
 install_deps_debian() {
   log "Installing deps via apt..."
   sudo apt-get update
-  sudo apt install build-essential cmake git
+  sudo apt install -y build-essential cmake git
   sudo apt-get install -y \
     git cmake ninja-build gettext libtool libtool-bin autoconf automake \
     g++ pkg-config unzip curl doxygen \
@@ -130,8 +130,11 @@ install_build_deps() {
 clone_source() {
   if [[ -d "$SRC_DIR/.git" ]]; then
     log "Source exists at $SRC_DIR; fetching & checking out $VERSION"
+    if ! git -C "$SRC_DIR" diff --quiet || ! git -C "$SRC_DIR" diff --cached --quiet; then
+      die "Refusing to update $SRC_DIR because it has local changes. Commit, stash, or use a fresh source directory."
+    fi
     git -C "$SRC_DIR" fetch --depth=1 origin "refs/tags/$VERSION:refs/tags/$VERSION" || true
-    git -C "$SRC_DIR" checkout -f "$VERSION"
+    git -C "$SRC_DIR" checkout "$VERSION"
   else
     log "Cloning Neovim $VERSION to $SRC_DIR"
     mkdir -p "$(dirname "$SRC_DIR")"
@@ -192,7 +195,6 @@ main "$@"
 ```
 
 2) QuickStart
- aj
 ```
 chmod +x build-neovim-0.10.4.sh
 # System-wide (needs sudo):

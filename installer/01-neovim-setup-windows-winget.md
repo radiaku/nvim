@@ -10,7 +10,7 @@ If you prefer **Scoop**, see [Scoop Guide](01-neovim-setup-windows-scoop.md).
 
 - PowerShell (recommended)
 - Git (needed for many tools and plugin managers)
-- Neovim `0.11+` is recommended for the current plugin set
+- Neovim `0.10.4` is the target version for this branch/config
 - For native plugins on Windows: `cmake`, `ninja`, and a C compiler such as `clang` (via LLVM) or Visual Studio Build Tools
 - For Telescope pickers: `ripgrep` (`rg`) and `fd`
 
@@ -73,40 +73,20 @@ After that, restart Neovim and run:
 ```vim
 :checkhealth
 :Lazy sync
+:TSUpdate
 ```
 
 PowerShell extras:
 
 ```powershell
-Install-Module -Name PSFzfHistory
+Install-Module -Name PSFzfHistory -Scope CurrentUser
+Get-Module -ListAvailable PSFzfHistory
 nvim $PROFILE
 ```
 
 Profile examples:
 ```
 https://github.com/radiaku/vscodepublicconfig
-```
-
-## Clone Config
-
-Place this repo in the Windows Neovim config directory (`%LOCALAPPDATA%\nvim`):
-
-- PowerShell:
-
-```powershell
-git clone https://github.com/radiaku/nvim $env:LOCALAPPDATA\nvim
-```
-
-- CMD:
-
-```cmd
-git clone https://github.com/radiaku/nvim %LOCALAPPDATA%\nvim
-```
-
-- WSL/Linux (if using Neovim inside WSL):
-
-```sh
-git clone https://github.com/radiaku/nvim ~/.config/nvim
 ```
 
 ## Language Servers (Global Installs)
@@ -186,6 +166,33 @@ Quick PowerShell verification:
 ```powershell
 Get-Command nvim, git, rg, fd, cmake, ninja, clang
 ```
+
+## Clone Config
+
+Place this repo in the Windows Neovim config directory only after the tools above are installed and visible in PATH (`%LOCALAPPDATA%\nvim`):
+
+- PowerShell:
+
+```powershell
+if (Test-Path $env:LOCALAPPDATA\nvim) {
+  Write-Host "$env:LOCALAPPDATA\nvim already exists. Back it up or update it with: git -C $env:LOCALAPPDATA\nvim pull"
+} else {
+  git clone https://github.com/radiaku/nvim $env:LOCALAPPDATA\nvim
+}
+```
+
+- CMD:
+
+```cmd
+git clone https://github.com/radiaku/nvim %LOCALAPPDATA%\nvim
+```
+
+- WSL/Linux (if using Neovim inside WSL):
+
+```sh
+git clone https://github.com/radiaku/nvim ~/.config/nvim
+```
+
 
 ## Verify in Neovim
 
