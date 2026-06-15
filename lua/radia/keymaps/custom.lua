@@ -1,8 +1,21 @@
 local map = require("radia.keymaps.helper").map
 
--- BufferLine navigation
-map("n", "<C-l>", ":BufferLineCycleNext<cr>", "Navigate to left tab from current buffer")
-map("n", "<C-h>", ":BufferLineCyclePrev<cr>", "Navigate to to right tab from current buffer")
+-- Buffer/tab navigation
+local function cycle_buffer_or_tab(direction)
+  if vim.fn.tabpagenr("$") > 1 then
+    vim.cmd(direction == "next" and "tabnext" or "tabprevious")
+    return
+  end
+
+  vim.cmd(direction == "next" and "bnext" or "bprevious")
+end
+
+map("n", "<C-l>", function()
+  cycle_buffer_or_tab("next")
+end, "Navigate to next buffer or tab")
+map("n", "<C-h>", function()
+  cycle_buffer_or_tab("prev")
+end, "Navigate to previous buffer or tab")
 map("n", "<C-n>", ":BufferLineMoveNext<CR>", "Move buffer to next left")
 map("n", "<C-p>", ":BufferLineMovePrev<CR>", "Move buffer to right")
 

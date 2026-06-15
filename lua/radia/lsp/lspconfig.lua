@@ -19,6 +19,8 @@ return {
 		local mason = require("mason")
 		local mason_lspconfig = require("mason-lspconfig")
 
+		mason.setup({ PATH = "prepend" })
+
 		-- Setup neodev if available
 		pcall(function()
 			require("neodev").setup({})

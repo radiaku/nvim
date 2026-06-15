@@ -19,7 +19,9 @@ function M.setup(lspconfig, capabilities, util)
 		["lua_ls"] = function()
 			local lua_ls_bin = utils.exepath("lua-language-server")
 			if not lua_ls_bin then
-				vim.notify("[LSP] 'lua-language-server' not found. On Termux, install from source or skip.", vim.log.levels.WARN)
+				if utils.is_termux() then
+					vim.notify("[LSP] 'lua-language-server' not found. On Termux, install from source or skip.", vim.log.levels.WARN)
+				end
 				return
 			end
 			lspconfig["lua_ls"].setup({
@@ -45,6 +47,18 @@ function M.setup(lspconfig, capabilities, util)
 						telemetry = { enable = false },
 					},
 				},
+			})
+		end,
+
+		-- JSON
+		["jsonls"] = function()
+			local cmd = utils.exepath("vscode-json-language-server")
+			if not cmd then
+				return
+			end
+			lspconfig["jsonls"].setup({
+				capabilities = capabilities,
+				cmd = { cmd, "--stdio" },
 			})
 		end,
 
@@ -123,43 +137,48 @@ function M.setup(lspconfig, capabilities, util)
 
 		-- TypeScript/JavaScript
 		["vtsls"] = function()
-			local vtsls_bin = utils.ensure("vtsls", "Install: npm i -g vtsls typescript")
-			if not vtsls_bin then return end
+			local cmd = utils.ensure("vtsls", "Install: npm i -g vtsls typescript")
+			if not cmd then return end
 			lspconfig["vtsls"].setup({
+				cmd = { cmd, "--stdio" },
 				capabilities = capabilities,
-				root_dir = util.root_pattern("package.json") or vim.fn.getcwd(),
+				root_dir = util.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git") or vim.fn.getcwd(),
 			})
 		end,
 
 		-- HTML
 		["html"] = function()
-			if not utils.ensure("vscode-html-language-server", "Install: npm i -g vscode-langservers-extracted") then
+			local cmd = utils.ensure("vscode-html-language-server", "Install: npm i -g vscode-langservers-extracted")
+			if not cmd then
 				return
 			end
 			lspconfig["html"].setup({
+				cmd = { cmd, "--stdio" },
 				filetypes = { "html" },
 				capabilities = capabilities,
 				init_options = {
 					embeddedLanguages = { css = true, javascript = true },
 					provideFormatter = true,
 				},
-				root_dir = util.root_pattern("package.json") or vim.fn.getcwd(),
+				root_dir = util.root_pattern("package.json", ".git") or vim.fn.getcwd(),
 				autoformat = false,
 			})
 		end,
 
 		-- TailwindCSS
 		["tailwindcss"] = function()
-			if not utils.ensure("tailwindcss-language-server", "Install: npm i -g @tailwindcss/language-server") then
+			local cmd = utils.ensure("tailwindcss-language-server", "Install: npm i -g @tailwindcss/language-server")
+			if not cmd then
 				return
 			end
 			lspconfig["tailwindcss"].setup({
+				cmd = { cmd, "--stdio" },
 				filetypes = {
 					"css", "typescriptreact", "typescript", "javascriptreact",
 					"templ", "sass", "scss", "less", "liquid", "svelte",
 				},
 				capabilities = capabilities,
-				root_dir = util.root_pattern("package.json") or vim.fn.getcwd(),
+				root_dir = util.root_pattern("tailwind.config.js", "tailwind.config.ts", "postcss.config.js", "postcss.config.ts", "package.json", ".git") or vim.fn.getcwd(),
 				autoformat = false,
 			})
 		end,
@@ -265,7 +284,26 @@ function M.setup(lspconfig, capabilities, util)
 
 		-- Emmet
 		["emmet_ls"] = function()
+			local cmd = utils.exepath("emmet-ls")
+			if not cmd then
+				return
+			end
 			lspconfig["emmet_ls"].setup({
+				cmd = { cmd, "--stdio" },
+				filetypes = {
+					"html", "typescriptreact", "typescript", "javascriptreact",
+					"css", "sass", "scss", "less", "svelte", "liquid",
+				},
+			})
+		end,
+
+		["emmet_language_server"] = function()
+			local cmd = utils.exepath("emmet-language-server")
+			if not cmd then
+				return
+			end
+			lspconfig["emmet_language_server"].setup({
+				cmd = { cmd, "--stdio" },
 				filetypes = {
 					"html", "typescriptreact", "typescript", "javascriptreact",
 					"css", "sass", "scss", "less", "svelte", "liquid",

@@ -4,12 +4,13 @@ return {
 	event = "VeryLazy",
 	dependencies = { 'nvim-tree/nvim-web-devicons' },
   config = function ()
-    require('bufferline').setup()
+    local bufferline = require('bufferline')
+    bufferline.setup()
     -- Fix bufferline when restoring a session
-    vim.api.nvim_create_autocmd('BufAdd', {
+    vim.api.nvim_create_autocmd({ 'BufAdd', 'SessionLoadPost' }, {
       callback = function()
         vim.schedule(function()
-          pcall(nvim_bufferline)
+          pcall(bufferline.refresh)
         end)
       end,
     })
