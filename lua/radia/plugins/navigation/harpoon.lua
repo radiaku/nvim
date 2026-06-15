@@ -2,6 +2,7 @@ return {
 	"ThePrimeagen/harpoon",
 	-- branch = "harpoon2",
 	commit = "ed1f85",
+	event = "VeryLazy",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 	},

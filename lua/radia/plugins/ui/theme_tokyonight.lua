@@ -1,7 +1,7 @@
 return {
 	"folke/tokyonight.nvim",
 	commit = "057ef5",
-	lazy = false,
+	lazy = true,
 	priority = 1000,
 	opts = {},
 }

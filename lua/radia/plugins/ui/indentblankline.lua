@@ -2,6 +2,7 @@ return {
 	"lukas-reineke/indent-blankline.nvim",
 	commit = "005b56",
 	main = "ibl",
+	event = "VeryLazy",
 	config = function()
 		-- require("ibl").setup()
 		local highlight = {

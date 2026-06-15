@@ -29,7 +29,16 @@ vim.opt.rtp:prepend(lazypath)
 -- Clipboard Configuration
 -- ============================================================================
 
-vim.opt.clipboard = "unnamedplus"
+-- Defer clipboard to avoid slow provider initialization during startup
+vim.opt.clipboard = ""
+vim.api.nvim_create_autocmd("UIEnter", {
+  once = true,
+  callback = function()
+    vim.defer_fn(function()
+      vim.opt.clipboard = "unnamedplus"
+    end, 50)
+  end,
+})
 
 -- Termux clipboard provider: use Termux:API tools when available
 do

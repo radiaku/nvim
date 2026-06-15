@@ -1,6 +1,7 @@
 return {
 	"AckslD/nvim-neoclip.lua",
 	commit = "831a97",
+	event = "VeryLazy",
 	dependencies = {
 		{ "nvim-telescope/telescope.nvim" },
 	},

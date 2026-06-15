@@ -26,6 +26,7 @@ if vim.fn.isdirectory(obsidian_vault_path) == 1 then
 		{
 			"MeanderingProgrammer/render-markdown.nvim",
 			commit = "8bb0d4",
+			ft = "markdown",
 			opts = {
 				latex = {
 					enabled = false,

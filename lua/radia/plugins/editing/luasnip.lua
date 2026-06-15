@@ -1,6 +1,7 @@
 return {
 	"L3MON4D3/LuaSnip",
   commit = "c9b9a2",
+  event = "InsertEnter",
 	-- version = "v2.*",
 	build = vim.fn.has("win32") == 1 and "pwsh " .. vim.fn.stdpath("config") .. vim.fn.expand("/lua/radia/windows/ps_luasnip_build_mingw.ps1")
 		or "make install_jsregexp",

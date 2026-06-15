@@ -1,7 +1,7 @@
 return {
 	"scottmckendry/cyberdream.nvim",
 	commit = "274eac",
-	lazy = false,
+	lazy = true,
 	priority = 1000,
 	config = function()
 		require("cyberdream").setup({

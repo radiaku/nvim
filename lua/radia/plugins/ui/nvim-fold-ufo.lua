@@ -1,6 +1,7 @@
 return {
 	"kevinhwang91/nvim-ufo",
 	commit = "a02636",
+	event = "VeryLazy",
 	dependencies = {
 		{ "kevinhwang91/promise-async", commit = "119e89" },
 	},

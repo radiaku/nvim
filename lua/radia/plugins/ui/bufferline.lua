@@ -1,7 +1,8 @@
 return {
 	'akinsho/bufferline.nvim',
 	-- version = "4.9.1",
-	requires = 'nvim-tree/nvim-web-devicons',
+	event = "VeryLazy",
+	dependencies = { 'nvim-tree/nvim-web-devicons' },
   config = function ()
     require('bufferline').setup()
     -- Fix bufferline when restoring a session

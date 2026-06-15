@@ -19,6 +19,7 @@ return {
 	--
 	"nvim-telescope/telescope.nvim",
 	commit = "a4ed82",
+	cmd = "Telescope",
 	-- branch = "0.1.x",
 	dependencies = {
 		-- 	{ "nvim-telescope/telescope-fzy-native.nvim" },

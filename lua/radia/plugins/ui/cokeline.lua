@@ -1,6 +1,7 @@
 return {
 	"willothy/nvim-cokeline",
 	commit = "9fbed1",
+	event = "VeryLazy",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"nvim-tree/nvim-web-devicons",
