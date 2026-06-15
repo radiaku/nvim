@@ -97,7 +97,7 @@ source ~/.bashrc
 - Plugin specs grouped under:
   - `lua/radia/plugins/ui`, `files`, `navigation`, `git`, `editing`, `diagnostics`, `language`, `terminal`, `session`, `tools`, `notes`, `lsp`.
 - Keymaps:
-  - Files in `lua/radia/keymaps/` and summary in `keymaps.md`.
+  - Files in `lua/radia/keymaps/` and summary in `neovim-keymaps.md`.
 - Lazy setup:
   - `lua/radia/lazy.lua` imports each group explicitly.
 
