@@ -1,10 +1,10 @@
 # Windows Installer Guide — winget
 
-> **Tags:** #windows #winget #core | [Index](README.md) | [Windows](setup-windows.md)
+> **Tags:** #windows #winget #core | [Index](README.md) | [Windows](windows.md)
 
 This guide sets up Neovim and language servers on Windows using `winget`. It covers native build tools, global installs for Node-based LSPs, Go `gopls`, and optional `clangd` for C/C++.
 
-If you prefer **Scoop**, see [Scoop Guide](setup-windows-scoop.md).
+If you prefer **Scoop**, see [Scoop Guide](windows-scoop.md).
 
 ## Prerequisites
 
