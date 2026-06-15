@@ -1,3 +1,7 @@
+# Build Neovim from Source — Termux
+
+> **Tags:** #termux #build | [Index](README.md)
+
 1) Prep & deps
 ```
 pkg update && pkg upgrade -y

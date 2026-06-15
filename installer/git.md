@@ -1,3 +1,7 @@
+# Git Profile Setup
+
+> **Tags:** #all #optional | [Index](README.md)
+
 https://gist.github.com/radiaku/d3ffb60c50c9a4e2dec5be57db7272c8
 
 make ssh for your git profile

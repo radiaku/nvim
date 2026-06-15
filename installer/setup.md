@@ -1,5 +1,7 @@
 # Installer Guide
 
+> **Tags:** #linux #macos #core | [Index](README.md)
+
 This guide outlines requirements, installation, and post-install steps for this Neovim configuration.
 
 If you're on  Windows , see the dedicated guide: [Installer (Windows)](setup-windows.md).

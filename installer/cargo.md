@@ -1,5 +1,7 @@
 # Rust & Cargo Installer
 
+> **Tags:** #all #optional | [Index](README.md)
+
 The standard way to install Rust on any platform is `rustup` — the official Rust toolchain installer.
 
 ## Quick Install

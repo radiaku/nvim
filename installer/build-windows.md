@@ -1,3 +1,7 @@
+# Build Neovim from Source — Windows
+
+> **Tags:** #windows #build | [Index](README.md)
+
 Absolutely—here are two reliable “builder” options for **Windows** to compile **Neovim 0.10.4**.
 
 ---

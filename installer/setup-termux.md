@@ -1,4 +1,7 @@
 # 📱 Neovim on Termux (Android)
+
+> **Tags:** #termux #android #core | [Index](README.md)
+
 > ⚡ A full-featured Neovim + LSP + Telescope setup that works directly inside Termux.
 
 [![Neovim](https://img.shields.io/badge/Neovim-0.9+-green?logo=neovim)](https://neovim.io)

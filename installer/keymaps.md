@@ -1,5 +1,7 @@
 # Keymaps
 
+> **Tags:** #all #reference | [Index](README.md)
+
 This document summarizes the key mappings defined in this configuration. Modes are noted as `n` (normal), `i` (insert), `v` (visual), `c` (command), and `t` (terminal).
 
 Notes

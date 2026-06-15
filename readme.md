@@ -1,16 +1,6 @@
-Radia’s Neovim configuration — fast, pragmatic, and organized.
+Radia's Neovim configuration — fast, pragmatic, and organized.
 
-This README is a friendly overview. For full setup details and all key mappings, see:
-- [Fonts: Nerd Font Install](installer/fonts.md)
-- [Installer Guide](installer/setup.md)
-- [Keymaps](installer/keymaps.md)
-- [Git Profile Setup](installer/git.md)
-- [Rust & Cargo](installer/cargo.md)
-
-If you want builder for neovim 0.10.4, check [build-linux](installer/build-linux.md)
-or [build-windows](installer/build-windows.md)
-or [build-termux](installer/build-termux.md)
-
+See the **[Installer Index](installer/README.md)** for all platform setup guides, keymaps, extras, and build instructions.
 
 **What you get**
 - Plugins cleanly grouped by function: `ui`, `files`, `navigation`, `git`, `editing`, `diagnostics`, `language`, `terminal`, `session`, `tools`, `notes`, `lsp` (plus `disabled` for parked specs).
@@ -24,16 +14,14 @@ or [build-termux](installer/build-termux.md)
   ```
 - Launch Neovim: `nvim`
 - Open plugin UI and install: `:Lazy sync`
-- Install Treesitter parsers: `:TSUpdate`
+- Install Treesitter parsers: `:TSInstall`
 
 **Requirements (short list)**
-- Neovim 0.10.x
+- Neovim 0.10.x+
 - `git`, compiler toolchain (`gcc`/`clang`, `make`)
 - `ripgrep` and `fd`
 - Nerd Font (set in your terminal)
 - Optional: Node, Python, Go, JDK, .NET, `lazygit`, `yazi`
-
-See the [Installer Guide](installer/setup.md) for macOS/Linux commands and details.
 
 **Themes**
 - Set `_G.themesname` before plugin setup (e.g., `tokyonight`, `cyberdream`, `gruvbox`, `sonokai`).
@@ -46,17 +34,10 @@ See the [Installer Guide](installer/setup.md) for macOS/Linux commands and detai
 **Common Commands**
 - `:Lazy` — manage plugins
 - `:Mason` — install LSPs/formatters
-- `:TSUpdate` — Treesitter
-- `:CheckHealth` — environment checks
+- `:TSInstall` — Treesitter parsers
+- `:checkhealth` — environment checks
 
 **Structure**
 - `lua/radia/plugins/*` — grouped plugin specs
 - `lua/radia/keymaps/*` — keymap files
-- `lua/radia/lazy.lua` — plugin loader
- 
-**Windows Notes**
-- If using Scoop/MSYS2, ensure paths are set and tools installed.
-- For FZF, verify search utilities exist and are detected (`fd`, `rg`).
-
-Enjoy, and tweak freely. If anything feels rough, check `installer/setup.md` first — it covers most gotchas.
-
+- `lua/radia/core/init.lua` — plugin loader (lazy.nvim)

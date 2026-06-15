@@ -1,5 +1,7 @@
 # Windows Installer Guide
 
+> **Tags:** #windows #core | [Index](README.md)
+
 Two package manager options — pick one:
 
 - **[Winget](setup-windows-winget.md)** — built into Windows 10/11, simple CLI

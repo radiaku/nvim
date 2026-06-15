@@ -1,3 +1,7 @@
+# Build Neovim from Source — Linux
+
+> **Tags:** #linux #build | [Index](README.md)
+
 Copy this to a file like build-neovim-0.10.4.sh, make it executable, and run it.
 ```
 #!/usr/bin/env bash
