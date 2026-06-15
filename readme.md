@@ -28,7 +28,7 @@ See the **[Installer Index](installer/README.md)** for all platform setup guides
 - Colorscheme application lives in `lua/radia/themes.lua`.
 
 **Learn the Keys**
-- Read the [Keymaps](installer/neovim-keymaps.md) for a human-friendly overview.
+- Read the [Keymaps](installer/05-neovim-keymaps.md) for a human-friendly overview.
 - In Neovim: `:Telescope keymaps` or `<leader>fm`.
 
 **Common Commands**

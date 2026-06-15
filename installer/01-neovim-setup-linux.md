@@ -4,10 +4,10 @@
 
 This guide outlines requirements, installation, and post-install steps for this Neovim configuration.
 
-If you're on  Windows , see the dedicated guide: [Installer (Windows)](neovim-setup-windows.md).
+If you're on  Windows , see the dedicated guide: [Installer (Windows)](01-neovim-setup-windows.md).
 
 
-If you're on Android using Termux, see the dedicated guide: [Installer (Termux)](neovim-setup-termux.md).
+If you're on Android using Termux, see the dedicated guide: [Installer (Termux)](01-neovim-setup-termux.md).
 
 ## Quick Install (copy-paste)
 - Clone directly to your Neovim config path:
@@ -97,7 +97,7 @@ source ~/.bashrc
 - Plugin specs grouped under:
   - `lua/radia/plugins/ui`, `files`, `navigation`, `git`, `editing`, `diagnostics`, `language`, `terminal`, `session`, `tools`, `notes`, `lsp`.
 - Keymaps:
-  - Files in `lua/radia/keymaps/` and summary in `neovim-keymaps.md`.
+  - Files in `lua/radia/keymaps/` and summary in `05-neovim-keymaps.md`.
 - Lazy setup:
   - `lua/radia/lazy.lua` imports each group explicitly.
 

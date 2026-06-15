@@ -4,8 +4,8 @@
 
 Two package manager options — pick one:
 
-- **[Winget](neovim-setup-windows-winget.md)** — built into Windows 10/11, simple CLI
-- **[Scoop](neovim-setup-windows-scoop.md)** — more packages, per-user installs, version pinning
+- **[Winget](01-neovim-setup-windows-winget.md)** — built into Windows 10/11, simple CLI
+- **[Scoop](01-neovim-setup-windows-scoop.md)** — more packages, per-user installs, version pinning
 
 ## Shared Requirements
 

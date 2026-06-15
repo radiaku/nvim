@@ -1,10 +1,10 @@
-# Windows Installer Guide — Scoop
+# Windows Installer Guide — winget
 
-> **Step 1b** · Tags: #windows #scoop #core | [Index](README.md) | [Windows](neovim-setup-windows.md)
+> **Step 1a** · Tags: #windows #winget #core | [Index](README.md) | [Windows](01-neovim-setup-windows.md)
 
-This guide sets up Neovim and language servers on Windows using `Scoop`. It covers native build tools, global installs for Node-based LSPs, Go `gopls`, and optional `clangd` for C/C++.
+This guide sets up Neovim and language servers on Windows using `winget`. It covers native build tools, global installs for Node-based LSPs, Go `gopls`, and optional `clangd` for C/C++.
 
-If you prefer **winget**, see [Winget Guide](neovim-setup-windows-winget.md).
+If you prefer **Scoop**, see [Scoop Guide](01-neovim-setup-windows-scoop.md).
 
 ## Prerequisites
 
@@ -14,62 +14,42 @@ If you prefer **winget**, see [Winget Guide](neovim-setup-windows-winget.md).
 - For native plugins on Windows: `cmake`, `ninja`, and a C compiler such as `clang` (via LLVM) or Visual Studio Build Tools
 - For Telescope pickers: `ripgrep` (`rg`) and `fd`
 
-## Install Scoop
-
-```powershell
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-irm get.scoop.sh -outfile 'install.ps1'
-iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
-```
-
-## Install Git First
-
-```powershell
-scoop install git
-```
-
-## Add Buckets
-
-```powershell
-scoop bucket add main
-scoop bucket add extras
-scoop bucket add versions
-```
-
 ## Install Core Tools
 
-```powershell
-scoop install git nodejs-lts go123 python312 llvm cmake ninja stylua 7zip cacert curl ffmpeg fzf fd gawk gzip innounp lazygit@0.57.0 less luarocks perl pipx sed sudo unzip vim wget bat ripgrep terminal-icons
+Search packages if IDs change:
+
+```
+winget search neovim
+winget search nodejs
+winget search python
+winget search golang
+winget search llvm
+winget search cmake
+winget search ninja
+winget search git
 ```
 
-> [!IMPORTANT]
-> **Pin lazygit to v0.57.0** — newer versions produce double characters when launched from Neovim on Windows:
-> ```powershell
-> scoop hold lazygit
-> ```
+Install core tools:
 
-## Global Installs (Optional, Requires Admin)
+```
+winget install --id Neovim.Neovim -e
+winget install --id Git.Git -e
+winget install --id OpenJS.NodeJS.LTS -e
+winget install --id Python.Python.3.12 -e
+winget install --id GoLang.Go -e
+winget install --id Kitware.CMake -e
+winget install --id Ninja-build.Ninja -e
+winget install --id LLVM.LLVM -e   # provides clang/clangd
+winget install --id BurntSushi.ripgrep.MSVC -e
+winget install --id sharkdp.fd -e
+```
 
-Two approaches:
+Optional shell extras:
 
-- Open an elevated PowerShell (Run as Administrator) and run:
-
-  ```powershell
-  scoop install -g neovim git nodejs-lts go python llvm cmake ninja stylua
-  ```
-
-- Or install `sudo` and use it to elevate:
-
-  ```powershell
-  scoop install sudo
-  sudo scoop install -g neovim git nodejs-lts go python llvm cmake ninja stylua
-  ```
-
-## Scoop PATH
-
-- Per-user shims: `C:\Users\<you>\scoop\shims`
-- Global shims: `C:\ProgramData\scoop\shims`
-- Ensure the appropriate shims directory is in your PATH.
+```
+winget install JanDeDobbeleer.OhMyPosh --source winget
+winget install --exact --id junegunn.fzf
+```
 
 ## Native Plugin Notes
 
@@ -135,13 +115,13 @@ These installs provide language servers outside of Neovim package managers (e.g.
 
 ### Node-based LSPs (via npm)
 
-```powershell
+```
 npm i -g vtsls typescript vscode-langservers-extracted @tailwindcss/language-server intelephense basedpyright
 ```
 
 PATH for npm globals:
 
-```powershell
+```
 npm config get prefix
 ```
 
@@ -150,13 +130,13 @@ npm config get prefix
 
 ### Go: gopls
 
-```powershell
+```
 go install golang.org/x/tools/gopls@latest
 ```
 
 PATH for Go tools:
 
-```powershell
+```
 go env GOPATH
 ```
 
@@ -165,8 +145,8 @@ go env GOPATH
 
 ### C/C++: clangd (optional)
 
-```powershell
-scoop install llvm
+```
+winget install --id LLVM.LLVM -e
 ```
 
 `clangd` is included with LLVM; ensure `clangd.exe` is on PATH.
@@ -175,7 +155,7 @@ scoop install llvm
 
 Prefer per-project virtual environments:
 
-```powershell
+```
 python -m venv .venv
 . .venv\Scripts\activate
 pip install black pylint ruff
@@ -183,7 +163,7 @@ pip install black pylint ruff
 
 If you want user-wide installs:
 
-```powershell
+```
 pip install --user black pylint ruff
 ```
 
@@ -199,9 +179,7 @@ Add these locations to PATH (depending on what you use):
 - npm global: `%USERPROFILE%\AppData\Roaming\npm`
 - Go tools: `%GOPATH%\bin`
 - Python user scripts: `%APPDATA%\Python\Python3x\Scripts`
-- Scoop shims (user): `C:\Users\<you>\scoop\shims`
-- Scoop shims (global): `C:\ProgramData\scoop\shims`
-- LLVM bin: path that includes `clangd.exe` (Scoop typically adds this)
+- LLVM bin: path that includes `clangd.exe` (winget typically adds this)
 
 Quick PowerShell verification:
 
@@ -217,4 +195,3 @@ Get-Command nvim, git, rg, fd, cmake, ninja, clang
 ## Notes
 
 - If you prefer Mason-managed servers inside Neovim, it can coexist with global installs; PATH order decides which binary is used.
-- On Windows, `scoop install stylua` is often easiest. Alternatively: `cargo install stylua` if you have Rust.
