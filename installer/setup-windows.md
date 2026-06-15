@@ -28,7 +28,6 @@ winget search git
 ```
 
 Install core tools:
-
 ```
 winget install --id Neovim.Neovim -e
 winget install --id Git.Git -e
