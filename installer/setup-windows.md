@@ -79,11 +79,11 @@ scoop bucket add versions
 Install core tools (per-user):
 
 ```
-scoop install git nodejs-lts go123 python312 llvm cmake ninja stylua 7zip cacert curl ffmpeg fzf fd gawk gzip innounp lazygit less luarocks perl pipx sed sudo unzip vim wget bat ripgrep terminal-icons
+scoop install git nodejs-lts go123 python312 llvm cmake ninja stylua 7zip cacert curl ffmpeg fzf fd gawk gzip innounp lazygit@0.57.0 less luarocks perl pipx sed sudo unzip vim wget bat ripgrep terminal-icons
 ```
 
 > [!IMPORTANT]
-> **Pin lazygit to v0.56.0** — newer versions produce double characters when launched from Neovim on Windows:
+> **Pin lazygit to v0.57.0** — this version works correctly. Newer versions produce double characters when launched from Neovim on Windows:
 > ```powershell
 > scoop hold lazygit
 > ```
