@@ -1,14 +1,14 @@
 Radia’s Neovim configuration — fast, pragmatic, and organized.
 
 This README is a friendly overview. For full setup details and all key mappings, see:
-- [Fonts: Nerd Font Install](fonts-nerd.md)
-- [Installer Guide](installer_default.md)
-- [Keymaps](keymaps.md)
-- [Git Profile Setup](gitconfig.md)
+- [Fonts: Nerd Font Install](installer/fonts.md)
+- [Installer Guide](installer/setup.md)
+- [Keymaps](installer/keymaps.md)
+- [Git Profile Setup](installer/git.md)
 
-If you want builder for neovim 0.10.4, check [build_neovim_linux.md](build_neovim_linux.md)
-or [build_neovim_windows.md](build_neovim_windows.md)
-or [build_neovim_termux.md](build_neovim_termux.md)
+If you want builder for neovim 0.10.4, check [build-linux](installer/build-linux.md)
+or [build-windows](installer/build-windows.md)
+or [build-termux](installer/build-termux.md)
 
 
 **What you get**
@@ -32,14 +32,14 @@ or [build_neovim_termux.md](build_neovim_termux.md)
 - Nerd Font (set in your terminal)
 - Optional: Node, Python, Go, JDK, .NET, `lazygit`, `yazi`
 
-See the [Installer Guide](installer.md) for macOS/Linux commands and details.
+See the [Installer Guide](installer/setup.md) for macOS/Linux commands and details.
 
 **Themes**
 - Set `_G.themesname` before plugin setup (e.g., `tokyonight`, `cyberdream`, `gruvbox`, `sonokai`).
 - Colorscheme application lives in `lua/radia/themes.lua`.
 
 **Learn the Keys**
-- Read the [Keymaps](keymaps.md) for a human-friendly overview.
+- Read the [Keymaps](installer/keymaps.md) for a human-friendly overview.
 - In Neovim: `:Telescope keymaps` or `<leader>fm`.
 
 **Common Commands**
@@ -57,5 +57,5 @@ See the [Installer Guide](installer.md) for macOS/Linux commands and details.
 - If using Scoop/MSYS2, ensure paths are set and tools installed.
 - For FZF, verify search utilities exist and are detected (`fd`, `rg`).
 
-Enjoy, and tweak freely. If anything feels rough, check `installer.md` first — it covers most gotchas.
+Enjoy, and tweak freely. If anything feels rough, check `installer/setup.md` first — it covers most gotchas.
 
