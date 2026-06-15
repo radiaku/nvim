@@ -1,10 +1,12 @@
 # Installer Guide
 
-> **Step 1** · Tags: #linux #macos #core | [Index](README.md)
+> **Step 1** · Tags: #linux #core | [Index](README.md)
 
 This guide outlines requirements, installation, and post-install steps for this Neovim configuration.
 
-If you're on  Windows , see the dedicated guide: [Installer (Windows)](01-neovim-setup-windows.md).
+If you're on macOS, see the dedicated guide: [Installer (macOS)](01-neovim-setup-macos.md).
+
+If you're on Windows, see the dedicated guide: [Installer (Windows)](01-neovim-setup-windows.md).
 
 
 If you're on Android using Termux, see the dedicated guide: [Installer (Termux)](01-neovim-setup-termux.md).
@@ -29,16 +31,6 @@ Install the base environment first. Clone the Neovim config only after `git`, Ne
   - .NET SDK for C#.
   - `lazygit` (for `:LazyGit`).
   - `yazi` file manager (if using the Yazi integration).
-
-### macOS Quick Setup
-- Install packages with Homebrew:
-  - ```brew install neovim git ripgrep fd node go python lazygit yazi tmux tree fzf lua```
-  - Ensure a compiler is present: `xcode-select --install` (or `brew install llvm`).
-  - Install JDK 17 for Kotlin LS:
-    - `brew install openjdk@17`
-    - Set environment:
-      - `export JAVA_HOME=$( /usr/libexec/java_home -v 17 )`
-      - `export PATH="$JAVA_HOME/bin:$PATH"`
 
 ### Linux Quick Setup
 - Debian/Ubuntu:
@@ -131,8 +123,8 @@ git -C ~/.config/nvim pull
 - `:checkhealth` — verify environment.
 
 ## Optional Integrations
-- Lazygit: `brew install lazygit` or install via your package manager; open with `:LazyGit`.
-- Yazi: `brew install yazi`; enable plugin if desired.
+- Lazygit: install via your Linux package manager; open with `:LazyGit`.
+- Yazi: install via your Linux package manager; enable plugin if desired.
 - Obsidian: set vault path in `lua/radia/plugins/notes/obsidian.lua`.
 
 ## Troubleshooting

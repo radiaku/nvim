@@ -2,7 +2,7 @@
 
 > **Step 2** · Tags: #all #optional | [Index](README.md)
 
-Simple, copy‑pasteable commands to install Iosevka Nerd Font (IosevkaTerm) on Termux (Android), Linux, and Windows. JetBrainsMono instructions are included below as an alternative.
+Simple, copy‑pasteable commands to install Iosevka Nerd Font (IosevkaTerm) on Termux (Android), Linux/macOS, and Windows. JetBrainsMono instructions are included below as an alternative.
 
 Related installers:
 - Termux setup: [01-neovim-setup-termux.md](01-neovim-setup-termux.md)

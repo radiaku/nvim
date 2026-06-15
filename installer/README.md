@@ -20,7 +20,8 @@
 
 | Doc | Tags | Description |
 |-----|------|-------------|
-| [01-neovim-setup-linux.md](01-neovim-setup-linux.md) | `#linux` `#macos` `#core` | Linux/macOS setup |
+| [01-neovim-setup-linux.md](01-neovim-setup-linux.md) | `#linux` `#core` | Linux setup |
+| [01-neovim-setup-macos.md](01-neovim-setup-macos.md) | `#macos` `#homebrew` `#core` | macOS via Homebrew |
 | [01-neovim-setup-windows.md](01-neovim-setup-windows.md) | `#windows` `#core` | Windows landing page |
 | [01-neovim-setup-windows-winget.md](01-neovim-setup-windows-winget.md) | `#windows` `#winget` `#core` | Windows via winget |
 | [01-neovim-setup-windows-scoop.md](01-neovim-setup-windows-scoop.md) | `#windows` `#scoop` `#core` | Windows via Scoop |
@@ -36,7 +37,8 @@
 ## Quick Paths
 
 - **New user on Windows?** → [Scoop](01-neovim-setup-windows-scoop.md) (recommended) or [winget](01-neovim-setup-windows-winget.md)
-- **New user on Linux/macOS?** → [Setup Guide](01-neovim-setup-linux.md)
+- **New user on Linux?** → [Linux Setup Guide](01-neovim-setup-linux.md)
+- **New user on macOS?** → [macOS Homebrew Guide](01-neovim-setup-macos.md)
 - **Android?** → [Termux Guide](01-neovim-setup-termux.md)
 - **Already set up?** → [Keymaps](05-neovim-keymaps.md)
 - **Need a Nerd Font?** → [Fonts](02-nerd-fonts.md)
@@ -47,7 +49,7 @@
 
 | Step | What | Link |
 |:----:|------|------|
-| 1 | Set up your platform | [Linux/macOS](01-neovim-setup-linux.md) · [Windows](01-neovim-setup-windows.md) · [Termux](01-neovim-setup-termux.md) |
+| 1 | Set up your platform | [Linux](01-neovim-setup-linux.md) · [macOS](01-neovim-setup-macos.md) · [Windows](01-neovim-setup-windows.md) · [Termux](01-neovim-setup-termux.md) |
 | 2 | Install a Nerd Font | [nerd-fonts](02-nerd-fonts.md) |
 | 3 | Configure Git | [git-profile](03-git-profile.md) |
 | 4 | (Optional) Install Rust/Cargo | [rust-cargo](04-rust-cargo.md) |
