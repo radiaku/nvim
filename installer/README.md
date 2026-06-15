@@ -26,3 +26,14 @@
 - **Need a Nerd Font?** → [Fonts](nerd-fonts.md)
 - **Want Rust tools?** → [Cargo](rust-cargo.md)
 - **Building Neovim from source?** → [Linux](neovim-build-linux.md) | [Windows](neovim-build-windows.md) | [Termux](neovim-build-termux.md)
+
+## New User Step-by-Step
+
+| Step | What | Link |
+|:----:|------|------|
+| 1 | Set up your platform | [Linux](neovim-setup-linux.md) · [Windows](neovim-setup-windows.md) · [Termux](neovim-setup-termux.md) |
+| 2 | Install a Nerd Font | [nerd-fonts](nerd-fonts.md) |
+| 3 | Configure Git | [git-profile](git-profile.md) |
+| 4 | (Optional) Install Rust/Cargo | [rust-cargo](rust-cargo.md) |
+| 5 | Learn keymaps | [neovim-keymaps](neovim-keymaps.md) |
+| 6 | (Advanced) Build Neovim from source | [Linux](neovim-build-linux.md) · [Windows](neovim-build-windows.md) · [Termux](neovim-build-termux.md) |

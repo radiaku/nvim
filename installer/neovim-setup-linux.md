@@ -1,6 +1,6 @@
 # Installer Guide
 
-> **Tags:** #linux #macos #core | [Index](README.md)
+> **Step 1** · Tags: #linux #macos #core | [Index](README.md)
 
 This guide outlines requirements, installation, and post-install steps for this Neovim configuration.
 

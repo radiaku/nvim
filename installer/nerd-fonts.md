@@ -1,6 +1,6 @@
 # Nerd Font (Iosevka) — Quick Install Guide
 
-> **Tags:** #all #optional | [Index](README.md)
+> **Step 2** · Tags: #all #optional | [Index](README.md)
 
 Simple, copy‑pasteable commands to install Iosevka Nerd Font (IosevkaTerm) on Termux (Android), Linux, and Windows. JetBrainsMono instructions are included below as an alternative.
 

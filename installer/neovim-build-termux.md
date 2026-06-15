@@ -1,6 +1,6 @@
 # Build Neovim from Source — Termux
 
-> **Tags:** #termux #build | [Index](README.md)
+> **Step 6** · Tags: #termux #build | [Index](README.md)
 
 1) Prep & deps
 ```

@@ -1,6 +1,6 @@
 # Windows Installer Guide — Scoop
 
-> **Tags:** #windows #scoop #core | [Index](README.md) | [Windows](neovim-setup-windows.md)
+> **Step 1b** · Tags: #windows #scoop #core | [Index](README.md) | [Windows](neovim-setup-windows.md)
 
 This guide sets up Neovim and language servers on Windows using `Scoop`. It covers native build tools, global installs for Node-based LSPs, Go `gopls`, and optional `clangd` for C/C++.
 

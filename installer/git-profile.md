@@ -1,6 +1,6 @@
 # Git Profile Setup
 
-> **Tags:** #all #optional | [Index](README.md)
+> **Step 3** · Tags: #all #optional | [Index](README.md)
 
 https://gist.github.com/radiaku/d3ffb60c50c9a4e2dec5be57db7272c8
 

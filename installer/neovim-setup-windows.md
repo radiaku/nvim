@@ -1,6 +1,6 @@
 # Windows Installer Guide
 
-> **Tags:** #windows #core | [Index](README.md)
+> **Step 1** · Tags: #windows #core | [Index](README.md)
 
 Two package manager options — pick one:
 
