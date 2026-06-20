@@ -2,3 +2,9 @@
 lazy-lock.json
 .kiro/
 .claude/
+.omo/
+.commandcode/
+.codegraph/
+.openclaude/
+.tmpdata/
+.nimvlog

@@ -9,14 +9,14 @@ keymap.set("n", "<leader>xs", "<cmd>source %<CR>", opts)
 opts = { desc = "Run selected lua script" }
 keymap.set("v", "<leader>xr", ":lua<CR>", opts)
 
-local pickers = require("telescope.pickers")
-local finders = require("telescope.finders")
-local actions = require("telescope.actions")
-local action_state = require("telescope.actions.state")
-local sorters = require("telescope.config").values.generic_sorter
-
 -- All Buffers picker
 local all_buffers = function()
+	local pickers = require("telescope.pickers")
+	local finders = require("telescope.finders")
+	local actions = require("telescope.actions")
+	local action_state = require("telescope.actions.state")
+	local sorters = require("telescope.config").values.generic_sorter
+
 	local get_buffers = function()
 		local buffers = {}
 		for buffer = 1, vim.fn.bufnr("$") do

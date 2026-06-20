@@ -27,9 +27,8 @@ vim.api.nvim_create_user_command("ClearQuickfixList", ClearQuickfixList, {})
 map("n", "<leader>cf", ":ClearQuickfixList<CR>", "clear QuickFix")
 
 -- Conform formatting
-local conform = require("conform")
 map({ "n", "v" }, "<leader>rf", function()
-  conform.format({
+  require("conform").format({
     lsp_fallback = true,
     async = false,
     timeout_ms = 5000,
@@ -37,8 +36,12 @@ map({ "n", "v" }, "<leader>rf", function()
 end, "Format file")
 
 -- Folding
-map("n", "zR", require("ufo").openAllFolds, "Open AllFolds")
-map("n", "zM", require("ufo").closeAllFolds, "Close AllFolds")
+map("n", "zR", function()
+  require("ufo").openAllFolds()
+end, "Open AllFolds")
+map("n", "zM", function()
+  require("ufo").closeAllFolds()
+end, "Close AllFolds")
 
 -- Todo
 map("n", "<leader>td", ":TodoTelescope<CR>", "Todo Telescope")
@@ -85,10 +88,8 @@ map("v", "<S-k>", ":MoveBlock(-1)<CR>", "Move BlockLine Up")
 map("n", "<leader>lg", "<cmd>LazyGit<cr>", "Toggle Lazygit")
 
 -- Harpoon
-local harpoon = require("harpoon")
-local conf = require("telescope.config").values
-
 local function toggle_telescope(harpoon_files)
+  local conf = require("telescope.config").values
   local finder = function()
     local paths = {}
     for _, item in ipairs(harpoon_files.items) do
@@ -115,10 +116,18 @@ local function toggle_telescope(harpoon_files)
   }):find()
 end
 
-map("n", "<leader>hm", function() toggle_telescope(harpoon:list()) end, "Open harpoon window")
-map("n", "<leader>ha", function() harpoon:list():add() end, "+Add to harpoon")
-map("n", "<leader>hn", function() harpoon:list():next() end, "Next Harpoon")
-map("n", "<leader>hp", function() harpoon:list():prev() end, "Previous Harpoon")
+map("n", "<leader>hm", function()
+  toggle_telescope(require("harpoon"):list())
+end, "Open harpoon window")
+map("n", "<leader>ha", function()
+  require("harpoon"):list():add()
+end, "+Add to harpoon")
+map("n", "<leader>hn", function()
+  require("harpoon"):list():next()
+end, "Next Harpoon")
+map("n", "<leader>hp", function()
+  require("harpoon"):list():prev()
+end, "Previous Harpoon")
 
 -- Trouble
 map("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", "Diagnostics (Trouble)")
