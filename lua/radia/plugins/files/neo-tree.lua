@@ -110,6 +110,13 @@ return {
 							show_path = "none",
 						},
 					},
+					["ga"] = function(state)
+						local node = state.tree:get_node()
+						local path = node:get_id()
+						vim.fn.system({ "git", "add", "--force", path })
+						-- Refresh the tree UI to show updated git icons
+						require("neo-tree.sources.manager").refresh(state.name)
+					end,
 
 					["A"] = "add_directory",
 					["d"] = "delete",
