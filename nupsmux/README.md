@@ -84,10 +84,40 @@ Rules:
 Add to `$nu.config-path`:
 
 ```nushell
-# Project picker: Ctrl+F
-# Scans ~/Dev/Work and ~/Dev/Personal
-# Creates session if missing, attaches if exists
+# Generate alphanumeric session name from path (no slashes, colons, spaces)
+def psmux-session-name [dir: string] {
+    $dir
+    | str replace -a "\\" "_"
+    | str replace -a ":" ""
+    | str replace -a " " "_"
+    | str replace -a "-" "_"
+    | str replace -a "." "_"
+    | str replace -r '[^a-zA-Z0-9_]' "_"
+}
+
+# Ensure psmux server is running (called before any psmux command)
+def psmux-ensure-server [] {
+    let info = (^psmux server-info | complete)
+    if ($info.exit_code != 0) {
+        ^psmux new-session -ds default
+    }
+}
+
+# psmux: create/attach session for current directory
+def psmux-here [] {
+    psmux-ensure-server
+    let session = (psmux-session-name $env.PWD)
+    do -i { ^psmux new-session -ds $session -c $env.PWD }
+    if ($env.TMUX? | is-not-empty) {
+        ^psmux switch-client -t $session
+    } else {
+        ^psmux attach -t $session
+    }
+}
+
+# psmux project picker: choose folder from ~/Dev/, create (or attach if exists)
 def psmux-project [] {
+    psmux-ensure-server
     let roots = [
         ($env.USERPROFILE | path join "Dev" "Work")
         ($env.USERPROFILE | path join "Dev" "Personal")
@@ -109,12 +139,10 @@ def psmux-project [] {
 
     let parent = ($roots | where {|r| ($r | path join $pick) in $dirs } | first)
     let dir = ($parent | path join $pick)
-    let session = ($dir | str replace -a "\\" "_" | str replace -a ":" "_")
+    let session = (psmux-session-name $dir)
 
-    # Create if missing (ignore error if exists)
     do -i { ^psmux new-session -ds $session -c $dir }
 
-    # Connect: switch if inside psmux, attach if outside
     if ($env.TMUX? | is-not-empty) {
         ^psmux switch-client -t $session
     } else {
@@ -132,6 +160,12 @@ $env.config.keybindings = ($env.config.keybindings | append {
         cmd: "psmux-project"
     }
 })
+
+# Auto-start psmux server on startup
+let _psmux_check = (^psmux server-info | complete)
+if ($_psmux_check.exit_code != 0) {
+    ^psmux new-session -ds default
+}
 ```
 
 Dependencies:
