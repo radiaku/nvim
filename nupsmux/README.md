@@ -109,7 +109,7 @@ def psmux-project [] {
 
     let parent = ($roots | where {|r| ($r | path join $pick) in $dirs } | first)
     let dir = ($parent | path join $pick)
-    let session = ($dir | str replace -a '\\' '_' | str replace -a ':' '_')
+    let session = ($dir | str replace -a "\\" "_" | str replace -a ":" "_")
 
     # Create if missing (ignore error if exists)
     do -i { ^psmux new-session -ds $session -c $dir }
