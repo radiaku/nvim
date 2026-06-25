@@ -1,0 +1,150 @@
+diff --git a/src/cli.rs b/src/cli.rs
+index f4b06ac..c75bf84 100644
+--- a/src/cli.rs
++++ b/src/cli.rs
+@@ -629,6 +629,29 @@ pub fn extract_session_from_target(target: &str) -> String {
+     parsed.session.unwrap_or_else(|| "default".to_string())
+ }
+ 
++/// Resolve the explicit `-t <session>` target for attach-session from the full
++/// argv, applying the `-L` socket-namespace prefix when present.
++///
++/// This MUST read from the raw `args`, not from the post-subcommand filtered
++/// command args: the arg pre-filter in `main` strips `-t <value>` for every
++/// subcommand (it assumes downstream reads the resolved env var). The attach
++/// handler re-derives the target from argv, so if it scans the *stripped* args
++/// it never finds `-t`, falls through to "most recent session", and attaches to
++/// the wrong session — `psmux attach -t A` opening B. Reading raw argv here (the
++/// same way the global `-t` handler does) keeps the explicit target intact.
++///
++/// Returns `None` when no `-t` flag is present (the caller then tries a
++/// positional name, then the default/last-session fallbacks).
++pub fn attach_target_session(args: &[String], l_socket_name: Option<&str>) -> Option<String> {
++    args.iter()
++        .position(|a| a == "-t")
++        .and_then(|i| args.get(i + 1))
++        .map(|s| match l_socket_name {
++            Some(l) => format!("{}__{}", l, s),
++            None => s.clone(),
++        })
++}
++
+ /// Extract a flag value from args, supporting tmux short-flag CLI forms:
+ ///   * Two-token form: `-F value`
+ ///   * Concatenated form: `-Fvalue`
+@@ -745,3 +768,7 @@ mod tests {
+ #[cfg(test)]
+ #[path = "../tests-rs/test_issue196_flag_equals.rs"]
+ mod tests_issue196_flag_equals;
++
++#[cfg(test)]
++#[path = "../tests-rs/test_attach_target_session.rs"]
++mod tests_attach_target_session;
+diff --git a/src/main.rs b/src/main.rs
+index 7732122..ef65e4a 100644
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -671,17 +671,16 @@ fn run_main() -> io::Result<()> {
+                 // otherwise argv[0] (the exe path or subcommand name) gets
+                 // picked up as the target session name.
+                 let sub_args: Vec<&String> = cmd_args.iter().skip(1).copied().collect();
+-                let name = sub_args
+-                    .iter()
+-                    .position(|a| *a == "-t")
+-                    .and_then(|i| sub_args.get(i + 1))
+-                    .map(|s| {
+-                        if let Some(ref l) = l_socket_name {
+-                            format!("{}__{}", l, s)
+-                        } else {
+-                            (*s).clone()
+-                        }
+-                    })
++                // Resolve the target session for `-t NAME`. IMPORTANT: this reads
++                // `-t` from the RAW `args`, not from `sub_args`/`cmd_args` — the
++                // cmd_args builder above strips `-t <value>` for every subcommand
++                // (see "After subcommand: strip only -t"). Scanning the stripped
++                // args never finds `-t`, so attach falls through to
++                // `resolve_last_session_name_ns` and connects to the most-recent
++                // session instead of the one the user asked for (the
++                // attach-wrong-session bug). The positional fallback below still
++                // uses sub_args, since positional args are not stripped.
++                let name = crate::cli::attach_target_session(&args, l_socket_name.as_deref())
+                     .or_else(|| {
+                         // Accept positional argument as target session name
+                         // (e.g. "psmux attach work" without -t flag)
+diff --git a/tests-rs/test_attach_target_session.rs b/tests-rs/test_attach_target_session.rs
+new file mode 100644
+index 0000000..b5aad28
+--- /dev/null
++++ b/tests-rs/test_attach_target_session.rs
+@@ -0,0 +1,70 @@
++// Regression: `psmux attach -t SESSION1` attached to the most-recently-used
++// session instead of SESSION1.
++//
++// Root cause: the argv pre-filter in `main` strips `-t <value>` for every
++// subcommand, but the attach handler re-derived its target by scanning that
++// stripped arg list. It therefore never saw `-t`, fell through to the
++// "most recent session" fallback, and attached to the wrong session. The
++// positional form (`psmux attach SESSION1`) was unaffected because positional
++// args are not stripped — which is the tell that only `-t` was broken.
++//
++// `attach_target_session` now reads `-t` from the RAW argv, so these tests pin
++// that behavior (including the `-L` socket-namespace prefix).
++
++use super::*;
++
++fn args(parts: &[&str]) -> Vec<String> {
++    parts.iter().map(|s| s.to_string()).collect()
++}
++
++#[test]
++fn attach_dash_t_returns_requested_session() {
++    // The core bug: -t must win, regardless of what other sessions exist.
++    let a = args(&["psmux", "attach", "-t", "SESSION1"]);
++    assert_eq!(attach_target_session(&a, None), Some("SESSION1".to_string()));
++}
++
++#[test]
++fn attach_dash_t_alias_forms() {
++    for sub in ["a", "at", "attach", "attach-session"] {
++        let a = args(&["psmux", sub, "-t", "work"]);
++        assert_eq!(attach_target_session(&a, None), Some("work".to_string()));
++    }
++}
++
++#[test]
++fn attach_dash_t_equals_form() {
++    // normalize_flag_equals splits `-t=NAME` into `-t NAME` before this runs.
++    let a = normalize_flag_equals(args(&["psmux", "attach", "-t=SESSION1"]));
++    assert_eq!(attach_target_session(&a, None), Some("SESSION1".to_string()));
++}
++
++#[test]
++fn attach_without_dash_t_is_none() {
++    // No -t: caller falls back to positional / default / last-session.
++    let a = args(&["psmux", "attach", "SESSION1"]);
++    assert_eq!(attach_target_session(&a, None), None);
++}
++
++#[test]
++fn attach_dash_t_applies_socket_namespace_prefix() {
++    let a = args(&["psmux", "-L", "mysock", "attach", "-t", "SESSION1"]);
++    assert_eq!(
++        attach_target_session(&a, Some("mysock")),
++        Some("mysock__SESSION1".to_string())
++    );
++}
++
++#[test]
++fn attach_dash_t_target_with_window_pane() {
++    // Full target specs are passed through verbatim here; the server splits them.
++    let a = args(&["psmux", "attach", "-t", "dev:0.1"]);
++    assert_eq!(attach_target_session(&a, None), Some("dev:0.1".to_string()));
++}
++
++#[test]
++fn attach_dash_t_missing_value_is_none() {
++    // Trailing `-t` with no value must not panic and must not fabricate a target.
++    let a = args(&["psmux", "attach", "-t"]);
++    assert_eq!(attach_target_session(&a, None), None);
++}

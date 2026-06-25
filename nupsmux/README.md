@@ -18,6 +18,22 @@ git fetch origin pull/393/head:pr-393
 git checkout pr-393
 ```
 
+### Alternative: Apply saved local patch
+
+If PR #393 disappears or GitHub changes the branch, use the saved patch:
+
+```bash
+git clone https://github.com/psmux/psmux.git ~/psmux-build
+cd ~/psmux-build
+git apply ~/AppData/Local/nvim/nupsmux/pr-393.patch
+```
+
+Saved patch:
+
+```
+~\AppData\Local\nvim\nupsmux\pr-393.patch
+```
+
 ### 2. Build (requires Rust/Cargo)
 
 ```bash
@@ -182,6 +198,7 @@ taskkill /f /im tmux.exe
 | Nushell config | `~\AppData\Roaming\nushell\config.nu` |
 | psmux config | `~/.config/psmux/psmux.conf` |
 | Rebuild script | `~/.local/bin/psmux-rebuild.nu` |
+| Saved PR #393 patch | `~\AppData\Local\nvim\nupsmux\pr-393.patch` |
 | This doc | `~\AppData\Local\nvim\nupsmux\README.md` |
 
 ---
