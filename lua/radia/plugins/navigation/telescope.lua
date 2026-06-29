@@ -90,6 +90,29 @@ return {
 		-- count_lines(filepath) must be defined somewhere else in your file:
 		--   it should return a number (or nil on error)
 
+		-- Pure-Lua, cross-platform replacements for `head`/`echo`. Those are not
+		-- standalone executables on Windows, so spawning them via job_maker fails
+		-- with "Executable not found".
+		local function set_preview_lines(bufnr, text)
+			if not vim.api.nvim_buf_is_valid(bufnr) then
+				return
+			end
+			pcall(vim.api.nvim_buf_set_lines, bufnr, 0, -1, false, vim.split(text or "", "\n", { plain = true }))
+		end
+
+		-- Show only the first `byte_limit` bytes of a file (replaces `head -c`).
+		local function preview_clipped(filepath, bufnr, byte_limit)
+			local fd = vim.loop.fs_open(filepath, "r", 438)
+			if not fd then
+				return
+			end
+			local data = vim.loop.fs_read(fd, byte_limit, 0)
+			vim.loop.fs_close(fd)
+			vim.schedule(function()
+				set_preview_lines(bufnr, data)
+			end)
+		end
+
 		local no_preview_minified = function(filepath, bufnr, opts)
 			opts = opts or {}
 
@@ -117,15 +140,13 @@ return {
 
 			-- Case 1: big file but very few lines → probably minified
 			if size > max_char_count and linecount > 0 and linecount < min_line_count then
-				local cmd = { "head", "-c", tostring(max_preview_len), filepath }
-				utils.job_maker(cmd, bufnr, opts)
+				preview_clipped(filepath, bufnr, max_preview_len)
 				return
 			end
 
 			-- Case 2: ridiculous line count → clip preview as well
 			if linecount > insane_line_cnt then
-				local cmd = { "head", "-c", tostring(max_preview_len), filepath }
-				utils.job_maker(cmd, bufnr, opts)
+				preview_clipped(filepath, bufnr, max_preview_len)
 				return
 			end
 
@@ -171,12 +192,10 @@ return {
 				},
 				preview = {
 					timeout_hook = function(filepath, bufnr, opts)
-						local cmd = { "echo", "timeout" }
-						require("telescope.previewers.utils").job_maker(cmd, bufnr, opts)
+						set_preview_lines(bufnr, "timeout")
 					end,
 					filesize_hook = function(filepath, bufnr, opts)
-						local cmd = { "echo", "filesize" }
-						require("telescope.previewers.utils").job_maker(cmd, bufnr, opts)
+						set_preview_lines(bufnr, "filesize")
 					end,
 				},
 				mappings = {

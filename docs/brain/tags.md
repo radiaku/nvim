@@ -8,7 +8,7 @@ Bootstrap, flow, and fundamentals.
 
 ## #plugins
 Plugin specs and lifecycle.
-- [[plugin-organization]] · [[disabled-plugins]] · [[pinned-commits]] · [[lazy-bootstrap]]
+- [[plugin-organization]] · [[disabled-plugins]] · [[pinned-commits]] · [[lazy-bootstrap]] · [[telescope-previewer-no-shell]]
 
 ## #lsp
 Language server setup.
@@ -16,7 +16,7 @@ Language server setup.
 
 ## #platform
 Cross-platform / OS-specific behavior.
-- [[termux-detection]] · [[windows-pwsh]] · [[clipboard]] · [[filetype-overrides]] · [[lsp-architecture]] · [[lsp-mason-path]] · [[lsp-direct-path]] · [[lsp-shared-libs]]
+- [[termux-detection]] · [[windows-pwsh]] · [[clipboard]] · [[filetype-overrides]] · [[telescope-previewer-no-shell]] · [[lsp-architecture]] · [[lsp-mason-path]] · [[lsp-direct-path]] · [[lsp-shared-libs]]
 
 ## #theme
 - [[theme-system]]
