@@ -2,7 +2,8 @@
 
 > **Step 6** · Tags: #termux #build | [Index](README.md)
 
-1) Prep & deps
+1. Prep & deps
+
 ```
 pkg update && pkg upgrade -y
 pkg install -y git cmake ninja build-essential gettext curl unzip
@@ -12,7 +13,15 @@ pip install --user --upgrade pynvim
 
 ```
 
-2) Get the 0.10.4 source
+1.1) after install ( use from fdroid )
+
+```
+termux-setup-storage
+pkg install termux-api
+
+```
+
+2. Get the 0.10.4 source
 
 ```
 cd ~
@@ -23,12 +32,16 @@ else
 fi
 cd neovim
 ```
-3) Build for Termux prefix
+
+3. Build for Termux prefix
+
 ```
 make CMAKE_BUILD_TYPE=Release CMAKE_INSTALL_PREFIX="$PREFIX" \
      -j"$(nproc)"
 ```
-4) Install
+
+4. Install
+
 ```
 make install
 hash -r     # refresh shell command cache
