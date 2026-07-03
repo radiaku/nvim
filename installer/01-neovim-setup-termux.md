@@ -54,6 +54,22 @@ dpkg --configure -a
 apt --fix-broken install
 ```
 
+1.3 ) fixing yazi paste problem
+
+```
+mkdir -p ~/.config/yazi
+vim ~/.config/yazi/keymap.toml
+```
+
+```
+[[input.prepend_keymap]]
+on   = "<C-v>"
+run  = [ "escape", "paste" ]
+desc = "Paste in input"
+for  = "android"
+
+```
+
 ---
 
 ## 2️⃣ Install Everything (one place)
