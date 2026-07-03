@@ -11,6 +11,7 @@
 ---
 
 ## 🧩 Table of Contents
+
 - [1. Prerequisites](#1-prerequisites)
 - [2. Install Base Packages](#2-install-base-packages)
 - [3. Install Rust & Cargo](#3-install-rust--cargo)
@@ -25,10 +26,22 @@
 ---
 
 ## 1️⃣ Prerequisites
+
 > Termux 0.118+ (from F-Droid or GitHub), and a stable Internet connection.
 
 ```bash
 pkg update -y && pkg upgrade -y
+```
+
+---
+
+1.1) after install ( use from fdroid )
+
+```
+termux-setup-storage
+pkg install termux-api
+pkg install yazi
+
 ```
 
 ---
@@ -127,18 +140,22 @@ If you still see build errors, ensure `clang`, `make`, and `cmake` are installed
 Lua (`lua-language-server`) and Go (`gopls`) are installed above. Use Mason for Node-based servers.
 
 ### 🟦 Go: gopls
+
 `gopls` is installed in section 2 with `CGO_ENABLED=0` and `GOBIN="$PREFIX/bin"` so it works reliably on Android/Termux.
 
 <!-- Java/JDTLS intentionally unsupported on Termux in this config. -->
 
 Mason-friendly servers (inside Neovim):
+
 ```
 :Mason
 ```
+
 - `vtsls`, `cssls`, `html`, `emmet_ls`, `tailwindcss`, `jsonls`, `bash-language-server`
 - Python: `basedpyright` (requires Node)
 
 Verify:
+
 ```
 :checkhealth
 ```
@@ -172,11 +189,13 @@ vim.env.PATH = table.concat({
 ## 9️⃣ Verify Installation
 
 Inside Neovim:
+
 ```
 :checkhealth
 ```
 
 You should see ✅ for:
+
 - `telescope.nvim`
 - `lua-language-server`
 - `stylua`
@@ -185,10 +204,9 @@ You should see ✅ for:
 
 ---
 
-
 ## 💡 Extra Tips
 
-- Use `fd` + `ripgrep` for blazing-fast Telescope searches  
+- Use `fd` + `ripgrep` for blazing-fast Telescope searches
 - To avoid startup crash if `fzf` build fails:
   ```lua
   pcall(require("telescope").load_extension, "fzf")
@@ -196,6 +214,7 @@ You should see ✅ for:
 - Clipboard sync with tmux (OSC52): tmux is already installed above.
 
 ### 📋 Clipboard with Termux:API
+
 - Install the companion app from F-Droid: `Termux:API`.
 - Install the CLI package (already in section 2): `pkg install termux-api`.
 - Test it works:
@@ -205,6 +224,7 @@ You should see ✅ for:
   ```
 - Neovim uses these automatically in this config. If you prefer faster copies inside tmux, use the provided OSC52 mapping: visually select and press `<leader>y`.
 - For persistent environment:
+
   ```bash
   source ~/.bashrc
   ```
@@ -224,12 +244,15 @@ Some Mason packages don’t ship Android builds. Prefer system installs or the c
 <!-- jdtls removed from Termux docs to prevent confusion and unwanted installs. -->
 
 ### go.nvim tool installs fail with `runtime/cgo` or `aarch64-linux-android-clang`
+
 Use CGO-free installs as in section 2. This config also auto-disables CGO during go.nvim tool installs when Termux is detected.
 
 ### lua-language-server “current platform is unsupported”
+
 Use the Termux package included in the base install (section 2).
 
 ### stylua “current platform is unsupported”
+
 Install via Cargo as in section 2.
 
 After installing these system binaries, Neovim will prefer tools found on `PATH` even if Mason couldn’t install them.
@@ -238,7 +261,9 @@ After installing these system binaries, Neovim will prefer tools found on `PATH`
 
 ✨ **Enjoy your fully working Neovim setup on Termux!**  
 Maintained by [@radiaku](https://github.com/radiaku)
+
 ### 🧠 Language Servers (Global Installs)
+
 - Node-based servers (requires `nodejs`):
   - `npm i -g vtsls typescript`
   - `npm i -g vscode-langservers-extracted`

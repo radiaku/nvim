@@ -18,6 +18,7 @@ pip install --user --upgrade pynvim
 ```
 termux-setup-storage
 pkg install termux-api
+pkg install yazi
 
 ```
 
