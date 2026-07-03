@@ -68,6 +68,11 @@ run  = [ "escape", "paste" ]
 desc = "Paste in input"
 for  = "android"
 
+[[input.prepend_keymap]]
+on   = [ "j", "k" ]
+run  = "escape"
+desc = "Exit input insert mode with jk"
+
 ```
 
 ---
