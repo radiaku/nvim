@@ -44,6 +44,15 @@ pkg install yazi
 
 ```
 
+1.2 ) if yazi ffmpeg error
+
+```
+pkg update
+pkg upgrade
+dpkg --configure -a
+apt --fix-broken install
+```
+
 ---
 
 ## 2️⃣ Install Everything (one place)
