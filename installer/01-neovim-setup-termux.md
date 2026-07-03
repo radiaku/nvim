@@ -36,6 +36,7 @@ pkg update -y && pkg upgrade -y
 ---
 
 1.1) after install ( use from fdroid )
+https://f-droid.org/en/packages/com.termux.api/
 
 ```
 termux-setup-storage
