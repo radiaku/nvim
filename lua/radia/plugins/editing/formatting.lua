@@ -5,6 +5,10 @@ return {
 		local conform = require("conform")
 		local prefix = vim.fn.stdpath("data") .. "/mason/bin/"
 		conform.setup({
+			-- Don't pop a notification when a formatter errors/times out (e.g. black
+			-- cold-start). The raised format_on_save timeout below is what actually
+			-- avoids the libuv "handle is already closing" race on the kill path.
+			notify_on_error = false,
 			formatters_by_ft = {
 				javascript = { "prettier" },
 				javascriptreact = { "prettier" },
@@ -62,7 +66,7 @@ return {
 			if file_size > 5 * 1024 * 1024 then
 				return
 			end
-			return { async = false, timeout_ms = 500, lsp_fallback = true }
+			return { async = false, timeout_ms = 3000, lsp_fallback = true }
 		end,
 
 			-- lsp_fallback = true,

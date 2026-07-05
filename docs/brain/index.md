@@ -15,6 +15,7 @@ Root of the knowledge graph. Each leaf is an **atomic note**: one concept, one f
   - [[disabled-plugins]] — the dormant `disabled/` directory
   - [[pinned-commits]] — inline `commit =` is the real lockfile
   - [[telescope-previewer-no-shell]] — don't spawn `head`/`echo` (Windows trap)
+  - [[formatting-on-save]] — conform.nvim; black timeout → libuv race
 - **LSP**
   - [[lsp-architecture]] — two parallel setup paths (the hub)
   - [[lsp-mason-path]] — desktop, Mason-managed
