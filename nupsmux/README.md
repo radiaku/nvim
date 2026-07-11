@@ -211,7 +211,9 @@ Path: `~/.config/psmux/psmux.conf`
 bind d detach-client
 
 # Native session chooser (reliable on Windows)
-bind-key -n C-j choose-session
+# Prefix-bound on purpose: `-n` puts it in the root table, where psmux
+# intercepts the key inside Neovim too (C-j is Telescope's move-down).
+bind-key j choose-session
 ```
 
 Load manually if needed:

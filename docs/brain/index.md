@@ -31,6 +31,7 @@ Root of the knowledge graph. Each leaf is an **atomic note**: one concept, one f
   - [[keymaps]] — keymap load chain
 - **Outside the runtime**
   - [[nupsmux]] — psmux/Nushell session tooling (not nvim config)
+  - [[psmux-key-shadowing]] — `bind-key -n` steals keys from nvim
 
 ## Indexes
 

@@ -35,8 +35,8 @@ Notes
 - `n <leader>bd` — Close current buffer.
 - `n <leader>ba` — Close all buffers except current.
 - `n <leader>bk` — Quit (force).
-- `n <C-l>` — Next buffer (BufferLine).
-- `n <C-h>` — Previous buffer (BufferLine).
+- `n <C-l>` — Next tab if more than one tabpage is open, otherwise next buffer.
+- `n <C-h>` — Previous tab if more than one tabpage is open, otherwise previous buffer.
 - `n <leader>fu` — Find and manage buffers (custom Telescope picker).
 
 ## Files & Working Directory

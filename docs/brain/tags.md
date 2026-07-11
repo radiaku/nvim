@@ -22,7 +22,7 @@ Cross-platform / OS-specific behavior.
 - [[theme-system]]
 
 ## #keymaps
-- [[keymaps]]
+- [[keymaps]] · [[psmux-key-shadowing]]
 
 ## #workflow
 How to operate / verify.
@@ -30,7 +30,11 @@ How to operate / verify.
 
 ## #external
 Outside the nvim runtime.
-- [[nupsmux]]
+- [[nupsmux]] · [[psmux-key-shadowing]]
+
+## #gotcha
+Non-obvious traps.
+- [[psmux-key-shadowing]] · [[telescope-previewer-no-shell]] · [[formatting-on-save]]
 
 ## #moc
 Maps of content.
