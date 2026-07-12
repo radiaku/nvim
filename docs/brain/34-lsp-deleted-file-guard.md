@@ -18,6 +18,8 @@ How it works (deleted while attached):
 - A `FileChangedShell` autocmd handles `v:fcs_reason == "deleted"` itself: `v:fcs_choice = ""` suppresses E211, the buffer is set `modified`, and a warning is notified. Every other reason (contents changed, mode, timestamp) falls back to default behavior via `v:fcs_choice = "ask"`.
 - LSP clients are deliberately **left attached** in this case — completion/diagnostics keep working off the buffer until the user recreates (`:w`) or abandons the file.
 
+Session restore (auto-session) is case 1: the session's `edit` of a missing file silently creates an empty `[New]` buffer — no E211, no sourcing error (verified by restoring a `mksession` file after deleting one of its files). The guard marks that buffer deferred, so no server attaches. On top of that, `post_restore_cmds` in `lua/radia/plugins/session/autosession.lua` wipes such phantom buffers right after restore (unmodified, normal buftype, named, file unreadable — unsaved edits are never wiped), so they don't linger in the buffer list. Note auto-session's commands are the 2.x names (`:SessionSave` / `:SessionRestore`), and its `pre_save_cmds` assumes Neotree is loaded.
+
 Consequences / gotchas:
 
 - **New unsaved files also match** (nvim can't distinguish "deleted" from "not yet created") — they get LSP only after the first save. Acceptable trade-off.
