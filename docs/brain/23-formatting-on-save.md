@@ -1,6 +1,6 @@
 # Format on save (conform.nvim)
 
-Format-on-save is owned by **conform.nvim** — `lua/radia/plugins/editing/formatting.lua` (loaded as a plugin spec, step of [[load-order]] via [[plugin-organization]]). This is separate from [[lsp-architecture]]'s none-ls path: `lua/radia/lsp/none-ls.lua` only wires **stylua** and does no on-save formatting.
+Format-on-save is owned by **conform.nvim** — `lua/radia/plugins/editing/formatting.lua` (loaded as a plugin spec, step of [[10-load-order]] via [[20-plugin-organization]]). This is separate from [[30-lsp-architecture]]'s none-ls path: `lua/radia/lsp/none-ls.lua` only wires **stylua** and does no on-save formatting.
 
 Key pieces of the conform spec:
 
@@ -24,6 +24,6 @@ The file still gets written; only the format is aborted. Fixes:
 
 File: `lua/radia/plugins/editing/formatting.lua`
 
-Links: [[load-order]] · [[plugin-organization]] · [[lsp-architecture]] · [[windows-pwsh]] · [[index]]
+Links: [[10-load-order]] · [[20-plugin-organization]] · [[30-lsp-architecture]] · [[51-windows-pwsh]] · [[index]]
 
-#plugins #platform
+Tags: [[tags#plugins|#plugins]] · [[tags#platform|#platform]]

@@ -15,6 +15,6 @@ psmux source-file ~/.psmux.conf
 
 Rule: never use `-n` for a key Neovim maps. Prefix-bind it, or gate it on `#{pane_current_command}` if a no-prefix key is really wanted.
 
-Links: [[nupsmux]] · [[keymaps]] · [[index]]
+Links: [[60-nupsmux]] · [[40-keymaps]] · [[index]]
 
-#external #keymaps #gotcha
+Tags: [[tags#external|#external]] · [[tags#keymaps|#keymaps]] · [[tags#gotcha|#gotcha]]

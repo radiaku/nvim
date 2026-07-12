@@ -14,13 +14,13 @@ require("radia.lsp.none-ls"),
 ```
 
 Two things to know:
-- Each `{ import }` line maps to a folder under `plugins/`. Adding a new top-level category folder requires adding a matching line here, or it stays invisible. → [[plugin-organization]]
-- LSP is `require`'d directly (not imported as a folder) on purpose, so lazy doesn't auto-load the helper modules. → [[lsp-architecture]]
+- Each `{ import }` line maps to a folder under `plugins/`. Adding a new top-level category folder requires adding a matching line here, or it stays invisible. → [[20-plugin-organization]]
+- LSP is `require`'d directly (not imported as a folder) on purpose, so lazy doesn't auto-load the helper modules. → [[30-lsp-architecture]]
 
 `checker.enabled = false` (no auto update checks); `change_detection.notify = true`.
 
 File: `lua/radia/core/init.lua`
 
-Links: [[load-order]] · [[plugin-organization]] · [[lsp-architecture]] · [[theme-system]]
+Links: [[10-load-order]] · [[20-plugin-organization]] · [[30-lsp-architecture]] · [[41-theme-system]]
 
-#core #plugins
+Tags: [[tags#core|#core]] · [[tags#plugins|#plugins]]

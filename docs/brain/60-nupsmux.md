@@ -10,8 +10,8 @@ Why it matters for orientation: recent git history ("fixing nu", "nupsmux", "add
 
 Session naming convention: first-letter abbreviation of all but the last 3 path components (e.g. `C:\Users\akura\Dev\Work\foo` → `c_u_a_Dev_Work_foo`).
 
-Caveat: its key bindings can leak into the editor — see [[psmux-key-shadowing]].
+Caveat: its key bindings can leak into the editor — see [[61-psmux-key-shadowing]].
 
-Links: [[psmux-key-shadowing]] · [[index]]
+Links: [[61-psmux-key-shadowing]] · [[index]]
 
-#external
+Tags: [[tags#external|#external]]

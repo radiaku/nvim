@@ -7,10 +7,10 @@ To validate a change:
 2. `:Msgs` — custom command that dumps `:messages` into a scratch buffer (defined in `core/init.lua`).
 3. `:Lazy` — plugin state, load errors, profiling.
 4. `:checkhealth` — provider/environment diagnostics.
-5. `:Lazy sync` — reconcile installed plugins with the pinned commits. → [[pinned-commits]]
+5. `:Lazy sync` — reconcile installed plugins with the pinned commits. → [[22-pinned-commits]]
 
-Caveat: a missing LSP binary does **not** error on desktop — the server is silently skipped. Absence of an error is not proof a server loaded. → [[lsp-direct-path]]
+Caveat: a missing LSP binary does **not** error on desktop — the server is silently skipped. Absence of an error is not proof a server loaded. → [[32-lsp-direct-path]]
 
-Links: [[index]] · [[load-order]] · [[pinned-commits]]
+Links: [[index]] · [[10-load-order]] · [[22-pinned-commits]]
 
-#workflow #core
+Tags: [[tags#workflow|#workflow]] · [[tags#core|#core]]

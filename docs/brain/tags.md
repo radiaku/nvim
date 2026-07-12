@@ -1,45 +1,63 @@
 # Tags
 
-Tag index for the [[index|brain]]. Each note carries one or more of these.
+Tag index for the [[index|brain]]. Each note's footer links back here (`[[tags#<tag>|#<tag>]]`), so tags and notes form a two-way graph: note → tag section → sibling notes.
 
-## #core
+## core
+
 Bootstrap, flow, and fundamentals.
-- [[load-order]] · [[lazy-bootstrap]] · [[verification]] · [[pinned-commits]] · [[theme-system]] · [[keymaps]] · [[clipboard]] · [[filetype-overrides]] · [[lsp-architecture]]
 
-## #plugins
+- [[10-load-order]] · [[11-lazy-bootstrap]] · [[12-verification]] · [[22-pinned-commits]] · [[41-theme-system]] · [[40-keymaps]] · [[52-clipboard]] · [[53-filetype-overrides]] · [[30-lsp-architecture]]
+
+## plugins
+
 Plugin specs and lifecycle.
-- [[plugin-organization]] · [[disabled-plugins]] · [[pinned-commits]] · [[lazy-bootstrap]] · [[telescope-previewer-no-shell]] · [[formatting-on-save]]
 
-## #lsp
+- [[20-plugin-organization]] · [[21-disabled-plugins]] · [[22-pinned-commits]] · [[11-lazy-bootstrap]] · [[24-telescope-previewer-no-shell]] · [[23-formatting-on-save]]
+
+## lsp
+
 Language server setup.
-- [[lsp-architecture]] · [[lsp-mason-path]] · [[lsp-direct-path]] · [[lsp-shared-libs]]
 
-## #platform
+- [[30-lsp-architecture]] · [[31-lsp-mason-path]] · [[32-lsp-direct-path]] · [[33-lsp-shared-libs]] · [[34-lsp-deleted-file-guard]]
+
+## platform
+
 Cross-platform / OS-specific behavior.
-- [[termux-detection]] · [[windows-pwsh]] · [[clipboard]] · [[filetype-overrides]] · [[telescope-previewer-no-shell]] · [[lsp-architecture]] · [[lsp-mason-path]] · [[lsp-direct-path]] · [[lsp-shared-libs]] · [[formatting-on-save]]
 
-## #theme
-- [[theme-system]]
+- [[50-termux-detection]] · [[51-windows-pwsh]] · [[52-clipboard]] · [[53-filetype-overrides]] · [[24-telescope-previewer-no-shell]] · [[30-lsp-architecture]] · [[31-lsp-mason-path]] · [[32-lsp-direct-path]] · [[33-lsp-shared-libs]] · [[23-formatting-on-save]]
 
-## #keymaps
-- [[keymaps]] · [[psmux-key-shadowing]]
+## theme
 
-## #workflow
+- [[41-theme-system]]
+
+## keymaps
+
+- [[40-keymaps]] · [[61-psmux-key-shadowing]]
+
+## workflow
+
 How to operate / verify.
-- [[verification]] · [[load-order]]
 
-## #external
+- [[12-verification]] · [[10-load-order]]
+
+## external
+
 Outside the nvim runtime.
-- [[nupsmux]] · [[psmux-key-shadowing]]
 
-## #gotcha
+- [[60-nupsmux]] · [[61-psmux-key-shadowing]]
+
+## gotcha
+
 Non-obvious traps.
-- [[psmux-key-shadowing]] · [[telescope-previewer-no-shell]] · [[formatting-on-save]]
 
-## #moc
+- [[61-psmux-key-shadowing]] · [[24-telescope-previewer-no-shell]] · [[23-formatting-on-save]] · [[34-lsp-deleted-file-guard]]
+
+## moc
+
 Maps of content.
+
 - [[index]]
 
 Links: [[index]]
 
-#moc
+Tags: [[tags#moc|#moc]]

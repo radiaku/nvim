@@ -7,12 +7,12 @@ On Windows (`vim.fn.has("win32") == 1`), `core/init.lua` requires `radia.core.pw
 - `shellcmdflag` with `-NoLogo -NoProfile -ExecutionPolicy RemoteSigned`, forces UTF-8 in/out encoding, and sets `$PSStyle.OutputRendering = PlainText` (strips ANSI so Neovim parses command output cleanly).
 - `shellxquote = ''`, `shellxescape = ''`.
 
-This is the Windows counterpart to the Termux branch. → [[termux-detection]]
+This is the Windows counterpart to the Termux branch. → [[50-termux-detection]]
 
-Related: some plugin specs carry Windows-only build instructions inline (cmake builds for native deps). → [[plugin-organization]]
+Related: some plugin specs carry Windows-only build instructions inline (cmake builds for native deps). → [[20-plugin-organization]]
 
 File: `lua/radia/core/pwsh.lua` (required from `lua/radia/core/init.lua`)
 
-Links: [[termux-detection]] · [[plugin-organization]] · [[index]]
+Links: [[50-termux-detection]] · [[20-plugin-organization]] · [[index]]
 
-#platform
+Tags: [[tags#platform|#platform]]

@@ -6,9 +6,9 @@ Key fact: `lazy-lock.json` is **gitignored** (`.gitignore` lists `*.json` and `l
 
 Implications:
 - When editing a spec, **preserve the pin** unless deliberately bumping it.
-- To upgrade a plugin, change its `commit =` and run `:Lazy sync`. → [[verification]]
+- To upgrade a plugin, change its `commit =` and run `:Lazy sync`. → [[12-verification]]
 - Don't rely on `lazy-lock.json` to reconstruct versions; read the specs.
 
-Links: [[plugin-organization]] · [[verification]] · [[index]]
+Links: [[20-plugin-organization]] · [[12-verification]] · [[index]]
 
-#plugins #core
+Tags: [[tags#plugins|#plugins]] · [[tags#core|#core]]

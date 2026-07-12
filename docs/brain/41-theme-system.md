@@ -7,10 +7,10 @@ The active colorscheme flows through a global: `_G.themesname`.
 
 Gotcha: `themes.lua` only *applies* the theme — it does **not** decide which one. Editing the string in `themes.lua` won't change the theme; edit `core/init.lua`.
 
-Available theme plugins live in `plugins/ui/theme_*.lua` (tokyonight, cyberdream, gruvbox, sonokai). → [[plugin-organization]]
+Available theme plugins live in `plugins/ui/theme_*.lua` (tokyonight, cyberdream, gruvbox, sonokai). → [[20-plugin-organization]]
 
-Application happens at step 3 of [[load-order]], after plugins load.
+Application happens at step 3 of [[10-load-order]], after plugins load.
 
-Links: [[load-order]] · [[plugin-organization]] · [[index]]
+Links: [[10-load-order]] · [[20-plugin-organization]] · [[index]]
 
-#theme #core
+Tags: [[tags#theme|#theme]] · [[tags#core|#core]]

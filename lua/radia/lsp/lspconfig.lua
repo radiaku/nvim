@@ -13,6 +13,7 @@ return {
 		local settings = require("radia.lsp.lib.settings")
 		local handlers = require("radia.lsp.lib.handlers")
 		local direct = require("radia.lsp.lib.direct")
+		local guard = require("radia.lsp.lib.guard")
 
 		local lspconfig = require("lspconfig")
 		local util = require("lspconfig.util")
@@ -20,6 +21,9 @@ return {
 		local mason_lspconfig = require("mason-lspconfig")
 
 		mason.setup({ PATH = "prepend" })
+
+		-- Skip LSP attach for buffers whose file was deleted outside nvim
+		guard.setup()
 
 		-- Setup neodev if available
 		pcall(function()
