@@ -78,6 +78,7 @@ flowchart TD
 - **4x · UI & input** — steps 2–3 of the load order
   - [[40-keymaps]] — keymap load chain
   - [[41-theme-system]] — `_G.themesname` set in core, applied in themes
+  - [[42-telescope-find-keymaps]] — `<leader>f*` search family; grep is fixed-string by default
 - **5x · Cross-platform** — the dimension that cuts across everything
   - [[50-termux-detection]] — the `com.termux` switch
   - [[51-windows-pwsh]] — pwsh shell wiring

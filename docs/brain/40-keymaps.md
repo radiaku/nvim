@@ -14,6 +14,6 @@ Discover live maps in Neovim: `:Telescope keymaps` or `<leader>fm`. Human-readab
 
 Files: `lua/radia/keymaps/*.lua`
 
-Links: [[10-load-order]] · [[index]]
+Links: [[10-load-order]] · [[42-telescope-find-keymaps]] · [[index]]
 
 Tags: [[tags#keymaps|#keymaps]] · [[tags#core|#core]]

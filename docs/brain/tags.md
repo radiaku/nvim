@@ -12,7 +12,7 @@ Bootstrap, flow, and fundamentals.
 
 Plugin specs and lifecycle.
 
-- [[20-plugin-organization]] · [[21-disabled-plugins]] · [[22-pinned-commits]] · [[11-lazy-bootstrap]] · [[24-telescope-previewer-no-shell]] · [[23-formatting-on-save]]
+- [[20-plugin-organization]] · [[21-disabled-plugins]] · [[22-pinned-commits]] · [[11-lazy-bootstrap]] · [[24-telescope-previewer-no-shell]] · [[23-formatting-on-save]] · [[42-telescope-find-keymaps]]
 
 ## lsp
 
@@ -32,7 +32,7 @@ Cross-platform / OS-specific behavior.
 
 ## keymaps
 
-- [[40-keymaps]] · [[61-psmux-key-shadowing]]
+- [[40-keymaps]] · [[61-psmux-key-shadowing]] · [[42-telescope-find-keymaps]]
 
 ## workflow
 
@@ -50,7 +50,7 @@ Outside the nvim runtime.
 
 Non-obvious traps.
 
-- [[61-psmux-key-shadowing]] · [[24-telescope-previewer-no-shell]] · [[23-formatting-on-save]] · [[34-lsp-deleted-file-guard]]
+- [[61-psmux-key-shadowing]] · [[24-telescope-previewer-no-shell]] · [[23-formatting-on-save]] · [[34-lsp-deleted-file-guard]] · [[42-telescope-find-keymaps]]
 
 ## moc
 
