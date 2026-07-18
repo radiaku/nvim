@@ -141,13 +141,24 @@ return {
 			end
 		end
 
+		-- Never auto-install on routine opens — that blocked first workspace load.
 		mason_lspconfig.setup({
 			ensure_installed = filtered_servers,
 			automatic_enable = false,
 		})
 
-		mason_tool_installer.setup({
-			ensure_installed = filtered_tools,
-		})
+		-- Defer tool install so it never races session restore / first LSP attach
+		vim.defer_fn(function()
+			if #filtered_tools == 0 and #filtered_servers == 0 then
+				return
+			end
+			pcall(function()
+				mason_tool_installer.setup({
+					ensure_installed = filtered_tools,
+					run_on_start = true,
+					start_delay = 5000,
+				})
+			end)
+		end, 3000)
 	end,
 }

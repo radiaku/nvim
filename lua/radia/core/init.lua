@@ -136,7 +136,8 @@ require("lazy").setup({
 		notify = false,
 	},
 	change_detection = {
-		notify = true,
+		-- Quiet: plugin file churn while Claude edits nvim config shouldn't spam
+		notify = false,
 	},
 	ui = {
 		border = "rounded",

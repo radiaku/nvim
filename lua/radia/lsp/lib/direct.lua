@@ -12,8 +12,18 @@ function M.setup(capabilities, util)
 	local gopls_bin = utils.ensure("gopls", "Install: pkg install gopls or 'go install golang.org/x/tools/gopls@latest'")
 	if gopls_bin then
 		vim.lsp.config("gopls", {
+			filetypes = { "go" },
+			root_dir = util.root_pattern("go.work", "go.mod", ".git"),
 			settings = {
 				gopls = {
+					directoryFilters = {
+						"-node_modules",
+						"-vendor",
+						"-.git",
+						"-dist",
+						"-build",
+						"-.cache",
+					},
 					analyses = {
 						modernize = false,
 						unusedparams = false,
@@ -33,7 +43,20 @@ function M.setup(capabilities, util)
 	if vtsls_bin then
 		vim.lsp.config("vtsls", {
 			capabilities = capabilities,
-			root_dir = util.root_pattern("package.json") or vim.fn.getcwd(),
+			root_dir = function(fname)
+				return util.root_pattern("tsconfig.json", "jsconfig.json", "package.json")(fname)
+					or util.find_git_ancestor(fname)
+			end,
+			settings = {
+				vtsls = {
+					autoUseWorkspaceTsdk = true,
+				},
+				typescript = {
+					tsserver = {
+						maxTsServerMemory = 3072,
+					},
+				},
+			},
 		})
 		vim.lsp.enable("vtsls")
 	end
@@ -158,6 +181,15 @@ function M.setup(capabilities, util)
 					autoSearchPaths = true,
 					diagnosticMode = "openFilesOnly",
 					useLibraryCodeForTypes = true,
+					exclude = {
+						"**/node_modules",
+						"**/__pycache__",
+						"**/.venv",
+						"**/venv",
+						"**/dist",
+						"**/build",
+						"**/.git",
+					},
 					diagnosticSeverityOverrides = settings.python_diagnostic_overrides,
 				},
 			},

@@ -9,6 +9,7 @@ function M.setup(capabilities, util)
 	-- Lua Language Server
 	local lua_ls_bin = utils.exepath("lua-language-server")
 	if lua_ls_bin then
+		-- Avoid nvim_get_runtime_file("", true) — walks every runtime path.
 		vim.lsp.config("lua_ls", {
 			settings = {
 				Lua = {
@@ -18,13 +19,12 @@ function M.setup(capabilities, util)
 						disable = { "missing-fields" },
 					},
 					workspace = {
+						checkThirdParty = false,
 						library = {
-							vim.api.nvim_get_runtime_file("", true),
 							vim.env.VIMRUNTIME,
 							vim.fn.expand("$VIMRUNTIME/lua"),
 							vim.fn.expand("$VIMRUNTIME/lua/vim/lsp"),
 							vim.fn.stdpath("config") .. "/lua",
-							vim.fn.stdpath("data") .. "/lazy/ui/nvchad_types",
 							vim.fn.stdpath("data") .. "/lazy/lazy.nvim/lua/lazy",
 							"${3rd}/luv/library",
 						},
@@ -54,10 +54,10 @@ function M.setup(capabilities, util)
 			filetypes = { "python", ".py" },
 			capabilities = capabilities,
 			cmd = { py_bin, "--stdio" },
+			-- Prefer project markers over bare git root (monorepos)
 			root_dir = function(fname)
 				table.unpack = table.unpack or unpack
 				return util.root_pattern(table.unpack(python_root_files))(fname)
-					or util.find_git_ancestor(fname)
 					or util.path.dirname(fname)
 			end,
 			settings = {
@@ -68,6 +68,15 @@ function M.setup(capabilities, util)
 						diagnosticMode = "openFilesOnly",
 						extraPaths = { site_packages_path },
 						useLibraryCodeForTypes = true,
+						exclude = {
+							"**/node_modules",
+							"**/__pycache__",
+							"**/.venv",
+							"**/venv",
+							"**/dist",
+							"**/build",
+							"**/.git",
+						},
 						diagnosticSeverityOverrides = settings.python_diagnostic_overrides,
 					},
 				},
@@ -84,8 +93,18 @@ function M.setup(capabilities, util)
 	-- Go
 	if utils.ensure("gopls", "Install: pkg install gopls or 'go install golang.org/x/tools/gopls@latest'") then
 		vim.lsp.config("gopls", {
+			filetypes = { "go" },
+			root_dir = util.root_pattern("go.work", "go.mod", ".git"),
 			settings = {
 				gopls = {
+					directoryFilters = {
+						"-node_modules",
+						"-vendor",
+						"-.git",
+						"-dist",
+						"-build",
+						"-.cache",
+					},
 					analyses = {
 						modernize = false,
 						unusedparams = false,
@@ -104,7 +123,20 @@ function M.setup(capabilities, util)
 	if utils.ensure("vtsls", "Install: npm i -g vtsls typescript") then
 		vim.lsp.config("vtsls", {
 			capabilities = capabilities,
-			root_dir = util.root_pattern("package.json") or vim.fn.getcwd(),
+			root_dir = function(fname)
+				return util.root_pattern("tsconfig.json", "jsconfig.json", "package.json")(fname)
+					or util.find_git_ancestor(fname)
+			end,
+			settings = {
+				vtsls = {
+					autoUseWorkspaceTsdk = true,
+				},
+				typescript = {
+					tsserver = {
+						maxTsServerMemory = 3072,
+					},
+				},
+			},
 		})
 		vim.lsp.enable("vtsls")
 	end
@@ -127,11 +159,19 @@ function M.setup(capabilities, util)
 	if utils.ensure("tailwindcss-language-server", "Install: npm i -g @tailwindcss/language-server") then
 		vim.lsp.config("tailwindcss", {
 			filetypes = {
-				"css", "typescriptreact", "typescript", "javascriptreact",
+				"css", "typescriptreact", "javascriptreact",
 				"templ", "sass", "scss", "less", "liquid", "svelte",
 			},
 			capabilities = capabilities,
-			root_dir = util.root_pattern("package.json") or vim.fn.getcwd(),
+			root_dir = function(fname)
+				return util.root_pattern(
+					"tailwind.config.js",
+					"tailwind.config.ts",
+					"tailwind.config.cjs",
+					"postcss.config.js",
+					"postcss.config.ts"
+				)(fname)
+			end,
 		})
 		vim.lsp.enable("tailwindcss")
 	end

@@ -48,4 +48,8 @@ opt.splitbelow = true -- split horizontal window to the bottom
 -- turn off swapfile
 opt.swapfile = false
 
+-- External edits (Claude/CommandCode): allow silent reload path.
+-- FileChangedShell in radia.lsp.lib.guard owns the real policy.
+opt.autoread = true
+
 -- opt.foldenable = false

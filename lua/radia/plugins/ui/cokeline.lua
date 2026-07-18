@@ -1,5 +1,8 @@
+-- Disabled: dual bufferline + cokeline both process every buffer on restore.
+-- bufferline.nvim is the active tabline. Keep this file for reference.
 return {
 	"willothy/nvim-cokeline",
+	enabled = false,
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"nvim-tree/nvim-web-devicons",

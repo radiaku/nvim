@@ -4,3 +4,6 @@ lazy-lock.json
 .nvimlog
 *.log
 *.txt
+.commandcode/taste
+.omo/evidence
+CLAUDE.md

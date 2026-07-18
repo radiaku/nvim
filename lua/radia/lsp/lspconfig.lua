@@ -12,9 +12,13 @@ return {
 		local settings = require("radia.lsp.lib.settings")
 		local handlers = require("radia.lsp.lib.handlers")
 		local direct = require("radia.lsp.lib.direct")
+		local guard = require("radia.lsp.lib.guard")
 		local util = require("lspconfig.util")
 		local ok_mason, mason = pcall(require, "mason")
 		local ok_mason_lspconfig, mason_lspconfig = pcall(require, "mason-lspconfig")
+
+		-- External-change + bulk-open guard must run before any vim.lsp.start
+		guard.setup()
 
 		-- Setup neodev if available
 		pcall(function()
@@ -35,10 +39,14 @@ return {
 
 		-- Mason setup (for desktop/managed installations)
 		if ok_mason and ok_mason_lspconfig then
-			mason_lspconfig.setup({})
+			-- Don't auto-enable every ensure_installed server on startup races
+			pcall(function()
+				mason_lspconfig.setup({ automatic_enable = false })
+			end)
 		end
 
 		-- Direct setups (for Termux, system-wide installations, or Mason fallback)
+		-- handlers.setup already vim.lsp.enable's when bins exist; direct is fallback
 		if utils.is_termux() or not (ok_mason and ok_mason_lspconfig) then
 			direct.setup(capabilities, util)
 		end

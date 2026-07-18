@@ -19,26 +19,25 @@ return {
 				vim.diagnostic.severity.INFO,
 				vim.diagnostic.severity.HINT,
 			},
-			-- Reduce overlay by not rendering full messages unless requested
 			options = {
 				add_messages = {
-					messages = true, -- show full messages inline
-					display_count = false, -- prefer messages over counts
+					messages = true,
+					display_count = false,
 					use_max_severity = true,
 					show_multiple_glyphs = true,
 				},
 				multilines = {
 					enabled = true,
-					always_show = true, -- ensure count appears even when not focused
+					always_show = false, -- only expand under cursor; cuts redraw thrash
 				},
 				show_source = { enabled = false },
-				throttle = 20,
+				-- Higher throttle: bulk external reloads + hjkl used to re-render every line
+				throttle = 250,
 			},
-			-- Ensure attach covers newly opened buffers consistently
-			overwrite_events = { "LspAttach", "BufEnter", "BufReadPost" },
+			-- Skip BufReadPost: silent reloads after external edits would re-attach every buffer
+			overwrite_events = { "LspAttach", "BufEnter" },
 			disabled_ft = {},
 		})
-		-- Ensure Neovim’s own virtual_text is disabled to avoid duplication
-		vim.diagnostic.config({ virtual_text = false })
+		vim.diagnostic.config({ virtual_text = false, update_in_insert = false })
 	end,
 }
