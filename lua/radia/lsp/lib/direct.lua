@@ -13,8 +13,17 @@ function M.setup(lspconfig, capabilities, util)
 	if gopls_bin then
 		lspconfig["gopls"].setup({
 			filetypes = { "go" },
+			root_dir = util.root_pattern("go.work", "go.mod", ".git"),
 			settings = {
 				gopls = {
+					directoryFilters = {
+						"-node_modules",
+						"-vendor",
+						"-.git",
+						"-dist",
+						"-build",
+						"-.cache",
+					},
 					analyses = {
 						modernize = false,
 						unusedparams = false,
@@ -33,7 +42,17 @@ function M.setup(lspconfig, capabilities, util)
 	if vtsls_bin then
 		lspconfig["vtsls"].setup({
 			capabilities = capabilities,
-			root_dir = util.root_pattern("package.json") or vim.fn.getcwd(),
+			root_dir = function(fname)
+				return util.root_pattern("tsconfig.json", "jsconfig.json", "package.json")(fname)
+					or util.find_git_ancestor(fname)
+			end,
+			settings = {
+				typescript = {
+					tsserver = {
+						maxTsServerMemory = 3072,
+					},
+				},
+			},
 		})
 	end
 
@@ -57,11 +76,19 @@ function M.setup(lspconfig, capabilities, util)
 	if tw_bin then
 		lspconfig["tailwindcss"].setup({
 			filetypes = {
-				"css", "typescriptreact", "typescript", "javascriptreact",
+				"css", "typescriptreact", "javascriptreact",
 				"templ", "sass", "scss", "less", "liquid", "svelte",
 			},
 			capabilities = capabilities,
-			root_dir = util.root_pattern("package.json") or vim.fn.getcwd(),
+			root_dir = function(fname)
+				return util.root_pattern(
+					"tailwind.config.js",
+					"tailwind.config.ts",
+					"tailwind.config.cjs",
+					"postcss.config.js",
+					"postcss.config.ts"
+				)(fname)
+			end,
 			autoformat = false,
 		})
 	end

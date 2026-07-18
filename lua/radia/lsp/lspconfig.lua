@@ -17,12 +17,15 @@ return {
 
 		local lspconfig = require("lspconfig")
 		local util = require("lspconfig.util")
-		local mason = require("mason")
-		local mason_lspconfig = require("mason-lspconfig")
 
-		mason.setup({ PATH = "prepend" })
+		-- Mason may still be VeryLazy; only wire handlers when available.
+		-- PATH prepend is enough if packages already live under mason/bin.
+		pcall(function()
+			require("mason").setup({ PATH = "prepend" })
+		end)
 
-		-- Skip LSP attach for buffers whose file was deleted outside nvim
+		-- Skip LSP attach for buffers whose file was deleted outside nvim;
+		-- also defers attach for non-focused buffers during bulk open.
 		guard.setup()
 
 		-- Setup neodev if available
@@ -39,8 +42,24 @@ return {
 		-- Add project node_modules to PATH
 		utils.setup_node_path()
 
+		local specs = handlers.setup(lspconfig, capabilities, util)
+
 		-- Mason handlers (for desktop/managed installations)
-		mason_lspconfig.setup_handlers(handlers.setup(lspconfig, capabilities, util))
+		local ok_mlsp, mason_lspconfig = pcall(require, "mason-lspconfig")
+		if ok_mlsp and mason_lspconfig.setup_handlers then
+			-- Ensure mason-lspconfig is initialized even if mason plugin is still lazy
+			pcall(function()
+				mason_lspconfig.setup({ automatic_installation = false })
+			end)
+			mason_lspconfig.setup_handlers(specs)
+		else
+			-- Fallback: register common servers directly (PATH / mason bin already installed)
+			for name, fn in pairs(specs) do
+				if type(name) == "string" and type(fn) == "function" then
+					pcall(fn)
+				end
+			end
+		end
 
 		-- Direct setups (for Termux or system-wide installations)
 		if utils.is_termux() then

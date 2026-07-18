@@ -13,20 +13,32 @@ return {
 			local treesitter = require("nvim-treesitter.configs")
 
 			-- configure treesitter
+			local function is_huge_buf(lang, buf)
+				buf = buf or 0
+				local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(buf))
+				if ok and stats and stats.size and stats.size > 500 * 1024 then
+					return true
+				end
+				-- Fallback without loading full buffer text
+				local line_count = vim.api.nvim_buf_line_count(buf)
+				return line_count > 20000
+			end
+
 			treesitter.setup({
 				-- enable syntax highlighting
 				highlight = {
 					enable = true,
+					disable = is_huge_buf,
 				},
 				-- enable indentation
-				indent = { enable = true },
+				indent = {
+					enable = true,
+					disable = is_huge_buf,
+				},
 				-- enable autotagging (w/ nvim-ts-autotag plugin)
 				autotag = {
 					enable = false,
 				},
-				disable = function()
-					return string.len(table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "")) > 500000
-				end,
 				-- ensure these language parsers are installed
 				ensure_installed = {
 					"json",

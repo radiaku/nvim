@@ -7,6 +7,9 @@
 -- Also owns external-change handling: defining FileChangedShell disables
 -- Neovim's default autoread path, so this must auto-reload unmodified
 -- buffers and never spam prompts when many files change (Claude, etc.).
+--
+-- Session/bulk open: only the focused buffer attaches LSP immediately;
+-- others wait for BufEnter so large workspaces don't start N servers at once.
 local M = {}
 
 -- True for a normal file buffer whose path no longer exists on disk
@@ -40,11 +43,52 @@ function M.setup()
 				vim.b[bufnr].radia_lsp_deferred = true
 				return
 			end
+			-- Bulk open / session restore: only attach to the focused buffer.
+			if bufnr ~= vim.api.nvim_get_current_buf() then
+				vim.b[bufnr].radia_lsp_focus_deferred = true
+				return
+			end
 			return try_add(self, bufnr, project_root, silent)
 		end
 	end
 
 	local group = vim.api.nvim_create_augroup("RadiaLspGuard", { clear = true })
+
+	-- Attach LSP when the user actually visits a deferred buffer (debounced).
+	local focus_pending = false
+	vim.api.nvim_create_autocmd("BufEnter", {
+		group = group,
+		desc = "Start LSP for buffers deferred during bulk open",
+		callback = function(args)
+			local buf = args.buf
+			if not vim.b[buf].radia_lsp_focus_deferred then
+				return
+			end
+			if file_missing(buf) then
+				return
+			end
+			if focus_pending then
+				return
+			end
+			focus_pending = true
+			vim.defer_fn(function()
+				focus_pending = false
+				if not vim.api.nvim_buf_is_valid(buf) then
+					return
+				end
+				if not vim.b[buf].radia_lsp_focus_deferred then
+					return
+				end
+				if buf ~= vim.api.nvim_get_current_buf() then
+					return
+				end
+				vim.b[buf].radia_lsp_focus_deferred = nil
+				vim.api.nvim_buf_call(buf, function()
+					pcall(vim.cmd, "LspStart")
+				end)
+			end, 80)
+		end,
+	})
 
 	-- Batch external-change notices so multi-file edits don't flood the UI.
 	-- Use defer_fn (not uv timers) — stop/close/recreate races produce red
@@ -115,7 +159,7 @@ function M.setup()
 	-- Detect disk changes when returning from terminal/other apps.
 	-- Guard against insert/cmdline and re-entrancy so checktime never storms.
 	local checking = false
-	local function safe_checktime()
+	local function safe_checktime(all_buffers)
 		if checking then
 			return
 		end
@@ -125,7 +169,12 @@ function M.setup()
 		end
 		checking = true
 		vim.schedule(function()
-			pcall(vim.cmd, "checktime")
+			if all_buffers then
+				pcall(vim.cmd, "checktime")
+			else
+				-- CursorHold: only current buffer (full checktime stats every open file)
+				pcall(vim.cmd, "checktime " .. vim.api.nvim_get_current_buf())
+			end
 			checking = false
 		end)
 	end
@@ -133,14 +182,18 @@ function M.setup()
 	vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
 		group = group,
 		desc = "checktime after focus/terminal so external edits are detected",
-		callback = safe_checktime,
+		callback = function()
+			safe_checktime(true)
+		end,
 	})
 
 	-- Lightweight poll while idle (covers GUIs/terminals that miss FocusGained)
 	vim.api.nvim_create_autocmd("CursorHold", {
 		group = group,
-		desc = "Periodic checktime for external file changes",
-		callback = safe_checktime,
+		desc = "Periodic checktime for current buffer only",
+		callback = function()
+			safe_checktime(false)
+		end,
 	})
 
 	-- Once the file exists on disk (first save of a new/re-created file),

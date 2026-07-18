@@ -24,6 +24,7 @@ function M.setup(lspconfig, capabilities, util)
 				end
 				return
 			end
+			-- Avoid nvim_get_runtime_file("", true) — walks every runtime path.
 			lspconfig["lua_ls"].setup({
 				settings = {
 					Lua = {
@@ -33,13 +34,12 @@ function M.setup(lspconfig, capabilities, util)
 							disable = { "missing-fields" },
 						},
 						workspace = {
+							checkThirdParty = false,
 							library = {
-								vim.api.nvim_get_runtime_file("", true),
 								vim.env.VIMRUNTIME,
 								vim.fn.expand("$VIMRUNTIME/lua"),
 								vim.fn.expand("$VIMRUNTIME/lua/vim/lsp"),
 								vim.fn.stdpath("config") .. "/lua",
-								vim.fn.stdpath("data") .. "/lazy/ui/nvchad_types",
 								vim.fn.stdpath("data") .. "/lazy/lazy.nvim/lua/lazy",
 								"${3rd}/luv/library",
 							},
@@ -87,10 +87,10 @@ function M.setup(lspconfig, capabilities, util)
 				filetypes = { "python", ".py" },
 				capabilities = capabilities,
 				cmd = { cmd, "--stdio" },
+				-- Prefer project markers over bare git root (monorepos)
 				root_dir = function(fname)
 					table.unpack = table.unpack or unpack
 					return util.root_pattern(table.unpack(python_root_files))(fname)
-						or util.find_git_ancestor(fname)
 						or util.path.dirname(fname)
 				end,
 				settings = {
@@ -101,6 +101,15 @@ function M.setup(lspconfig, capabilities, util)
 							diagnosticMode = "openFilesOnly",
 							extraPaths = { site_packages_path },
 							useLibraryCodeForTypes = true,
+							exclude = {
+								"**/node_modules",
+								"**/__pycache__",
+								"**/.venv",
+								"**/venv",
+								"**/dist",
+								"**/build",
+								"**/.git",
+							},
 							diagnosticSeverityOverrides = settings.python_diagnostic_overrides,
 						},
 					},
@@ -120,8 +129,17 @@ function M.setup(lspconfig, capabilities, util)
 			end
 			lspconfig["gopls"].setup({
 				filetypes = { "go" },
+				root_dir = util.root_pattern("go.work", "go.mod", ".git"),
 				settings = {
 					gopls = {
+						directoryFilters = {
+							"-node_modules",
+							"-vendor",
+							"-.git",
+							"-dist",
+							"-build",
+							"-.cache",
+						},
 						analyses = {
 							modernize = false,
 							unusedparams = false,
@@ -142,7 +160,20 @@ function M.setup(lspconfig, capabilities, util)
 			lspconfig["vtsls"].setup({
 				cmd = { cmd, "--stdio" },
 				capabilities = capabilities,
-				root_dir = util.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git") or vim.fn.getcwd(),
+				root_dir = function(fname)
+					return util.root_pattern("tsconfig.json", "jsconfig.json", "package.json")(fname)
+						or util.find_git_ancestor(fname)
+				end,
+				settings = {
+					vtsls = {
+						autoUseWorkspaceTsdk = true,
+					},
+					typescript = {
+						tsserver = {
+							maxTsServerMemory = 3072,
+						},
+					},
+				},
 			})
 		end,
 
@@ -174,11 +205,19 @@ function M.setup(lspconfig, capabilities, util)
 			lspconfig["tailwindcss"].setup({
 				cmd = { cmd, "--stdio" },
 				filetypes = {
-					"css", "typescriptreact", "typescript", "javascriptreact",
+					"css", "typescriptreact", "javascriptreact",
 					"templ", "sass", "scss", "less", "liquid", "svelte",
 				},
 				capabilities = capabilities,
-				root_dir = util.root_pattern("tailwind.config.js", "tailwind.config.ts", "postcss.config.js", "postcss.config.ts", "package.json", ".git") or vim.fn.getcwd(),
+				root_dir = function(fname)
+					return util.root_pattern(
+						"tailwind.config.js",
+						"tailwind.config.ts",
+						"tailwind.config.cjs",
+						"postcss.config.js",
+						"postcss.config.ts"
+					)(fname)
+				end,
 				autoformat = false,
 			})
 		end,

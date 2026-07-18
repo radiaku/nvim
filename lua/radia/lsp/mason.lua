@@ -1,6 +1,9 @@
 return {
 	"williamboman/mason.nvim",
 	commit = "fc9883",
+	-- Don't block startup: only load UI/installer when asked, or after UI settles.
+	cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUpdate", "MasonLog" },
+	event = "VeryLazy",
 	dependencies = {
 		{ "williamboman/mason-lspconfig.nvim", commit = "8e46de" },
 		{ "WhoIsSethDaniel/mason-tool-installer.nvim", commit = "125551" },
@@ -43,8 +46,6 @@ return {
 
 		if has_go and not is_termux then
 			table.insert(servers, "gopls")
-		else
-			-- vim.notify("Go not found in PATH: skipping gopls", vim.log.levels.WARN)
 		end
 
 		if has_node then
@@ -53,22 +54,15 @@ return {
 			table.insert(servers, "html")
 			table.insert(servers, "emmet_ls")
 			table.insert(servers, "tailwindcss")
-			table.insert(servers, "html")
 			table.insert(servers, "intelephense")
 			table.insert(servers, "jsonls")
 			table.insert(tools, "prettier")
 			table.insert(tools, "eslint_d")
-		else
-			-- vim.notify("Node.js not found in PATH: skipping vtsls", vim.log.levels.WARN)
 		end
 
 		if has_python then
 			-- Prefer basedpyright and never install pyright alongside it
 			table.insert(servers, "basedpyright")
-			-- table.insert(tools, "black")
-			-- table.insert(tools, "pylint")
-		else
-			-- vim.notify("Python not found in PATH: skipping basedpyright", vim.log.levels.WARN)
 		end
 
 		-- Only ensure-install servers/tools that are missing globally
@@ -119,13 +113,25 @@ return {
 			end
 		end
 
+		-- Never auto-install on routine opens — that blocked first workspace load.
+		-- Missing packages still list in :Mason; install manually or via tool-installer run.
 		mason_lspconfig.setup({
 			ensure_installed = filtered_servers,
-			automatic_installation = not is_termux,
+			automatic_installation = false,
 		})
 
-		mason_tool_installer.setup({
-			ensure_installed = filtered_tools,
-		})
+		-- Defer tool install so it never races session restore / first LSP attach
+		vim.defer_fn(function()
+			if #filtered_tools == 0 and #filtered_servers == 0 then
+				return
+			end
+			pcall(function()
+				mason_tool_installer.setup({
+					ensure_installed = filtered_tools,
+					run_on_start = true,
+					start_delay = 5000,
+				})
+			end)
+		end, 3000)
 	end,
 }
