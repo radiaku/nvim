@@ -43,6 +43,20 @@ return {
 			depth_limit_indicator = "..",
 		})
 
-		vim.o.winbar = " %{%v:lua.require'nvim-navic'.get_location()%}"
+		-- Safe wrapper: winbar eval runs on every redraw. After bulk external
+		-- reloads, bare get_location() can throw → red ErrorMsg flood that
+		-- blocks input until hard-close.
+		_G.RadiaNavicLocation = function()
+			local ok, navic = pcall(require, "nvim-navic")
+			if not ok or not navic.is_available() then
+				return ""
+			end
+			local ok_loc, loc = pcall(navic.get_location)
+			if not ok_loc or type(loc) ~= "string" then
+				return ""
+			end
+			return loc
+		end
+		vim.o.winbar = " %{%v:lua.RadiaNavicLocation()%}"
 	end,
 }

@@ -48,4 +48,7 @@ opt.splitbelow = true -- split horizontal window to the bottom
 -- turn off swapfile
 opt.swapfile = false
 
+-- Reload unmodified buffers when files change on disk (Claude, git, etc.)
+opt.autoread = true
+
 -- opt.foldenable = false

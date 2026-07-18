@@ -27,7 +27,10 @@ return {
 					},
 					{
 						function()
-							return require("lsp-progress").progress()
+							local ok, text = pcall(function()
+								return require("lsp-progress").progress()
+							end)
+							return (ok and text) or ""
 						end,
 					},
 				},

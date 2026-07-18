@@ -3,6 +3,10 @@
 -- Covers both Mason and direct setups: every lspconfig server attaches
 -- through manager:try_add, and all manager instances share methods via
 -- __index on the module table, so one patch gates them all.
+--
+-- Also owns external-change handling: defining FileChangedShell disables
+-- Neovim's default autoread path, so this must auto-reload unmodified
+-- buffers and never spam prompts when many files change (Claude, etc.).
 local M = {}
 
 -- True for a normal file buffer whose path no longer exists on disk
@@ -42,26 +46,101 @@ function M.setup()
 
 	local group = vim.api.nvim_create_augroup("RadiaLspGuard", { clear = true })
 
-	-- File deleted on disk while the buffer (and LSP) is open: keep both,
-	-- silently. Attached servers work from buffer content, and :w recreates
-	-- the file. Handling "deleted" ourselves suppresses the E211 error;
-	-- every other reason falls through to default behavior via "ask".
+	-- Batch external-change notices so multi-file edits don't flood the UI.
+	-- Use defer_fn (not uv timers) — stop/close/recreate races produce red
+	-- "Error executing luv callback" storms that block input.
+	local pending = { reloaded = 0, deleted = 0, conflict = 0 }
+	local notify_scheduled = false
+
+	local function flush_notice()
+		notify_scheduled = false
+		local parts = {}
+		if pending.reloaded > 0 then
+			parts[#parts + 1] = pending.reloaded .. " reloaded"
+		end
+		if pending.deleted > 0 then
+			parts[#parts + 1] = pending.deleted .. " deleted (kept)"
+		end
+		if pending.conflict > 0 then
+			parts[#parts + 1] = pending.conflict .. " conflict (kept local)"
+		end
+		pending.reloaded, pending.deleted, pending.conflict = 0, 0, 0
+		if #parts == 0 then
+			return
+		end
+		pcall(vim.notify, "Disk change: " .. table.concat(parts, ", "), vim.log.levels.INFO)
+	end
+
+	local function queue_notice(kind)
+		pending[kind] = (pending[kind] or 0) + 1
+		if notify_scheduled then
+			return
+		end
+		notify_scheduled = true
+		vim.defer_fn(flush_notice, 250)
+	end
+
+	-- Defining FileChangedShell disables default autoread handling, so every
+	-- reason must set v:fcs_choice. Unmodified external edits → silent reload
+	-- (no per-file prompt storm when Claude rewrites many open buffers).
 	vim.api.nvim_create_autocmd("FileChangedShell", {
 		group = group,
-		desc = "Deleted on disk: keep buffer and LSP quietly instead of E211",
+		desc = "Auto-reload external edits; quiet deleted-file E211",
 		callback = function(args)
-			if vim.v.fcs_reason ~= "deleted" then
-				vim.v.fcs_choice = "ask"
+			local reason = vim.v.fcs_reason
+			local buf = args.buf
+			local modified = vim.bo[buf].modified
+
+			if reason == "deleted" then
+				-- Keep buffer + LSP; :w recreates the file. Suppress E211.
+				vim.v.fcs_choice = ""
+				vim.bo[buf].modified = true
+				queue_notice("deleted")
 				return
 			end
-			vim.v.fcs_choice = ""
-			-- mirror the default: don't let an unsaved buffer look clean
-			vim.bo[args.buf].modified = true
-			local name = vim.fn.fnamemodify(args.file, ":~:.")
-			vim.schedule(function()
-				vim.notify(("File deleted on disk; buffer kept, :w recreates it: %s"):format(name), vim.log.levels.WARN)
-			end)
+
+			-- conflict: buffer dirty AND disk changed — never clobber local work
+			if reason == "conflict" or modified then
+				vim.v.fcs_choice = ""
+				queue_notice("conflict")
+				return
+			end
+
+			-- changed / mode / time on a clean buffer → reload from disk
+			vim.v.fcs_choice = "reload"
+			queue_notice("reloaded")
 		end,
+	})
+
+	-- Detect disk changes when returning from terminal/other apps.
+	-- Guard against insert/cmdline and re-entrancy so checktime never storms.
+	local checking = false
+	local function safe_checktime()
+		if checking then
+			return
+		end
+		local mode = vim.fn.mode()
+		if mode:find("[iRct]") ~= nil then
+			return
+		end
+		checking = true
+		vim.schedule(function()
+			pcall(vim.cmd, "checktime")
+			checking = false
+		end)
+	end
+
+	vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
+		group = group,
+		desc = "checktime after focus/terminal so external edits are detected",
+		callback = safe_checktime,
+	})
+
+	-- Lightweight poll while idle (covers GUIs/terminals that miss FocusGained)
+	vim.api.nvim_create_autocmd("CursorHold", {
+		group = group,
+		desc = "Periodic checktime for external file changes",
+		callback = safe_checktime,
 	})
 
 	-- Once the file exists on disk (first save of a new/re-created file),

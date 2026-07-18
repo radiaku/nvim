@@ -1,11 +1,12 @@
-# LSP deleted-file guard
+# LSP guard + external disk changes
 
-Covers **both directions** of the file-deleted-outside-nvim problem:
+Covers **three** outside-nvim file problems:
 
 1. **Deleted before open** (stale oldfiles entry, restored session, harpoon mark): language servers used to attach to a buffer with no file behind it and could error. The guard makes LSP simply **not attach** to such buffers.
-2. **Deleted while open and attached**: the buffer and its servers are fine (servers work from buffer content, not disk), but the moment nvim notices (focus regain, `:checktime`) it throws **`E211: File no longer available`**. The guard replaces that with a quiet `vim.notify` warning, keeps the buffer (marked modified, mirroring the default), and `:w` recreates the file.
+2. **Deleted while open and attached**: the buffer and its servers are fine (servers work from buffer content, not disk), but the moment nvim notices (focus regain, `:checktime`) it throws **`E211: File no longer available`**. The guard suppresses E211, keeps the buffer (marked modified), and `:w` recreates the file.
+3. **Modified externally while open** (Claude, CommandCode, git checkout): many open buffers used to hit `v:fcs_choice = "ask"` per file → prompt/error spam on every `checktime`/movement until hard-close. Clean buffers now **silent-reload**; dirty+disk-changed buffers keep local work (`conflict`).
 
-Lives in `lua/radia/lsp/lib/guard.lua`, called from `lspconfig.lua` (`guard.setup()`) before any server setup.
+Lives in `lua/radia/lsp/lib/guard.lua`, called from `lspconfig.lua` (`guard.setup()`) before any server setup. `opt.autoread = true` is set in `settings.lua` (harmless; `FileChangedShell` still owns the real path).
 
 How it works (deleted before open):
 
@@ -13,18 +14,27 @@ How it works (deleted before open):
 - The patch skips attach when the buffer is a normal file buffer (`buftype == ""`, non-empty name) whose path fails `filereadable()`, and marks it `vim.b.radia_lsp_deferred`.
 - A `BufWritePost` autocmd (`RadiaLspGuard` group) watches deferred buffers: once the file exists on disk (first `:w`), it runs `:LspStart` so servers attach normally.
 
-How it works (deleted while attached):
+How it works (FileChangedShell — critical):
 
-- A `FileChangedShell` autocmd handles `v:fcs_reason == "deleted"` itself: `v:fcs_choice = ""` suppresses E211, the buffer is set `modified`, and a warning is notified. Every other reason (contents changed, mode, timestamp) falls back to default behavior via `v:fcs_choice = "ask"`.
-- LSP clients are deliberately **left attached** in this case — completion/diagnostics keep working off the buffer until the user recreates (`:w`) or abandons the file.
+- Defining **any** `FileChangedShell` autocmd **disables Neovim's default autoread path**. Every reason must set `v:fcs_choice` or nvim freezes on prompts.
+- `deleted` → `fcs_choice = ""`, mark modified, batch notify.
+- `conflict` or buffer already `modified` → `fcs_choice = ""` (keep local; never clobber unsaved edits).
+- clean buffer + disk changed (`changed` / `mode` / `time`) → `fcs_choice = "reload"`.
+- Notices are **batched** (~200ms) so multi-file external edits become one `Disk change: N reloaded` notify, not N messages.
 
-Session restore (auto-session) is case 1: the session's `edit` of a missing file silently creates an empty `[New]` buffer — no E211, no sourcing error (verified by restoring a `mksession` file after deleting one of its files). The guard marks that buffer deferred, so no server attaches. On top of that, `post_restore_cmds` in `lua/radia/plugins/session/autosession.lua` wipes such phantom buffers right after restore (unmodified, normal buftype, named, file unreadable — unsaved edits are never wiped), so they don't linger in the buffer list. Note auto-session's commands are the 2.x names (`:SessionSave` / `:SessionRestore`), and its `pre_save_cmds` assumes Neotree is loaded.
+Detection:
+
+- `FocusGained` / `TermClose` / `TermLeave` / `CursorHold` run a re-entrancy-safe `:checktime` (skipped in insert/cmdline).
+- Without these, nvim only notices on write/certain ops — stale buffers + false LSP errors pile up until you move around and everything explodes.
+
+Session restore (auto-session) is case 1: the session's `edit` of a missing file silently creates an empty `[New]` buffer — no E211. The guard marks that buffer deferred. `post_restore_cmds` in `lua/radia/plugins/session/autosession.lua` also wipes unmodified missing-file phantoms after restore.
 
 Consequences / gotchas:
 
-- **New unsaved files also match** (nvim can't distinguish "deleted" from "not yet created") — they get LSP only after the first save. Acceptable trade-off.
-- `null-ls` (none-ls) bypasses lspconfig's manager, so it still attaches — harmless, it's in-process and formats from buffer contents, never the disk path.
-- The patch targets the pinned lspconfig's manager API ([[22-pinned-commits]]); if the lspconfig pin is ever bumped past the manager-based architecture (it was removed upstream in favor of `vim.lsp.config`), the guard needs reworking — its `pcall(require, "lspconfig.manager")` fails soft, meaning the guard silently stops gating rather than erroring.
+- **New unsaved files also match** the missing-file gate (nvim can't distinguish "deleted" from "not yet created") — they get LSP only after the first save.
+- Dirty buffer + external rewrite keeps **local** content; user must resolve manually (`:e!` to take disk, or `:w!` to overwrite disk).
+- `null-ls` (none-ls) bypasses lspconfig's manager — still attaches; harmless.
+- The patch targets the pinned lspconfig manager API ([[22-pinned-commits]]); `pcall(require, "lspconfig.manager")` fails soft if that architecture goes away.
 
 Links: [[30-lsp-architecture]] · [[22-pinned-commits]] · [[index]]
 

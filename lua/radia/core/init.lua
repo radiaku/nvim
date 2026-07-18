@@ -141,7 +141,7 @@ require("lazy").setup({
 		notify = false,
 	},
 	change_detection = {
-		notify = true,
+		notify = false,
 	},
 	ui = {
 		border = "rounded",
