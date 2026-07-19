@@ -1,74 +1,51 @@
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",
-		branch = "main",
-		lazy = false,
 		build = ":TSUpdate",
+		event = { "BufReadPost", "BufNewFile" },
 		config = function()
-			local ok, treesitter = pcall(require, "nvim-treesitter")
+			local ok, configs = pcall(require, "nvim-treesitter.configs")
 			if not ok then
 				vim.notify("nvim-treesitter not loaded", vim.log.levels.ERROR)
 				return
 			end
 
-			local ensure_installed = {
-				"json",
-				"javascript",
-				"html",
-				"go",
-				"php",
-				"python",
-				"css",
-				"bash",
-				"lua",
-				"vim",
-				"vimdoc",
-				"gitignore",
-				"query",
-			}
-
-			treesitter.setup({
-				install_dir = vim.fn.stdpath("data") .. "/site/parser",
-			})
-
-			vim.api.nvim_create_autocmd("User", {
-				pattern = "LazyDone",
-				once = true,
-				callback = function()
-					local installed = treesitter.get_installed("parsers")
-					local missing = vim.tbl_filter(function(lang)
-						return not vim.list_contains(installed, lang)
-					end, ensure_installed)
-
-					if #missing > 0 then
-						treesitter.install(missing)
-					end
-				end,
-			})
-
-			local max_size = 500000
-
-			local start_group = vim.api.nvim_create_augroup("RadiaTreesitterStart", { clear = true })
-
-			vim.api.nvim_create_autocmd("FileType", {
-				group = start_group,
-				callback = function(args)
-					local bufnr = args.buf
-
-					if vim.bo[bufnr].buftype ~= "" then
-						return
-					end
-
-					local ok_size, byte_size = pcall(function()
-						return vim.api.nvim_buf_get_offset(bufnr, vim.api.nvim_buf_line_count(bufnr))
-					end)
-
-					if not ok_size or byte_size > max_size then
-						return
-					end
-
-					pcall(vim.treesitter.start, bufnr)
-				end,
+			configs.setup({
+				ensure_installed = {
+					"json",
+					"javascript",
+					"html",
+					"go",
+					"php",
+					"python",
+					"css",
+					"bash",
+					"lua",
+					"vim",
+					"vimdoc",
+					"gitignore",
+					"query",
+				},
+				sync_install = false,
+				auto_install = true,
+				highlight = {
+					enable = true,
+					disable = function(_, buf)
+						local max_size = 500000
+						local ok_size, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(buf))
+						if ok_size and stats and stats.size > max_size then
+							return true
+						end
+						local ok_offset, byte_size = pcall(function()
+							return vim.api.nvim_buf_get_offset(buf, vim.api.nvim_buf_line_count(buf))
+						end)
+						return ok_offset and byte_size > max_size
+					end,
+					additional_vim_regex_highlighting = false,
+				},
+				indent = {
+					enable = true,
+				},
 			})
 		end,
 	},

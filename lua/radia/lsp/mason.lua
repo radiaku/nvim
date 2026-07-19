@@ -147,7 +147,7 @@ return {
 		-- Never auto-install on routine opens — that blocked first workspace load.
 		mason_lspconfig.setup({
 			ensure_installed = filtered_servers,
-			automatic_enable = false,
+			automatic_installation = false,
 		})
 
 		-- Defer tool install so it never races session restore / first LSP attach

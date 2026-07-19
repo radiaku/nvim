@@ -3,14 +3,21 @@ local utils = require("radia.lsp.lib.utils")
 
 local M = {}
 
+local function setup_server(name, opts)
+	local ok, lspconfig = pcall(require, "lspconfig")
+	if not ok or not lspconfig[name] then
+		return
+	end
+	lspconfig[name].setup(opts or {})
+end
+
 function M.setup(capabilities, util)
 	local server_namepy = "basedpyright"
 
-	-- Lua Language Server
 	local lua_ls_bin = utils.exepath("lua-language-server")
 	if lua_ls_bin then
-		-- Avoid nvim_get_runtime_file("", true) — walks every runtime path.
-		vim.lsp.config("lua_ls", {
+		setup_server("lua_ls", {
+			capabilities = capabilities,
 			settings = {
 				Lua = {
 					runtime = { version = "LuaJIT" },
@@ -33,28 +40,31 @@ function M.setup(capabilities, util)
 				},
 			},
 		})
-		vim.lsp.enable("lua_ls")
 	end
 
-	-- Python (basedpyright)
 	local py_bin = utils.exepath("basedpyright-langserver") or utils.exepath("pyright-langserver")
 	if py_bin then
 		local python_root_files = {
-			"WORKSPACE", "pyproject.toml", "setup.py",
-			"setup.cfg", "requirements.txt", "Pipfile",
+			"WORKSPACE",
+			"pyproject.toml",
+			"setup.py",
+			"setup.cfg",
+			"requirements.txt",
+			"Pipfile",
 		}
 		local site_packages_path = ""
 		if vim.fn.has("win32") == 1 then
 			local python_install_path = vim.fn.exepath("python")
 			local python_directory = python_install_path:match("(.*)\\[^\\]*$")
-			site_packages_path = python_directory .. "\\lib\\site-packages"
+			if python_directory then
+				site_packages_path = python_directory .. "\\lib\\site-packages"
+			end
 		end
 
-		vim.lsp.config(server_namepy, {
-			filetypes = { "python", ".py" },
+		setup_server(server_namepy, {
+			filetypes = { "python" },
 			capabilities = capabilities,
 			cmd = { py_bin, "--stdio" },
-			-- Prefer project markers over bare git root (monorepos)
 			root_dir = function(fname)
 				table.unpack = table.unpack or unpack
 				return util.root_pattern(table.unpack(python_root_files))(fname)
@@ -66,7 +76,7 @@ function M.setup(capabilities, util)
 						typeCheckingMode = "basic",
 						autoSearchPaths = true,
 						diagnosticMode = "openFilesOnly",
-						extraPaths = { site_packages_path },
+						extraPaths = site_packages_path ~= "" and { site_packages_path } or {},
 						useLibraryCodeForTypes = true,
 						exclude = {
 							"**/node_modules",
@@ -87,12 +97,11 @@ function M.setup(capabilities, util)
 				},
 			},
 		})
-		vim.lsp.enable(server_namepy)
 	end
 
-	-- Go
 	if utils.ensure("gopls", "Install: pkg install gopls or 'go install golang.org/x/tools/gopls@latest'") then
-		vim.lsp.config("gopls", {
+		setup_server("gopls", {
+			capabilities = capabilities,
 			filetypes = { "go" },
 			root_dir = util.root_pattern("go.work", "go.mod", ".git"),
 			settings = {
@@ -116,12 +125,10 @@ function M.setup(capabilities, util)
 				},
 			},
 		})
-		vim.lsp.enable("gopls")
 	end
 
-	-- TypeScript/JavaScript
 	if utils.ensure("vtsls", "Install: npm i -g vtsls typescript") then
-		vim.lsp.config("vtsls", {
+		setup_server("vtsls", {
 			capabilities = capabilities,
 			root_dir = function(fname)
 				return util.root_pattern("tsconfig.json", "jsconfig.json", "package.json")(fname)
@@ -138,29 +145,34 @@ function M.setup(capabilities, util)
 				},
 			},
 		})
-		vim.lsp.enable("vtsls")
 	end
 
-	-- HTML
 	if utils.ensure("vscode-html-language-server", "Install: npm i -g vscode-langservers-extracted") then
-		vim.lsp.config("html", {
+		setup_server("html", {
 			filetypes = { "html" },
 			capabilities = capabilities,
 			init_options = {
 				embeddedLanguages = { css = true, javascript = true },
 				provideFormatter = true,
 			},
-			root_dir = util.root_pattern("package.json") or vim.fn.getcwd(),
+			root_dir = function(fname)
+				return util.root_pattern("package.json")(fname) or util.find_git_ancestor(fname) or vim.fn.getcwd()
+			end,
 		})
-		vim.lsp.enable("html")
 	end
 
-	-- TailwindCSS
 	if utils.ensure("tailwindcss-language-server", "Install: npm i -g @tailwindcss/language-server") then
-		vim.lsp.config("tailwindcss", {
+		setup_server("tailwindcss", {
 			filetypes = {
-				"css", "typescriptreact", "javascriptreact",
-				"templ", "sass", "scss", "less", "liquid", "svelte",
+				"css",
+				"typescriptreact",
+				"javascriptreact",
+				"templ",
+				"sass",
+				"scss",
+				"less",
+				"liquid",
+				"svelte",
 			},
 			capabilities = capabilities,
 			root_dir = function(fname)
@@ -173,18 +185,20 @@ function M.setup(capabilities, util)
 				)(fname)
 			end,
 		})
-		vim.lsp.enable("tailwindcss")
 	end
 
-	-- PHP
 	if utils.ensure("intelephense", "Install: npm i -g intelephense") then
-		vim.lsp.config("intelephense", {
+		setup_server("intelephense", {
 			cmd = { "intelephense", "--stdio" },
 			filetypes = { "php" },
+			capabilities = capabilities,
 			root_dir = function(pattern)
 				local cwd = vim.fn.getcwd()
 				local root = util.root_pattern("composer.json", ".git")(pattern)
-				return util.path.is_descendant(cwd, root) and cwd or root
+				if root and util.path.is_descendant(cwd, root) then
+					return cwd
+				end
+				return root
 			end,
 			settings = {
 				intelephense = {
@@ -201,73 +215,78 @@ function M.setup(capabilities, util)
 				},
 			},
 		})
-		vim.lsp.enable("intelephense")
 	end
 
-	-- Kotlin
 	local kotlin_bin = vim.fn.has("win32") == 1 and "kotlin-language-server.cmd" or "kotlin-language-server"
 	if utils.ensure(kotlin_bin, "Install: scoop/choco on Windows, or your package manager on Unix") then
-		vim.lsp.config("kotlin_language_server", {
+		setup_server("kotlin_language_server", {
 			filetypes = { "kotlin", "kt" },
 			capabilities = capabilities,
-			root_dir = util.root_pattern("package.json", ".git") or vim.fn.getcwd(),
 			cmd = { kotlin_bin },
+			root_dir = function(fname)
+				return util.root_pattern("package.json", ".git")(fname) or vim.fn.getcwd()
+			end,
 		})
-		vim.lsp.enable("kotlin_language_server")
 	end
 
-	-- C/C++
 	if utils.ensure("clangd", "Install: pkg install clangd") then
-		vim.lsp.config("clangd", {
+		setup_server("clangd", {
 			filetypes = { "c", "cpp", "objc", "objcpp" },
 			capabilities = capabilities,
-			root_dir = util.root_pattern(
-				"package.json", ".clangd", "compile_flags.txt",
-				"compile_commands.json", ".vim/", ".git", ".hg"
-			) or vim.fn.getcwd(),
+			root_dir = function(fname)
+				return util.root_pattern(
+					"package.json",
+					".clangd",
+					"compile_flags.txt",
+					"compile_commands.json",
+					".vim/",
+					".git",
+					".hg"
+				)(fname) or vim.fn.getcwd()
+			end,
 		})
-		vim.lsp.enable("clangd")
 	end
 
-	-- Templ
-	vim.lsp.config("templ", {
+	setup_server("templ", {
 		capabilities = capabilities,
 		root_dir = util.root_pattern("go.mod", ".git"),
 	})
-	vim.lsp.enable("templ")
 
-	-- C#
 	local omnisharp_path = vim.fn.expand("$HOME/.config/omnisharp/omnisharp.exe")
 	if vim.fn.executable(omnisharp_path) == 1 then
 		local pid = vim.fn.getpid()
-		vim.lsp.config("omnisharp", {
+		setup_server("omnisharp", {
 			filetypes = { "cs", "csharp", "c_sharp" },
 			capabilities = capabilities,
-			root_dir = util.root_pattern("package.json")
-				or util.root_pattern(".git")
-				or util.root_pattern("csproj")
-				or util.root_pattern("sln")
-				or vim.fn.getcwd(),
 			cmd = { omnisharp_path, "--languageserver", "--hostPID", tostring(pid) },
+			root_dir = function(fname)
+				return util.root_pattern("*.sln", "*.csproj", ".git", "package.json")(fname) or vim.fn.getcwd()
+			end,
 		})
-		vim.lsp.enable("omnisharp")
 	end
 
-	-- Liquid (Shopify)
-	vim.lsp.config("theme_check", {
-		capabilities = capabilities,
-		cmd = { "theme-check-liquid-server" },
-	})
-	vim.lsp.enable("theme_check")
+	if utils.exepath("theme-check-liquid-server") then
+		setup_server("theme_check", {
+			capabilities = capabilities,
+			cmd = { "theme-check-liquid-server" },
+		})
+	end
 
-	-- Emmet
-	vim.lsp.config("emmet_ls", {
+	setup_server("emmet_ls", {
+		capabilities = capabilities,
 		filetypes = {
-			"html", "typescriptreact", "typescript", "javascriptreact",
-			"css", "sass", "scss", "less", "svelte", "liquid",
+			"html",
+			"typescriptreact",
+			"typescript",
+			"javascriptreact",
+			"css",
+			"sass",
+			"scss",
+			"less",
+			"svelte",
+			"liquid",
 		},
 	})
-	vim.lsp.enable("emmet_ls")
 end
 
 return M

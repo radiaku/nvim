@@ -33,17 +33,32 @@ local function patch_validate()
   local original_validate = vim.validate
 
   vim.validate = function(name, value, validator, optional, message)
-    if validator ~= nil or type(name) ~= "table" then
-      return original_validate(name, value, validator, optional, message)
+    -- Nvim 0.11+ multi-arg form: vim.validate(name, value, validator, ...)
+    if type(name) == "string" then
+      return original_validate({
+        [name] = { value, normalize_validator(validator), optional, message },
+      })
     end
 
-    local keys = vim.tbl_keys(name)
-    table.sort(keys)
-
-    for _, key in ipairs(keys) do
-      local spec = name[key]
-      original_validate(key, spec[1], normalize_validator(spec[2]), spec[3], spec[4])
+    -- Table form: vim.validate({ name = { value, validator, ... }, ... })
+    if type(name) == "table" then
+      local normalized = {}
+      for key, spec in pairs(name) do
+        if type(spec) == "table" then
+          normalized[key] = {
+            spec[1],
+            normalize_validator(spec[2]),
+            spec[3],
+            spec[4],
+          }
+        else
+          normalized[key] = spec
+        end
+      end
+      return original_validate(normalized)
     end
+
+    return original_validate(name, value, validator, optional, message)
   end
 
   vim.g.radia_compat_validate_patched = true

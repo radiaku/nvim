@@ -34,19 +34,17 @@ return {
 		-- Add project node_modules to PATH
 		utils.setup_node_path()
 
-		-- Define custom server config overrides using the new vim.lsp.config API
+		-- Classic lspconfig setups (Nvim 0.10; vim.lsp.config needs 0.11+)
 		handlers.setup(capabilities, util)
 
 		-- Mason setup (for desktop/managed installations)
 		if ok_mason and ok_mason_lspconfig then
-			-- Don't auto-enable every ensure_installed server on startup races
 			pcall(function()
-				mason_lspconfig.setup({ automatic_enable = false })
+				mason_lspconfig.setup({ automatic_installation = false })
 			end)
 		end
 
 		-- Direct setups (for Termux, system-wide installations, or Mason fallback)
-		-- handlers.setup already vim.lsp.enable's when bins exist; direct is fallback
 		if utils.is_termux() or not (ok_mason and ok_mason_lspconfig) then
 			direct.setup(capabilities, util)
 		end

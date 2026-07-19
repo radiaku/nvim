@@ -5,13 +5,21 @@ local utils = require("radia.lsp.lib.utils")
 
 local M = {}
 
+local function setup_server(name, opts)
+	local ok, lspconfig = pcall(require, "lspconfig")
+	if not ok or not lspconfig[name] then
+		return
+	end
+	lspconfig[name].setup(opts or {})
+end
+
 function M.setup(capabilities, util)
 	local server_namepy = "basedpyright"
 
-	-- Go
 	local gopls_bin = utils.ensure("gopls", "Install: pkg install gopls or 'go install golang.org/x/tools/gopls@latest'")
 	if gopls_bin then
-		vim.lsp.config("gopls", {
+		setup_server("gopls", {
+			capabilities = capabilities,
 			filetypes = { "go" },
 			root_dir = util.root_pattern("go.work", "go.mod", ".git"),
 			settings = {
@@ -35,13 +43,11 @@ function M.setup(capabilities, util)
 				},
 			},
 		})
-		vim.lsp.enable("gopls")
 	end
 
-	-- TypeScript/JavaScript
 	local vtsls_bin = utils.ensure("vtsls", "Install: npm i -g vtsls typescript")
 	if vtsls_bin then
-		vim.lsp.config("vtsls", {
+		setup_server("vtsls", {
 			capabilities = capabilities,
 			root_dir = function(fname)
 				return util.root_pattern("tsconfig.json", "jsconfig.json", "package.json")(fname)
@@ -58,48 +64,58 @@ function M.setup(capabilities, util)
 				},
 			},
 		})
-		vim.lsp.enable("vtsls")
 	end
 
-	-- HTML
 	local html_bin = utils.ensure("vscode-html-language-server", "Install: npm i -g vscode-langservers-extracted")
 	if html_bin then
-		vim.lsp.config("html", {
+		setup_server("html", {
 			filetypes = { "html" },
 			capabilities = capabilities,
 			init_options = {
 				embeddedLanguages = { css = true, javascript = true },
 				provideFormatter = true,
 			},
-			root_dir = util.root_pattern("package.json") or vim.fn.getcwd(),
+			root_dir = function(fname)
+				return util.root_pattern("package.json")(fname) or util.find_git_ancestor(fname) or vim.fn.getcwd()
+			end,
 		})
-		vim.lsp.enable("html")
 	end
 
-	-- TailwindCSS
 	local tw_bin = utils.ensure("tailwindcss-language-server", "Install: npm i -g @tailwindcss/language-server")
 	if tw_bin then
-		vim.lsp.config("tailwindcss", {
+		setup_server("tailwindcss", {
 			filetypes = {
-				"css", "typescriptreact", "typescript", "javascriptreact",
-				"templ", "sass", "scss", "less", "liquid", "svelte",
+				"css",
+				"typescriptreact",
+				"typescript",
+				"javascriptreact",
+				"templ",
+				"sass",
+				"scss",
+				"less",
+				"liquid",
+				"svelte",
 			},
 			capabilities = capabilities,
-			root_dir = util.root_pattern("package.json") or vim.fn.getcwd(),
+			root_dir = function(fname)
+				return util.root_pattern("package.json")(fname) or util.find_git_ancestor(fname) or vim.fn.getcwd()
+			end,
 		})
-		vim.lsp.enable("tailwindcss")
 	end
 
-	-- PHP
 	local intele_bin = utils.ensure("intelephense", "Install: npm i -g intelephense")
 	if intele_bin then
-		vim.lsp.config("intelephense", {
+		setup_server("intelephense", {
 			cmd = { "intelephense", "--stdio" },
 			filetypes = { "php" },
+			capabilities = capabilities,
 			root_dir = function(pattern)
 				local cwd = vim.fn.getcwd()
 				local root = util.root_pattern("composer.json", ".git")(pattern)
-				return util.path.is_descendant(cwd, root) and cwd or root
+				if root and util.path.is_descendant(cwd, root) then
+					return cwd
+				end
+				return root
 			end,
 			settings = {
 				intelephense = {
@@ -116,10 +132,8 @@ function M.setup(capabilities, util)
 				},
 			},
 		})
-		vim.lsp.enable("intelephense")
 	end
 
-	-- Python (basedpyright)
 	local py_bin = utils.exepath("basedpyright-langserver") or utils.exepath("pyright-langserver")
 	if py_bin then
 		local function detect_python_venv()
@@ -161,7 +175,6 @@ function M.setup(capabilities, util)
 			table.insert(extra_paths, project_sp)
 		end
 
-		-- Deduplicate paths
 		local function dedupe_paths(paths)
 			local seen, out = {}, {}
 			for _, p in ipairs(paths) do
@@ -201,15 +214,19 @@ function M.setup(capabilities, util)
 			py_settings.python = { venvPath = venv_path, venv = venv_name }
 		end
 
-		vim.lsp.config(server_namepy, {
-			filetypes = { "python", ".py" },
+		setup_server(server_namepy, {
+			filetypes = { "python" },
 			capabilities = capabilities,
 			cmd = { py_bin, "--stdio" },
 			root_dir = function(fname)
 				table.unpack = table.unpack or unpack
 				local python_root_files = {
-					"WORKSPACE", "pyproject.toml", "setup.py",
-					"setup.cfg", "requirements.txt", "Pipfile",
+					"WORKSPACE",
+					"pyproject.toml",
+					"setup.py",
+					"setup.cfg",
+					"requirements.txt",
+					"Pipfile",
 				}
 				return util.root_pattern(table.unpack(python_root_files))(fname)
 					or util.find_git_ancestor(fname)
@@ -217,10 +234,8 @@ function M.setup(capabilities, util)
 			end,
 			settings = py_settings,
 		})
-		vim.lsp.enable(server_namepy)
 	end
 
-	-- Kotlin
 	local kotlin_bin = utils.exepath("kotlin-language-server")
 	if kotlin_bin then
 		local function get_java_major_version()
@@ -272,27 +287,34 @@ function M.setup(capabilities, util)
 			end
 		end
 
-		vim.lsp.config("kotlin_language_server", {
+		setup_server("kotlin_language_server", {
 			cmd = { kotlin_bin },
 			cmd_env = cmd_env,
 			capabilities = capabilities,
-			root_dir = util.root_pattern("settings.gradle", "build.gradle", "pom.xml", ".git") or vim.fn.getcwd(),
+			root_dir = function(fname)
+				return util.root_pattern("settings.gradle", "build.gradle", "pom.xml", ".git")(fname)
+					or vim.fn.getcwd()
+			end,
 		})
-		vim.lsp.enable("kotlin_language_server")
 	end
 
-	-- C/C++
 	local clangd_bin = utils.exepath("clangd")
 	if clangd_bin then
-		vim.lsp.config("clangd", {
+		setup_server("clangd", {
 			filetypes = { "c", "cpp", "objc", "objcpp" },
 			capabilities = capabilities,
-			root_dir = util.root_pattern(
-				"package.json", ".clangd", "compile_flags.txt",
-				"compile_commands.json", ".vim/", ".git", ".hg"
-			) or vim.fn.getcwd(),
+			root_dir = function(fname)
+				return util.root_pattern(
+					"package.json",
+					".clangd",
+					"compile_flags.txt",
+					"compile_commands.json",
+					".vim/",
+					".git",
+					".hg"
+				)(fname) or vim.fn.getcwd()
+			end,
 		})
-		vim.lsp.enable("clangd")
 	end
 end
 
