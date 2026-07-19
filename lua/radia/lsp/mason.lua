@@ -1,5 +1,8 @@
 return {
 	"williamboman/mason.nvim",
+	-- Don't block startup: UI/installer on demand, rest after UI settles.
+	cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUpdate", "MasonLog" },
+	event = "VeryLazy",
 	dependencies = {
 		{ "williamboman/mason-lspconfig.nvim" },
 		{ "WhoIsSethDaniel/mason-tool-installer.nvim" },
