@@ -59,18 +59,26 @@ map("n", "<leader>fm", "<cmd>:lua require('telescope.builtin').keymaps({layout_s
 map("n", "<leader>ff", "<cmd>Telescope find_files theme=ivy previewer=false<cr>", "Fuzzy find files in cwd")
 map("n", "<leader>fh", "<cmd>Telescope find_files theme=ivy previewer=false hidden=true no_ignore=true<cr>", "Fuzzy find files in cwd with hidden")
 
-map("n", "<leader>fs", function()
-  require('telescope').extensions.live_grep_args.live_grep_args({
-    default_text = '-F ',
-  })
-end, "Find string in cwd")
+-- Literal search is passed as an arg instead of typing "-F " into the prompt:
+-- a prompt starting with "-" disables auto-quoting, so "-F foo bar" used to search
+-- "foo" inside a path named "bar". Now "foo bar" searches the phrase "foo bar".
+-- Need regex/flags? quote the pattern: "foo.*bar" --no-fixed-strings -t lua  (or <C-g> for a glob)
+local function grep_literal(extra)
+	return function()
+		require("telescope").extensions.live_grep_args.live_grep_args(vim.tbl_extend("force", {
+			additional_args = { "--fixed-strings" },
+		}, extra or {}))
+	end
+end
 
-map("n", "<leader>fx", function()
-  require("telescope").extensions.live_grep_args.live_grep_args({
-    cwd = vim.fn.stdpath("config"),
-    default_text = "-F ",
-  })
-end, "Find string in config (hidden, fixed)")
+map("n", "<leader>fs", grep_literal(), "Find string in cwd")
+
+map("n", "<leader>fS", grep_literal({
+	prompt_title = "Live Grep (incl. ignored)",
+	additional_args = { "--fixed-strings", "--no-ignore" },
+}), "Find string in cwd (incl. gitignored)")
+
+map("n", "<leader>fx", grep_literal({ cwd = vim.fn.stdpath("config") }), "Find string in config (hidden, fixed)")
 
 map("n", "<leader>fa", "<cmd>Telescope buffers show_all_buffers=true sort_lastused=true theme=dropdown<cr>", "Find buffer on buffers")
 map("n", "<leader>fc", '<cmd>Telescope live_grep search_dirs={"%:p"} vimgrep_arguments=rg,--color=never,--no-heading,--with-filename,--line-number,--column,--smart-case,--fixed-strings --theme=ivy<cr>', "Find string in current buffer")

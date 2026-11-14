@@ -156,6 +156,13 @@ return {
 
 		telescope.setup({
 			defaults = {
+				-- Speed notes:
+				-- * .gitignore is respected (no --no-ignore): build output, caches and deps are
+				--   skipped by rg itself. Use <leader>fS when you really need ignored files.
+				-- * Heavy dirs are pruned in rg via --glob (file_ignore_patterns below only filters
+				--   AFTER rg has already read and printed every match, which is what made it slow).
+				-- * Minified/huge lines are truncated and huge files skipped, so one bundle can't
+				--   flood the picker with megabytes of text.
 				vimgrep_arguments = {
 					"rg",
 					"--color=never",
@@ -165,9 +172,13 @@ return {
 					"--column",
 					"--smart-case",
 					"--hidden",
-					"--no-ignore",
-					"--glob",
-					"!**/.git/*",
+					"--glob=!.git/",
+					"--glob=!node_modules/",
+					"--glob=!venv/",
+					"--glob=!.venv/",
+					"--max-columns=300",
+					"--max-columns-preview",
+					"--max-filesize=1M",
 				},
 				file_ignore_patterns = {
 					"node_modules",
@@ -223,6 +234,14 @@ return {
 			extensions = {
 				live_grep_args = {
 					auto_quoting = true,
+					-- wait for a typing pause before spawning rg (no search per keystroke)
+					debounce = 150,
+					mappings = {
+						i = {
+							-- "foo" -> "\"foo\" --iglob " : then type e.g. *.lua or !*test*
+							["<C-g>"] = require("telescope-live-grep-args.actions").quote_prompt({ postfix = " --iglob " }),
+						},
+					},
 				},
 			},
 		})

@@ -47,14 +47,14 @@ Notes
 ## Search & Telescope
 - `n <leader>ff` — Find files (ivy, no preview).
 - `n <leader>fh` — Find files including hidden, not ignored.
-- `n <leader>fs` — Live grep in cwd via `live_grep_args`; prompt is prefilled with `-F ` (fixed-string/literal search — delete it or add rg flags for regex).
+- `n <leader>fs` — Live grep in cwd, literal (fixed-string), respects `.gitignore`; `foo bar` searches the whole phrase (no `-F ` prefix needed).
+- `n <leader>fS` — Same as `fs` but also searches gitignored files (still skips `.git`, `node_modules`, `venv`).
 - `n <leader>fx` — Same as `fs` but scoped to the Neovim config directory.
 
-  Any ripgrep flag works in the `fs`/`fx` prompt (quote the pattern when combining):
+  Any ripgrep flag works in the `fs`/`fS`/`fx` prompt (quote the pattern when combining):
   `"foo bar" -t lua` (file type) · `"foo" -g "*.md"` (glob) · `"foo" -g "!dist/**"` (exclude) ·
-  `"foo" --hidden` · `"foo" --no-ignore` · `"foo" -w` (whole word) · `"foo" -i` (ignore case) ·
-  `"foo" lua/radia/` (limit to path). Press `<C-k>` to auto-quote what you've typed,
-  `<C-i>` to quote it and append ` --iglob `.
+  `"foo" -w` (whole word) · `"foo" -s` (case-sensitive) · `"a.*b" --no-fixed-strings` (regex) ·
+  `"foo" lua/radia/` (limit to path). Press `<C-g>` to quote what you've typed and append ` --iglob `.
 - `n <leader>fa` — List and pick buffers.
 - `n <leader>fr` — Registers viewer (vertical layout).
 - `n <leader>fm` — Keymaps viewer (vertical layout).
