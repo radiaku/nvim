@@ -45,8 +45,9 @@ Notes
 ## Search & Telescope
 - `n <leader>ff` — Find files (ivy, no preview).
 - `n <leader>fh` — Find files including hidden, not ignored.
-- `n <leader>fs` — Live grep in cwd (supports flags via `live_grep_args`).
-- `n <leader>fx` — Live grep in cwd including hidden files (ignores `.git/`).
+- `n <leader>fs` — Live grep in cwd, literal (fixed-string), respects `.gitignore`; `foo bar` searches the whole phrase. For flags, quote the pattern: `"foo" -g *.ts`, `"foo" -t md`, `"a.*b" --no-fixed-strings`. In the prompt, `<C-g>` quotes it and appends `--iglob ` (e.g. `*.lua`, `!*test*`).
+- `n <leader>fS` — Same as `fs` but also searches gitignored files (still skips `.git`, `node_modules`, `venv`).
+- `n <leader>fx` — Live grep in the nvim config dir (same rules as `fs`).
 - `n <leader>fa` — List and pick buffers.
 - `n <leader>fr` — Registers viewer (vertical layout).
 - `n <leader>fm` — Keymaps viewer (vertical layout).
